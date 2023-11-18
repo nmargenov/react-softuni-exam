@@ -4,11 +4,11 @@ import { register } from "../../../services/authService";
 import { UserContext } from "../../../contexts/AuthContext";
 import { useNavigate } from "react-router";
 import { SmallSpinner } from "../../spinners/SmallSpinner";
+import { useForm } from "../../../hooks/useForm";
 
 export const Register = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [errorMsg, setErrorMsg] = useState("");
-    const [values, setValues] = useState({
+
+    const initialValues = {
         username: "",
         password: "",
         rePassword: "",
@@ -16,44 +16,44 @@ export const Register = () => {
         firstName: "",
         lastName: "",
         birthdate: "",
-    });
+    };
+    
+    const { values, onInputChange, onSubmitHandler,isLoading,setIsLoading,errorMsg,setErrorMsg } = useForm(initialValues)
 
     const navigate = useNavigate();
-
+    
     const { setToken } = useContext(UserContext);
 
-    function onInputChange(e) {
-        setValues((oldState) => ({ ...oldState, [e.target.name]: e.target.value }));
-    }
+
 
     function onSubmit(e) {
-        e.preventDefault();
+       onSubmitHandler(e);
         setIsLoading(true);
         register(values)
             .then((data) => {
                 setToken(data);
                 setIsLoading(false);
-                navigate("/");
+                navigate("/feed");
             })
             .catch((err) => {
                 setIsLoading(false);
                 setErrorMsg(err.message);
             });
     }
-    
+
     const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
 
-    function isValidEmail(email){
+    function isValidEmail(email) {
         return emailRegex.test(email);
     }
-    
+
     function birthdateValidator(birthdate) {
-    if (!birthdate) {
-      return false;
+        if (!birthdate) {
+            return false;
+        }
+        const year = String(birthdate).split('-')[0];
+        return !(Number(year) >= 1900 && Number(year) <= 2023);
     }
-    const year = String(birthdate).split('-')[0];
-    return !(Number(year) >= 1900 && Number(year) <= 2023);
-  }
 
     return (
         <div className={styles["main"]}>
