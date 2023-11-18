@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styles from "./login.module.css";
+import { login } from "../../../services/authService";
+import { UserContext} from "../../../contexts/AuthContext";
+import { useNavigate } from "react-router";
 
 export const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -9,13 +12,23 @@ export const Login = () => {
         password: '',
     });
 
+    const navigate = useNavigate();
+
+    const {setToken} = useContext(UserContext);
+
     function onInputChange(e){
         setValues(oldState=>({...oldState,[e.target.name]:e.target.value}));
     }
 
     function onSubmit(e) {
         e.preventDefault();
-        console.log(values);
+        login(values)
+            .then((data)=>{
+                setToken(data);
+                navigate('/');
+            }).catch((err)=>{
+                console.log(err);
+            })
     }
     return (
         <div className={styles["main"]}>

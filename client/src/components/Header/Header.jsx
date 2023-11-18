@@ -2,11 +2,14 @@ import { Link } from "react-router-dom";
 import styles from "./header.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faList, faClose } from "@fortawesome/free-solid-svg-icons"
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../../contexts/AuthContext";
 
 export const Header = () => {
 
     const [isOpen, setIsOpen] = useState(false);
+
+    const {isAuthenticated,logout} = useContext(UserContext);
 
     function toggleOpen() {
         setIsOpen(!isOpen);
@@ -17,6 +20,11 @@ export const Header = () => {
             return;
         }
         setIsOpen(false);
+    }
+
+    function onLogoutClick(){
+        logout(),
+        clickHandler();
     }
 
     return (
@@ -31,10 +39,14 @@ export const Header = () => {
                 </li>
                 <li className={`${styles.menu} ${isOpen ? styles['is-open'] : ''}`}>
                     <Link onClick={clickHandler} to={"/feed"} className={styles["menu-item"]}>Feed</Link>
+                    {!isAuthenticated && <>
                     <Link onClick={clickHandler} to={"/login"} className={styles["menu-item"]}> Login</Link >
                     <Link onClick={clickHandler} to={"/register"} className={styles["menu-item"]} > Register</Link >
+                    </>}
+                    {isAuthenticated&&<>
                     <Link onClick={clickHandler} to={"/profile"} className={styles["menu-item"]} > Profile</Link >
-                    <Link onClick={clickHandler} to={"/logout"} className={styles["menu-item"]} > Logout</Link >
+                    <Link onClick={onLogoutClick} to="/feed" className={styles["menu-item"]} > Logout</Link >
+                    </>}
                 </li >
             </ul >
         </nav >
