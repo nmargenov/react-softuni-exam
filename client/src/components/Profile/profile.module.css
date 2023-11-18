@@ -102,6 +102,7 @@
 
 .settings {
     display: none;
+    margin-top: 5px;
 }
 
 .is-loading {
