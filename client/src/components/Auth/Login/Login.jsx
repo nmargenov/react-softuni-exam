@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import styles from "./login.module.css";
+import styles from "../shared/styles.module.css";
 import { login } from "../../../services/authService";
 import { UserContext } from "../../../contexts/AuthContext";
 import { useNavigate } from "react-router";

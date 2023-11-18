@@ -5,6 +5,7 @@ import styles from "./app.module.css";
 import { Route, Routes } from "react-router";
 import { Login } from "./components/Auth/Login/Login";
 import { AuthProvider } from "./contexts/AuthContext";
+import { Register } from "./components/Auth/Register/Register";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <div className={styles["main"]}>
         <Routes>
           <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
         </Routes>
       </div>
       <Footer />
