@@ -5,8 +5,7 @@ exports.auth = async (req, res, next) => {
     const token = req.headers[AUTH_COOKIE];
     if (token) {
         try {
-            const newToken = token.split(' ')[1];
-            const decodedToken = await verify(newToken, SECRET);
+            const decodedToken = await verify(token, SECRET);
 
             req.user=decodedToken;
             res.isLogged = true;

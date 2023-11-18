@@ -4,12 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faList, faClose } from "@fortawesome/free-solid-svg-icons"
 import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/AuthContext";
+import * as jwt from "jwt-decode";
 
 export const Header = () => {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const {isAuthenticated,logout} = useContext(UserContext);
+    const {isAuthenticated,logout,user} = useContext(UserContext);
 
     function toggleOpen() {
         setIsOpen(!isOpen);
@@ -44,7 +45,7 @@ export const Header = () => {
                     <Link onClick={clickHandler} to={"/register"} className={styles["menu-item"]} > Register</Link >
                     </>}
                     {isAuthenticated&&<>
-                    <Link onClick={clickHandler} to={"/profile"} className={styles["menu-item"]} > Profile</Link >
+                    <Link onClick={clickHandler} to={"/profile/"+jwt.jwtDecode(user).username} className={styles["menu-item"]} > Profile</Link >
                     <Link onClick={onLogoutClick} to="/feed" className={styles["menu-item"]} > Logout</Link >
                     </>}
                 </li >

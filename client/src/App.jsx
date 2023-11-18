@@ -6,6 +6,7 @@ import { Navigate, Route, Routes } from "react-router";
 import { Login } from "./components/Auth/Login/Login";
 import { AuthProvider } from "./contexts/AuthContext";
 import { Register } from "./components/Auth/Register/Register";
+import { Profile } from "./components/Profile/Profile";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
           <Route path='/' element={<Navigate to='/feed'/>}/>
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/profile/:username' element={<Profile />} />
         </Routes>
       </div>
       <Footer />
