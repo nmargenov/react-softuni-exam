@@ -1,8 +1,9 @@
 import { useContext, useState } from "react";
 import styles from "./login.module.css";
 import { login } from "../../../services/authService";
-import { UserContext} from "../../../contexts/AuthContext";
+import { UserContext } from "../../../contexts/AuthContext";
 import { useNavigate } from "react-router";
+import { SmallSpinner } from "../../spinners/SmallSpinner";
 
 export const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -14,20 +15,23 @@ export const Login = () => {
 
     const navigate = useNavigate();
 
-    const {setToken} = useContext(UserContext);
+    const { setToken } = useContext(UserContext);
 
-    function onInputChange(e){
-        setValues(oldState=>({...oldState,[e.target.name]:e.target.value}));
+    function onInputChange(e) {
+        setValues(oldState => ({ ...oldState, [e.target.name]: e.target.value }));
     }
 
     function onSubmit(e) {
         e.preventDefault();
+        setIsLoading(true);
         login(values)
             .then((data)=>{
                 setToken(data);
+                setIsLoading(false);
                 navigate('/');
             }).catch((err)=>{
-                console.log(err);
+                setIsLoading(false);
+                setErrorMsg(err.message);
             })
     }
     return (
@@ -53,6 +57,7 @@ export const Login = () => {
                             }`}
                         value={values.username}
                         onChange={onInputChange}
+                        disabled={isLoading}
                     />
                     {values.username.length > 0 && values.username.length < 3 && (
                         <div className={styles.errorDiv}>
@@ -73,6 +78,8 @@ export const Login = () => {
                             }`}
                         value={values.password}
                         onChange={onInputChange}
+                        disabled={isLoading}
+
                     />
                     {values.password.length > 0 && values.password.length < 6 && (
                         <div className={styles.errorDiv}>
@@ -81,12 +88,18 @@ export const Login = () => {
                             </small>
                         </div>
                     )}
-                    <input
-                        type="submit"
-                        className={styles["submit-button"]}
-                        value="Login"
-                        disabled={values.username.length < 3 || values.password.length < 6}
-                    />
+                    {!isLoading &&
+                        <input
+                            type="submit"
+                            className={styles["submit-button"]}
+                            value="Login"
+                            disabled={values.username.length < 3 || values.password.length < 6 || isLoading}
+                        />}
+                    {isLoading &&
+                        <div className={styles["loader"]}>
+                            <SmallSpinner />
+                        </div>
+                        }
                 </form>
             </div>
         </div>

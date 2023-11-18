@@ -67,8 +67,18 @@ input[type="email"] {
     transition: background-color 0.3s;
 }
 
+.submit-button:disabled,
+.submit-button:disabled:hover{
+    background-color: #888;
+}
+
 .invalidField {
     border: 1px solid red !important;
+}
+
+.loader{
+    margin-top: 5px;
+    padding: 25px;
 }
 
 .submit-button:hover {

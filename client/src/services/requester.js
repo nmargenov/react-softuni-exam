@@ -19,7 +19,8 @@ const requester = async (method, url, data) =>{
     
     const request = await fetch(url,options);
     if(!request.ok){
-        throw new Error('Error');
+        const response = await request.json();
+        throw new Error(response.message);
     }
     const response = await request.json();
     return response;
