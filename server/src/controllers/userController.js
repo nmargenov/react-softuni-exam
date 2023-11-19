@@ -110,7 +110,7 @@ router.patch(paths.privateData,mustBeAuth,async(req,res)=>{
         }
         const email = req.body.email?.trim();
         const birthdate = req.body.birthdate?.trim();
-        const token = await editPrivateProfileData(email,birthdate,userId);
+        const token = await editPrivateProfileData(email,birthdate,userId,loggedInUser);
         res.status(200).json(token);
     }catch(err){
         const error = formatErrorMessage(err);

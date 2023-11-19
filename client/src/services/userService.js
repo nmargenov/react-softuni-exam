@@ -31,3 +31,8 @@ export const removeExistingImage = (userId) =>{
     const url = BASE_URL + paths.removeExistingImage.replace(':userId', userId);
     return del(url);
 }
+
+export const editPrivateData=(userId,email,birthdate)=>{
+    const url = BASE_URL + paths.privateData.replace(':userId', userId);
+    return patch(url,{email,birthdate});
+  }

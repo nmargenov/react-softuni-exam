@@ -1,9 +1,14 @@
+import { SettingsProvider } from "../../contexts/SettingsContext";
+import { PrivateInfo } from "./PrivateInfo/PrivateInfo";
 import { PublicInfo } from "./PublicInfo/PublicInfo"
 import styles from "./settings.module.css";
-export const Settings = () =>{
-    return(
+export const Settings = () => {
+    return (
         <div className={styles["main"]}>
-            <PublicInfo/>
+            <SettingsProvider>
+                <PublicInfo />
+                <PrivateInfo />
+            </SettingsProvider>
         </div>
     )
 }

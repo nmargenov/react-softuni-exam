@@ -115,7 +115,6 @@ exports.follow = async (userToFollow, userId) => {
 };
 
 exports.editPublicProfileData = async (req, res, userId) => {
-    console.log(req.body);
     const { image, bio, firstName, lastName, username } = await editPublicProfileData(req, res);
     const existingUsername = await User.findOne({ username });
     if (existingUsername && existingUsername._id != userId) {
@@ -180,7 +179,13 @@ exports.editPrivateProfileData = async (email, birthdate, userId) => {
     return token;
 };
 
-exports.editPrivateProfileData = async (email, birthdate, userId) => {
+exports.editPrivateProfileData = async (email, birthdate, userId,loggedInUser) => {
+    const existingEmail = await User.findOne({ email });
+
+    if(existingEmail && existingEmail._id != loggedInUser){
+        throw new Error("Email is in use already!");
+    }
+
     const year = birthdate?.split('-')[0];
     const isValidBirthdate = Number(year) >= 1900 && Number(year) <= 2023;
 

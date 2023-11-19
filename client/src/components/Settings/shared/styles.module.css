@@ -78,6 +78,7 @@ h2 {
 }
 
 .container input[type="text"],
+.container input[type="email"],
 .container input[type="date"],
 .container input[type="password"] {
   width: 220px;

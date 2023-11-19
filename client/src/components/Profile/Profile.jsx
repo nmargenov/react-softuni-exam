@@ -31,7 +31,6 @@ export const Profile = () => {
                 }
                 setIsLoading(false);
             }).catch((err) => {
-                console.log(err);
                 setIsLoading(false);
             })
     }, [username]);
@@ -49,7 +48,6 @@ export const Profile = () => {
                 setUser(data);
             }).catch((err)=>{
                 setIsFollowingLoading(false);
-                console.log(err);
             })
     };
 
