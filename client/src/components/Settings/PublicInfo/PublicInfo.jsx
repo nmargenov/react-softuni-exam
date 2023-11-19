@@ -22,7 +22,7 @@ export const PublicInfo = () => {
         bio: decodedUser.bio,
         profilePicture: decodedUser.profilePicture
     });
-    
+
 
     const formRef = useRef(null);
     const fileInputRef = useRef(null);
@@ -47,10 +47,11 @@ export const PublicInfo = () => {
         removeExistingImage(decodedUser._id)
             .then((data) => {
                 setIsLoading(false);
+                setErrorMsg('');
                 setUser(data);
             }).catch((err) => {
                 setIsLoading(false);
-                console.log(err);
+                setErrorMsg(err.message);
             })
     }
     function onSubmit(e) {
@@ -70,12 +71,13 @@ export const PublicInfo = () => {
                 setUser(data);
                 setPreviewUrl(false);
                 setSelectedFile(null);
+                setErrorMsg('');
                 setIsLoading(false);
             }).catch((err) => {
                 setPreviewUrl(false);
                 setSelectedFile(null);
                 setIsLoading(false);
-                console.log(err);
+                setErrorMsg(err.message);
             })
     }
 
@@ -106,8 +108,8 @@ export const PublicInfo = () => {
                     <div className={styles["left-info"]}>
                         <form onKeyDown={handleKeyDown} ref={formRef} onSubmit={onSubmit}>
                             {errorMsg && (
-                                <div className={styles["errorDiv"]}>
-                                    <p className={styles["errorMsg first"]}>{errorMsg}</p>
+                                <div className={styles["errorDiv-first"]}>
+                                    <p className={styles["errorMsg"]}>{errorMsg}</p>
                                 </div>
                             )}
                             <div className={styles['field']}>
@@ -205,7 +207,7 @@ export const PublicInfo = () => {
                                     <img
 
                                         src={decodeBuffer(decodedUser.profilePicture)}
-                                        
+
                                         alt=""
                                     />
                                 </>)}

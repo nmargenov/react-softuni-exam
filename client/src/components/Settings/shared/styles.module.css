@@ -28,6 +28,12 @@ h2 {
   overflow: auto;
 }
 
+.errorDiv-first{
+  max-width: 225px;
+  overflow: auto;
+  margin-top: -20px;
+}
+
 .errorMsg {
   font-size: 15px;
   color: red;
