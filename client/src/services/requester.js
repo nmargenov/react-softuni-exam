@@ -6,7 +6,13 @@ const requester = async (method, url, data) =>{
             'Content-Type':'application/json'
         }
         if(data){
-            options.body=JSON.stringify(data);
+            if (data instanceof FormData) {
+                delete options.headers['Content-Type'];
+                options.body = data;
+              } else {
+                options.body = JSON.stringify(data);
+              }
+          
         }
     }
     const token = localStorage.getItem('authToken');
@@ -19,6 +25,9 @@ const requester = async (method, url, data) =>{
     
     const request = await fetch(url,options);
     if(!request.ok){
+        if(request.status === Number('409')){
+            localStorage.removeItem('authToken');
+        }
         const response = await request.json();
         throw new Error(response.message);
     }

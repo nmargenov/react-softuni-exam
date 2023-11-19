@@ -115,6 +115,7 @@ exports.follow = async (userToFollow, userId) => {
 };
 
 exports.editPublicProfileData = async (req, res, userId) => {
+    console.log(req.body);
     const { image, bio, firstName, lastName, username } = await editPublicProfileData(req, res);
     const existingUsername = await User.findOne({ username });
     if (existingUsername && existingUsername._id != userId) {

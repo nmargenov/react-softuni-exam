@@ -19,18 +19,18 @@
 }
 
 
-h1 {
+.main h1 {
     text-align: center;
 }
 
-form {
+.main form {
     text-align: center;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="date"],
-input[type="email"] {
+.main input[type="text"],
+.main input[type="password"],
+.main input[type="date"],
+.main input[type="email"] {
     width: 100%;
     padding: 12px;
     margin-top: 20px;

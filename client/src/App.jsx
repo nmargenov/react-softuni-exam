@@ -7,6 +7,7 @@ import { Login } from "./components/Auth/Login/Login";
 import { AuthProvider } from "./contexts/AuthContext";
 import { Register } from "./components/Auth/Register/Register";
 import { Profile } from "./components/Profile/Profile";
+import { Settings } from "./components/Settings/Settings";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/profile/:username' element={<Profile />} />
+          <Route path='/account/settings' element={<Settings />} />
         </Routes>
       </div>
       <Footer />
