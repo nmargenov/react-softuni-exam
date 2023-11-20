@@ -1,0 +1,142 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 700px;
+    margin: 0 20px;
+    margin-top: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.post-content {
+    margin-top: 15px;
+    margin-left: 15px;
+    padding-right: 15px;
+}
+
+textarea {
+    width: 100%;
+    font-size: 18px;
+    height: 100px;
+    resize: none;
+    border: none;
+    outline: none;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.post-actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+    margin-bottom: 15px;
+}
+
+img {
+    max-width: 100%;
+    max-height: 500px;
+    padding: 10px 0;
+}
+
+.image-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+    border-top: 1px solid rgb(192, 192, 192);
+    border-bottom: 1px solid rgb(192, 192, 192);
+}
+
+.clear-btn {
+    max-width: fit-content;
+    background-color: rgb(236, 81, 81);
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.clear-btn:hover {
+    background-color: rgb(228, 139, 139);
+}
+
+.clear-btn:active {
+    background-color: rgb(236, 81, 81);
+}
+
+.post-btn,
+.upload-btn {
+    background-color: #1da1f2;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.post-btn:hover,
+.upload-btn:hover {
+    background-color: #69baec;
+}
+
+.post-btn:active,
+.upload-btn:active {
+    background-color: #1da1f2;
+}
+
+.errorDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    padding-bottom: 0;
+}
+
+.errorMsg {
+    color: red;
+}
+
+.spinner {
+    display: flex;
+    justify-content: center;
+}
+
+textarea:disabled {
+    background-color: #ffffff;
+}
+
+.loader{
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .post-actions {
+        flex-direction: column;
+        margin-top: 0;
+    }
+
+    .clear-btn {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .post-btn {
+        margin-top: 10px;
+    }
+}

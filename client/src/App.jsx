@@ -10,6 +10,7 @@ import { Profile } from "./components/Profile/Profile";
 import { Settings } from "./components/Settings/Settings";
 import { MustBeGuestGuard } from "./guards/MustBeGuestGuard";
 import { MustBeAuthGuard } from "./guards/MustBeAuthGuard";
+import { Feed } from "./components/Feed/Feed";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
       <div className={styles["main"]}>
         <Routes>
           <Route path='/' element={<Navigate to='/feed' />} />
+          <Route path='/feed' element={<Feed/>} />
           <Route path='/login' element={
             <MustBeGuestGuard>
               <Login />
