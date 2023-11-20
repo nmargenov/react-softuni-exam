@@ -9,7 +9,7 @@ import { editPrivateData } from '../../../services/userService';
 export const PrivateInfo = () => {
 
     const { setUser, decodedUser } = useContext(UserContext);
-    const { isPublicSaving, isPrivateSaving, setIsPrivateSaving } = useContext(SettingsContext);
+    const { isPasswordSaving, isPublicSaving, isPrivateSaving, setIsPrivateSaving } = useContext(SettingsContext);
 
     const formRef = useRef();
 
@@ -75,7 +75,7 @@ export const PrivateInfo = () => {
                             <div className={styles['field']}>
                             <p className={styles["first"]}>Email</p>
                                 <input
-                                    disabled={isPrivateSaving || isPublicSaving}
+                                    disabled={isPrivateSaving || isPublicSaving || isPasswordSaving}
                                     value={values.email}
                                     autoComplete="off"
                                     type="email"
@@ -97,7 +97,7 @@ export const PrivateInfo = () => {
                             <div className={styles['field']}>
                                 <p>Birthdate</p>
                                 <input
-                                    disabled={isPrivateSaving || isPublicSaving}
+                                    disabled={isPrivateSaving || isPublicSaving || isPasswordSaving}
                                     value={values.birthdate}
                                     autoComplete="off"
                                     type="date"
@@ -126,7 +126,7 @@ export const PrivateInfo = () => {
                     {!isPrivateSaving &&
                         <button onClick={() => formRef.current.requestSubmit()} className={styles["save"]}
                             disabled={!isValidEmail(values.email) || birthdateValidator(values.birthdate)
-                                || isPublicSaving || isPrivateSaving} >
+                                || isPublicSaving || isPrivateSaving ||isPasswordSaving} >
                             Save changes
                         </button>}
                 </div>

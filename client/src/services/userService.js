@@ -14,7 +14,7 @@ const paths = {
 }
 
 export const getUser = (username) => {
-    const url = BASE_URL + paths.user.replace(':username',username);
+    const url = BASE_URL + paths.user.replace(':username', username);
     return get(url);
 }
 
@@ -27,12 +27,18 @@ export const editPublicData = (userId, formData) => {
     return patch(url, formData);
 }
 
-export const removeExistingImage = (userId) =>{
+export const removeExistingImage = (userId) => {
     const url = BASE_URL + paths.removeExistingImage.replace(':userId', userId);
     return del(url);
 }
 
-export const editPrivateData=(userId,email,birthdate)=>{
+export const editPrivateData = (userId, email, birthdate) => {
     const url = BASE_URL + paths.privateData.replace(':userId', userId);
-    return patch(url,{email,birthdate});
-  }
+    return patch(url, { email, birthdate });
+}
+
+
+export const editPassword = (userId, oldPassword, newPassword, newRePassword) => {
+    const url = BASE_URL + paths.password.replace(':userId', userId);
+    return patch(url, { oldPassword, newPassword, newRePassword });
+}

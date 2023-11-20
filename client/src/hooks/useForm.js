@@ -15,6 +15,7 @@ export const useForm = (initialValues) => {
 
     return{
         values,
+        setValues,
         onInputChange,
         onSubmitHandler,
         isLoading,

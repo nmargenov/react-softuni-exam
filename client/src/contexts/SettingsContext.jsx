@@ -8,12 +8,16 @@ export const SettingsProvider = ({
 
     const [isPublicSaving, setIsPublicSaving] = useState(false);
     const [isPrivateSaving, setIsPrivateSaving] = useState(false);
+    const [isPasswordSaving, setIsPasswordSaving] = useState(false);
+   
    
     const context = {
         isPublicSaving,
         setIsPublicSaving,
         isPrivateSaving,
-        setIsPrivateSaving
+        setIsPrivateSaving,
+        isPasswordSaving,
+        setIsPasswordSaving,
     }
 
     return(

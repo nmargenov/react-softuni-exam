@@ -11,7 +11,7 @@ import { SmallSpinner } from '../../spinners/SmallSpinner';
 
 export const PublicInfo = () => {
     const { setUser, decodedUser } = useContext(UserContext);
-    const { isPrivateSaving, isPublicSaving, setIsPublicSaving } = useContext(SettingsContext);
+    const { isPasswordSaving, isPrivateSaving, isPublicSaving, setIsPublicSaving } = useContext(SettingsContext);
     const [previewUrl, setPreviewUrl] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
 
@@ -115,7 +115,7 @@ export const PublicInfo = () => {
                             <div className={styles['field']}>
                                 <p className={styles["first"]}>Username</p>
                                 <input
-                                    disabled={isPublicSaving || isPrivateSaving}
+                                    disabled={isPublicSaving || isPrivateSaving || isPasswordSaving}
                                     value={values.username}
                                     autoComplete="off"
                                     type="text"
@@ -139,7 +139,7 @@ export const PublicInfo = () => {
                             <div className={styles['field']}>
                                 <p>First Name</p>
                                 <input
-                                    disabled={isPublicSaving || isPrivateSaving}
+                                    disabled={isPublicSaving || isPrivateSaving || isPasswordSaving}
                                     value={values.firstName}
                                     autoComplete="off"
                                     type="text"
@@ -162,7 +162,7 @@ export const PublicInfo = () => {
                             <div className={styles['field']}>
                                 <p>Last Name</p>
                                 <input
-                                    disabled={isPublicSaving || isPrivateSaving}
+                                    disabled={isPublicSaving || isPrivateSaving || isPasswordSaving}
                                     value={values.lastName}
                                     autoComplete="off"
                                     type="text"
@@ -186,7 +186,7 @@ export const PublicInfo = () => {
                                 <p>Biography</p>
                                 <textarea
                                     value={values.bio}
-                                    disabled={isPublicSaving || isPrivateSaving}
+                                    disabled={isPublicSaving || isPrivateSaving || isPasswordSaving}
                                     autoComplete="off"
                                     type="text"
                                     name="bio"
@@ -214,7 +214,7 @@ export const PublicInfo = () => {
                         </div>
                         <div className={styles["upload-div"]}>
                             <input
-                                disabled={isPublicSaving || isPrivateSaving}
+                                disabled={isPublicSaving || isPrivateSaving || isPasswordSaving}
                                 type="file"
                                 name='profilePicture'
                                 ref={fileInputRef}
@@ -222,9 +222,9 @@ export const PublicInfo = () => {
                                 id="file-input"
                                 onChange={onFileInputChange}
                             />
-                            {!previewUrl && !isPublicSaving && !isPrivateSaving && <FontAwesomeIcon className={styles['icon']} icon={faUpload} onClick={() => fileInputRef.current.click()} />}
-                            {previewUrl && !isPublicSaving && !isPrivateSaving && <FontAwesomeIcon className={styles['cancel-icon']} disabled={isPublicSaving || isPrivateSaving} onClick={onClearPreview} icon={faTimesCircle} />}
-                            {hasProfilePicture(decodedUser.profilePicture) && !previewUrl && !isPublicSaving && !isPrivateSaving && <button disabled={isPublicSaving || isPrivateSaving} onClick={onRemoveExistingImage} className={styles["remove-existing-image"]}>
+                            {!previewUrl && !isPublicSaving && !isPrivateSaving && !isPasswordSaving && <FontAwesomeIcon className={styles['icon']} icon={faUpload} onClick={() => fileInputRef.current.click()} />}
+                            {previewUrl && !isPublicSaving && !isPrivateSaving && !isPasswordSaving && <FontAwesomeIcon className={styles['cancel-icon']} disabled={isPublicSaving || isPasswordSaving || isPrivateSaving} onClick={onClearPreview} icon={faTimesCircle} />}
+                            {hasProfilePicture(decodedUser.profilePicture) && !previewUrl && !isPublicSaving && !isPrivateSaving && !isPasswordSaving && <button disabled={isPublicSaving || isPrivateSaving || isPasswordSaving} onClick={onRemoveExistingImage} className={styles["remove-existing-image"]}>
                                 Remove existing image
                             </button>}
                         </div>
@@ -238,7 +238,7 @@ export const PublicInfo = () => {
                     {!isPublicSaving &&
                         <button onClick={() => formRef.current.requestSubmit()} className={styles["save"]}
                             disabled={values.username.length < 3 || values.firstName < 2
-                                || values.lastName < 2 || isPublicSaving || isPrivateSaving} >
+                                || values.lastName < 2 || isPublicSaving || isPrivateSaving || isPasswordSaving} >
                             Save changes
                         </button>}
                 </div>
