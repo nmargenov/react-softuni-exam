@@ -1,7 +1,12 @@
 .feed-main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.create-post {
+  display: flex;
+  width: 100%;
+  max-width: fit-content;
+}

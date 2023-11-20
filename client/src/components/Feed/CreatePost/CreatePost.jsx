@@ -5,7 +5,7 @@ import { SmallSpinner } from '../../spinners/SmallSpinner';
 import { createPost } from '../../../services/postService';
 import { UserContext } from '../../../contexts/AuthContext';
 
-export const CreatePost = () => {
+export const CreatePost = ({setPosts}) => {
     const initialValues = {
         description: ""
     }
@@ -35,6 +35,11 @@ export const CreatePost = () => {
     function onSubmit(e) {
         onSubmitHandler(e);
 
+        if(values.description.length<5){
+            setErrorMsg('Description must be at least 5 characters long!');
+            return;
+        }
+
         const formData = new FormData();
         formData.append('owner',decodedUser._id);
         formData.append('description',values.description);
@@ -45,10 +50,12 @@ export const CreatePost = () => {
         createPost(formData)
             .then((data)=>{
                 setIsLoading(false);
+                setPosts(state=>[data,...state])
                 setValues(initialValues);
                 setSelectedFile(null);
                 setPreviewUrl(null)
                 setErrorMsg('');
+                
             }).catch((err)=>{
                 setIsLoading(false);
                 setValues(initialValues);
@@ -58,7 +65,7 @@ export const CreatePost = () => {
             })
     }
     return (
-        <div className={styles['container']}>
+        <div className={styles['create-post-container']}>
             {errorMsg && <div className={styles['errorDiv']}>
                 <span className={styles['errorMsg']}>{errorMsg}</span>
             </div>}

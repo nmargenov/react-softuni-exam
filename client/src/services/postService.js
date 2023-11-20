@@ -1,4 +1,4 @@
-import { post } from "./requester";
+import { get, post } from "./requester";
 
 const BASE_URL = "http://localhost:5000/api";
 
@@ -18,5 +18,7 @@ export const createPost = (formData) => {
     return post(BASE_URL + paths.posts, formData);
 }
 
-
+export const getAllPosts = () =>{
+    return get(BASE_URL+paths.posts);
+}
 
