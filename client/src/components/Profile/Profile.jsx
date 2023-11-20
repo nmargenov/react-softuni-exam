@@ -22,7 +22,9 @@ export const Profile = () => {
 
     const { decodedUser, isAuthenticated } = useContext(UserContext);
 
+
     useEffect(() => {
+        ;
         getUser(username)
             .then((data) => {
                 setUser(data);
