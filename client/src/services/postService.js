@@ -26,3 +26,7 @@ export const getFollowingPosts = () =>{
     return get(BASE_URL+paths.followingPosts);
 }
 
+export const getLikedPosts =(userId) =>{
+    const url = BASE_URL+ paths.likedPosts.replace(':userId',userId);
+    return get(url);
+}

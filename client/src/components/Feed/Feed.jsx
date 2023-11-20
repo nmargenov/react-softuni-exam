@@ -2,10 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { CreatePost } from "./CreatePost/CreatePost";
 import styles from './feed.module.css';
 import { getAllPosts, getFollowingPosts } from "../../services/postService";
-import { PostList } from "./PostList/PostList";
+import { PostList } from "../Shared/PostList/PostList";
 import { UserContext } from "../../contexts/AuthContext";
 import { GlobalSpinner } from "../Spinners/GlobalSpinner/GlobalSpinner";
-import { ChooseFeed } from "./ChooseFeed/ChooseFeed";
+import { ChooseFeed } from "../Shared/ChooseFeed/ChooseFeed";
 
 export const Feed = () => {
 
@@ -47,7 +47,7 @@ export const Feed = () => {
                     <CreatePost hasError={hasError} isPostsLoading={isLoading} setPosts={setPosts} />
                 </div>}
             <div className={styles['choose-feed-component']}>
-                <ChooseFeed isLoading={isLoading} feed={feed} setFeed={setFeed} />
+                <ChooseFeed checkOwner={false} valueOne={'explore'} valueTwo={'following'} stateOne={'explore'} stateTwo={'following'} isLoading={isLoading} feed={feed} setFeed={setFeed} />
             </div>
             {!isLoading && <div className={styles['post-list-component']}>
                 <PostList hasError={hasError} posts={posts} />

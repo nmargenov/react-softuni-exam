@@ -109,12 +109,27 @@
     display: none;
 }
 
-.loader{
+.loader {
     width: 100%;
     min-height: calc(100vh - (198px));
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.loader-div {
+    margin-top: 200px;
+}
+
+.post-list-component {
+    width: 100%;
+    max-width: 740px;
+}
+
+.choose-feed-component {
+    display: flex;
+    width: 100%;
+    max-width: 740px;
 }
 
 @media (max-width: 768px) {

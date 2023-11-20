@@ -2,7 +2,7 @@ import { Error } from "../../Error/Error";
 import { PostItem } from "./PostItem/PostItem";
 import styles from './postList.module.css';
 
-export const PostList = ({ hasError, isLoading, posts }) => {
+export const PostList = ({ hasError, posts }) => {
     return (
         <>
             {hasError && <Error />}

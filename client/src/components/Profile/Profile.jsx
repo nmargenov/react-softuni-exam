@@ -9,6 +9,9 @@ import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GlobalSpinner } from "../Spinners/GlobalSpinner/GlobalSpinner";
 import { Error } from "../Error/Error";
+import { ChooseFeed } from "../Shared/ChooseFeed/ChooseFeed";
+import { PostList } from "../Shared/PostList/PostList";
+import { getLikedPosts } from "../../services/postService";
 
 export const Profile = () => {
 
@@ -21,18 +24,19 @@ export const Profile = () => {
     const [isFollowingLoading, setIsFollowingLoading] = useState(false);
     const [isImageLoading, setIsImageLoading] = useState(true);
     const [hasError, setHasError] = useState(true);
+    const [posts, setPosts] = useState([]);
+    const [isPostsLoading, setIsPostsLoading] = useState(false);
 
     const { decodedUser, isAuthenticated } = useContext(UserContext);
 
+    const [feed, setFeed] = useState('myPosts');
 
     useEffect(() => {
         getUser(username)
             .then((data) => {
-                if(!data){
-                    throw new Error().status('404');
-                }
                 setUser(data);
-                data.followers.includes(decodedUser._id) ? setIsFollowing(true) : setIsFollowing(false);
+                setPosts(data.userPosts)
+                isAuthenticated && data.followers.includes(decodedUser._id) ? setIsFollowing(true) : setIsFollowing(false);
                 if (decodedUser) {
                     data._id === decodedUser._id ? setIsOwner(true) : setIsOwner(false);
                 }
@@ -43,6 +47,21 @@ export const Profile = () => {
                 setIsLoading(false);
             })
     }, [username]);
+
+    useEffect(() => {
+        if (feed === 'liked') {
+            setIsPostsLoading(true);
+            getLikedPosts(decodedUser._id)
+                .then((data) => {
+                    setPosts(data);
+                    setIsPostsLoading(false);
+                }).catch((err) => {
+                    setIsPostsLoading(false);
+                })
+        } else if (feed === "myPosts") {
+            setPosts(user?.userPosts);
+        }
+    }, [feed])
 
     const onFollow = async () => {
         const userId = decodedUser?._id;
@@ -71,7 +90,7 @@ export const Profile = () => {
                 <div className={styles["loader"]}>
                     <GlobalSpinner />
                 </div>}
-                {!isLoading && hasError && <Error/>}
+            {!isLoading && hasError && <Error />}
             {!isLoading && !hasError && <div className={styles["main"]}>
                 <div className={styles["profile"]}>
                     <div className={styles["profile-image"]}>
@@ -92,7 +111,7 @@ export const Profile = () => {
                                     <button onClick={() => navigate('/account/settings')} className={styles["edit-btn"]}>
                                         Edit Profile
                                     </button>
-                                    <FontAwesomeIcon className={styles['settings']} icon={faGear} />
+                                    <FontAwesomeIcon  onClick={() => navigate('/account/settings')} className={styles['settings']} icon={faGear} />
                                 </>
                             )}
                             {!isOwner && isAuthenticated && (
@@ -130,9 +149,16 @@ export const Profile = () => {
                         </div>
                     </div>
                 </div>
-                {/* /* <ChooseFeed ensureLoggedInAndOwner={ensureLoggedInAndOwner} feedChange={getFeed} />
-            <ListPosts isLikedFetching={isLikedFetching} posts={posts} />
-            {isLikedFetching && <Spinner />} */}
+                <div className={styles['choose-feed-component']}>
+                    <ChooseFeed checkOwner={true} ownerId={user._id} isLoading={isPostsLoading} feed={feed} setFeed={setFeed} valueOne={decodedUser?._id === user._id ? "My Posts" : `${user.username} Posts`} valueTwo={'Liked'} stateOne={'myPosts'} stateTwo={'liked'} />
+                </div>
+                {!isPostsLoading && <div className={styles['post-list-component']}>
+                    <PostList posts={posts} />
+                </div>}
+                {isPostsLoading && <><div className={styles[['loader-div']]}>
+                    <GlobalSpinner />
+                </div></>}
+
             </div>}
         </>
     )
