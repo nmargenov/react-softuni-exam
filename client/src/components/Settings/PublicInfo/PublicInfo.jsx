@@ -15,13 +15,15 @@ export const PublicInfo = () => {
     const [previewUrl, setPreviewUrl] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
 
-    const { values, onInputChange, onSubmitHandler, errorMsg, setErrorMsg } = useForm({
+    const initialValues={
         username: decodedUser.username,
         firstName: decodedUser.firstName,
         lastName: decodedUser.lastName,
         bio: decodedUser.bio,
         profilePicture: decodedUser.profilePicture
-    });
+    }
+
+    const { values, onInputChange, onSubmitHandler, errorMsg, setErrorMsg } = useForm(initialValues);
 
 
     const formRef = useRef(null);

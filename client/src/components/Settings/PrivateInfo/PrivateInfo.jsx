@@ -5,6 +5,8 @@ import { UserContext } from '../../../contexts/AuthContext';
 import { SettingsContext } from '../../../contexts/SettingsContext';
 import { SmallSpinner } from '../../spinners/SmallSpinner';
 import { editPrivateData } from '../../../services/userService';
+import { birthdateValidator, isValidEmail } from '../../../utils/fieldsUtil';
+
 
 export const PrivateInfo = () => {
 
@@ -13,24 +15,12 @@ export const PrivateInfo = () => {
 
     const formRef = useRef();
 
-    const { values, onInputChange, onSubmitHandler, errorMsg, setErrorMsg } = useForm({
+    const initialValues = {
         email: decodedUser.email,
         birthdate: decodedUser.birthdate,
-    });
-
-    const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
-
-    function isValidEmail(email) {
-        return emailRegex.test(email);
     }
 
-    function birthdateValidator(birthdate) {
-        if (!birthdate) {
-            return false;
-        }
-        const year = String(birthdate).split('-')[0];
-        return !(Number(year) >= 1900 && Number(year) <= 2023);
-    }
+    const { values, onInputChange, onSubmitHandler, errorMsg, setErrorMsg } = useForm(initialValues);
 
     function onSubmit(e) {
         onSubmitHandler(e);
