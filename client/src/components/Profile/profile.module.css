@@ -109,17 +109,12 @@
     display: none;
 }
 
-app-list-posts {
-    margin-top: 10px;
-    max-width: 740px;
+.loader{
     width: 100%;
-}
-
-app-choose-feed {
+    min-height: calc(100vh - (198px));
     display: flex;
-    margin-top: 10px;
-    max-width: 740px;
-    width: 100%;
+    align-items: center;
+    justify-content: center;
 }
 
 @media (max-width: 768px) {

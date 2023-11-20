@@ -7,6 +7,7 @@ import { SmallSpinner } from "../spinners/SmallSpinner";
 import { UserContext } from "../../contexts/AuthContext";
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { GlobalSpinner } from "../Spinners/GlobalSpinner/GlobalSpinner";
 
 export const Profile = () => {
 
@@ -25,7 +26,7 @@ export const Profile = () => {
         getUser(username)
             .then((data) => {
                 setUser(data);
-                data.followers.includes(decodedUser._id) ? setIsFollowing(true):setIsFollowing(false);
+                data.followers.includes(decodedUser._id) ? setIsFollowing(true) : setIsFollowing(false);
                 if (decodedUser) {
                     data._id === decodedUser._id ? setIsOwner(true) : setIsOwner(false);
                 }
@@ -42,11 +43,11 @@ export const Profile = () => {
         }
         setIsFollowingLoading(true);
         follow(username, userId)
-            .then((data)=>{
+            .then((data) => {
                 setIsFollowingLoading(false);
-                data.followers.includes(decodedUser._id) ? setIsFollowing(true):setIsFollowing(false);
+                data.followers.includes(decodedUser._id) ? setIsFollowing(true) : setIsFollowing(false);
                 setUser(data);
-            }).catch((err)=>{
+            }).catch((err) => {
                 setIsFollowingLoading(false);
             })
     };
@@ -58,6 +59,10 @@ export const Profile = () => {
 
     return (
         <>
+            {isLoading &&
+                <div className={styles["loader"]}>
+                    <GlobalSpinner/>
+                </div>}
             {!isLoading && <div className={styles["main"]}>
                 <div className={styles["profile"]}>
                     <div className={styles["profile-image"]}>
