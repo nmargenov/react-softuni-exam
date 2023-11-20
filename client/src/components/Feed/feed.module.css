@@ -5,8 +5,29 @@
   align-items: center;
 }
 
-.create-post {
+.create-post-component {
   display: flex;
   width: 100%;
   max-width: fit-content;
+}
+
+.post-list-component {
+  width: 100%;
+  max-width: 740px;
+}
+
+.choose-feed-component {
+  display: flex;
+  width: 100%;
+  max-width: 740px;
+}
+
+.loader-div{
+  margin-top: 200px;
+}
+
+@media (max-width: 768px) {
+  .loader-div{
+    margin-top: 150px;
+  }
 }

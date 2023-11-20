@@ -8,6 +8,7 @@ import { UserContext } from "../../contexts/AuthContext";
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GlobalSpinner } from "../Spinners/GlobalSpinner/GlobalSpinner";
+import { Error } from "../Error/Error";
 
 export const Profile = () => {
 
@@ -19,22 +20,28 @@ export const Profile = () => {
     const [isFollowing, setIsFollowing] = useState(false);
     const [isFollowingLoading, setIsFollowingLoading] = useState(false);
     const [isImageLoading, setIsImageLoading] = useState(true);
+    const [hasError, setHasError] = useState(true);
 
     const { decodedUser, isAuthenticated } = useContext(UserContext);
 
 
     useEffect(() => {
         getUser(username)
-        .then((data) => {
-            setUser(data);
-            data.followers.includes(decodedUser._id) ? setIsFollowing(true) : setIsFollowing(false);
-            if (decodedUser) {
-                data._id === decodedUser._id ? setIsOwner(true) : setIsOwner(false);
-            }
-            setIsLoading(false);
-        }).catch((err) => {
-            setIsLoading(false);
-        })
+            .then((data) => {
+                if(!data){
+                    throw new Error().status('404');
+                }
+                setUser(data);
+                data.followers.includes(decodedUser._id) ? setIsFollowing(true) : setIsFollowing(false);
+                if (decodedUser) {
+                    data._id === decodedUser._id ? setIsOwner(true) : setIsOwner(false);
+                }
+                setIsLoading(false);
+                setHasError(false);
+            }).catch((err) => {
+                setHasError(true);
+                setIsLoading(false);
+            })
     }, [username]);
 
     const onFollow = async () => {
@@ -64,7 +71,8 @@ export const Profile = () => {
                 <div className={styles["loader"]}>
                     <GlobalSpinner />
                 </div>}
-            {!isLoading && <div className={styles["main"]}>
+                {!isLoading && hasError && <Error/>}
+            {!isLoading && !hasError && <div className={styles["main"]}>
                 <div className={styles["profile"]}>
                     <div className={styles["profile-image"]}>
                         {isImageLoading && <SmallSpinner />}

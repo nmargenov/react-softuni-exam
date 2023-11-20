@@ -112,6 +112,14 @@
     display: none;
 }
 
+.post-image-loader{
+    width: 80%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+
 @media (max-width: 768px) {
     .header {
         flex-direction: column;

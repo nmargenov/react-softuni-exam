@@ -22,3 +22,7 @@ export const getAllPosts = () =>{
     return get(BASE_URL+paths.posts);
 }
 
+export const getFollowingPosts = () =>{
+    return get(BASE_URL+paths.followingPosts);
+}
+

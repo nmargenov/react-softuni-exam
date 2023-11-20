@@ -17,7 +17,7 @@ exports.getAllPosts = async (userId) => {
     }
 };
 
-exports.createPost = (description, owner, image) => {
+exports.createPost = async (description, owner, image) => {
     const date = Date.now();
     const post = {
         description,
@@ -31,7 +31,8 @@ exports.createPost = (description, owner, image) => {
             contentType: 'image/png'
         }
     }
-    return Post.create(post);
+    const createdPost = await Post.create(post);
+    return createdPost.populate({path:'owner',select:'-password'});
 };
 
 exports.getPostById = (postId) => {

@@ -1,20 +1,40 @@
+import { useState } from 'react';
 import { decodeBuffer } from '../../../../utils/imageHelper';
 import { isEdited, timeAgo } from '../../../../utils/postHelper';
 import styles from '../postList.module.css';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { SmallSpinner } from '../../../spinners/SmallSpinner';
 
-export const PostItem = ({ _id, description, image, likedBy,comments, owner, createdAt, lastEditedAt }) => {
+
+export const PostItem = ({ _id, description, image, likedBy, comments, owner, createdAt, lastEditedAt }) => {
+
+    const navigate = useNavigate();
+    const [isPostImageLoading, setIsPostImageLoading] = useState(true);
+
+    function navigateToUserProfile(username) {
+        navigate('/profile/' + username);
+    }
+
+    function navigateToPost(postID) {
+        navigate('/post/' + postID);
+    }
+
+    function onLoad() {
+        setIsPostImageLoading(false)
+    }
+
     return (
-        <div className={styles['item-container']}>
+        <div onClick={() => navigateToPost(_id)} className={styles['item-container']}>
             <div className={styles['profile-image-div']}>
-                <img className={styles['profile-image']} src={decodeBuffer(owner.profilePicture)} />
+                <img onClick={(e) => { e.stopPropagation(); navigateToUserProfile(owner.username) }} className={styles['profile-image']} src={decodeBuffer(owner.profilePicture)} />
             </div>
             <div className={styles['main']}>
                 <div className={styles['header']}>
-                    <div className={styles['owner-name']}>
+                    <div onClick={(e) => { e.stopPropagation(); navigateToUserProfile(owner.username) }} className={styles['owner-name']}>
                         <p>{owner.firstName} {owner.lastName}</p>
                     </div>
                     <div className={styles['username-publish']}>
-                        <div className={styles['owner-username']}>
+                        <div onClick={(e) => { e.stopPropagation(); navigateToUserProfile(owner.username) }} className={styles['owner-username']}>
                             <p>@{owner.username}</p>
                         </div>
                         <div className={styles['publish-time']}>
@@ -28,8 +48,12 @@ export const PostItem = ({ _id, description, image, likedBy,comments, owner, cre
                 <div className={styles['content']}>
                     <p>{description}</p>
                     {image && <div className={styles['post-image']}>
-                        <img className={styles['post-image']} src={decodeBuffer(image)} alt="" />
+                        <img className={isPostImageLoading ? styles['is-loading'] : styles['post-image']} onLoad={onLoad} onError={onLoad} src={decodeBuffer(image)} alt="" />
                     </div>}
+                    {image && isPostImageLoading &&
+                        <div className={styles['post-image-loader']}>
+                            <SmallSpinner />
+                        </div>}
                 </div>
                 <div className={styles['footer']}>
                     <div className={styles['likes']}>
@@ -43,50 +67,3 @@ export const PostItem = ({ _id, description, image, likedBy,comments, owner, cre
         </div>
     )
 }
-
-/*/*<div *ngIf="posts!.length==0" class="no-posts">
-    <h1>No posts yet. Please check again later!</h1>
-</div>
-<ng-container *ngIf="posts!.length>0">
-    <div (click)="navigateToPost(post._id)" *ngFor="let post of posts" class="container">
-        <div class="profile-image-div">
-            <app-spinner *ngIf="isProfileImageLoading"/>
-            <img [class.is-loading]="isProfileImageLoading" (load)="onProfileImageLoad()" (error)="onProfileImageLoad()" class="profile-image" [src]="decodeBuffer(post!.owner.profilePicture.data)" (click)="navigateToUserProfile(post.owner.username)">
-        </div>
-        <div class="main">
-            <div class="header">
-                <div (click)="navigateToUserProfile(post.owner.username)" class="owner-name">
-                    <p>{{post.owner.firstName}} {{post.owner.lastName}}</p>
-                </div>
-                <div class="username-publish">
-                    <div (click)="navigateToUserProfile(post.owner.username)"  class="owner-username">
-                        <p>@{{post.owner.username}}</p>
-                    </div>
-                    <div class="publish-time">
-                        <p>{{timeAgo(post.createdAt)}}</p>
-                    </div>
-                </div>
-                <div *ngIf="isEdited(post!.createdAt,post!.lastEditedAt)" class="edited">
-                    <p>Edited</p>
-                    <i class="material-icons">edit</i>
-                </div>
-            </div>
-            <div class="content">
-                <p>{{post.description}}</p>
-                <div *ngIf="post.image" class="post-image">
-                    <app-spinner *ngIf="isLoadingImage"/>
-                    <img [class.is-loading]="isLoadingImage" class="post-image" (error)="onImageLoad()"
-                    (load)="onImageLoad()" [src]="decodeBuffer(post.image.data)">
-                </div>
-            </div>
-            <div class="footer">
-                <div class="likes">
-                    <p>{{post.likedBy.length}} likes</p>
-                </div>
-                <div class="comments">
-                    <p>{{post.comments.length}} comments</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</ng-container>*/

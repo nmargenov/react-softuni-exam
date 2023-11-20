@@ -5,7 +5,7 @@ import { SmallSpinner } from '../../spinners/SmallSpinner';
 import { createPost } from '../../../services/postService';
 import { UserContext } from '../../../contexts/AuthContext';
 
-export const CreatePost = ({setPosts}) => {
+export const CreatePost = ({hasError,isPostsLoading,setPosts}) => {
     const initialValues = {
         description: ""
     }
@@ -50,10 +50,10 @@ export const CreatePost = ({setPosts}) => {
         createPost(formData)
             .then((data)=>{
                 setIsLoading(false);
-                setPosts(state=>[data,...state])
+                setPosts(state=>[data,...state]);
                 setValues(initialValues);
                 setSelectedFile(null);
-                setPreviewUrl(null)
+                setPreviewUrl(null);
                 setErrorMsg('');
                 
             }).catch((err)=>{
@@ -64,25 +64,35 @@ export const CreatePost = ({setPosts}) => {
                 setErrorMsg(err.message);
             })
     }
+
+    const handleKeyDown = (e) => {
+        if (values.description<5){
+            setErrorMsg('Description must be at least 5 characters long!');
+            return;
+        }
+        if (e.key === 'Enter') {
+            onSubmit(e);
+        }
+    };
     return (
         <div className={styles['create-post-container']}>
             {errorMsg && <div className={styles['errorDiv']}>
                 <span className={styles['errorMsg']}>{errorMsg}</span>
             </div>}
-            <form ref={formRef} onSubmit={onSubmit}>
+            <form onKeyDown={handleKeyDown} ref={formRef} onSubmit={onSubmit}>
                 <div className={styles['post-content']}>
-                    <textarea disabled={isLoading} value={values.description} onChange={onInputChange} name="description" id="" placeholder="What's happening?"></textarea>
+                    <textarea disabled={isLoading||isPostsLoading || hasError} value={values.description} onChange={onInputChange} name="description" id="" placeholder="What's happening?"></textarea>
                     <input onChange={onFileInputChange} ref={fileInputRef} type='file' accept='image/*'></input>
                 </div>
             </form>
             {previewUrl && <div className={styles['image-div']}>
                 <img src={previewUrl} />
-                {!isLoading && <button onClick={onClearPreview} className={styles['clear-btn']}>Clear images</button>}
+                {!isLoading && <button disabled={isLoading || isPostsLoading || hasError} onClick={onClearPreview} className={styles['clear-btn']}>Clear images</button>}
             </div>}
             <div className={styles['post-actions']}>
                 {!isLoading && <>
-                    <button onClick={() => fileInputRef.current.click()} className={styles['upload-btn']}>{previewUrl ? "Change Image" : "Upload Image"}</button>
-                    <button onClick={() => formRef.current.requestSubmit()} className={styles['post-btn']}>Post</button>
+                    <button disabled={isLoading || isPostsLoading || hasError} onClick={() => fileInputRef.current.click()} className={styles['upload-btn']}>{previewUrl ? "Change Image" : "Upload Image"}</button>
+                    <button disabled={isLoading || isPostsLoading || hasError} onClick={() => formRef.current.requestSubmit()} className={styles['post-btn']}>Post</button>
                 </>}
                 {isLoading && <div className={styles['loader']}>
                     <SmallSpinner />
