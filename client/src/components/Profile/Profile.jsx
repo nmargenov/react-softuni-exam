@@ -42,7 +42,9 @@ export const Profile = () => {
                 }
                 setIsLoading(false);
                 setHasError(false);
+                document.title=`${data.firstName} ${data.lastName}`;
             }).catch((err) => {
+                document.title="Profile";
                 setHasError(true);
                 setIsLoading(false);
             })

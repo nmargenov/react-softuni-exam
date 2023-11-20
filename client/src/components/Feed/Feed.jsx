@@ -16,6 +16,7 @@ export const Feed = () => {
     const [feed, setFeed] = useState('explore');
     const [hasError, setHasError] = useState(false);
     useEffect(() => {
+        document.title="Feed";
         setIsLoading(true);
         if(feed=="explore"){
             getAllPosts()

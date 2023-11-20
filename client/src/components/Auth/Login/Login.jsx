@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect } from "react";
 import styles from "../shared/styles.module.css";
 import { login } from "../../../services/authService";
 import { UserContext } from "../../../contexts/AuthContext";
@@ -7,6 +7,9 @@ import { SmallSpinner } from "../../spinners/SmallSpinner";
 import { useForm } from "../../../hooks/useForm";
 
 export const Login = () => {
+    useEffect(()=>{
+        document.title="Login";
+    },[])
 
     const initialValues={
         username: '',

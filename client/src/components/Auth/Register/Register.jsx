@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import styles from "../shared/styles.module.css";
 import { register } from "../../../services/authService";
 import { UserContext } from "../../../contexts/AuthContext";
@@ -9,6 +9,9 @@ import { birthdateValidator, isValidEmail } from "../../../utils/fieldsUtil";
 
 
 export const Register = () => {
+    useEffect(()=>{
+        document.title='Register';
+    },[]);
 
     const initialValues = {
         username: "",
