@@ -42,7 +42,7 @@ export const CreatePost = ({hasError,isPostsLoading,setPosts}) => {
 
         const formData = new FormData();
         formData.append('owner',decodedUser._id);
-        formData.append('description',values.description);
+        formData.append('description',values.description.trim());
         formData.append('postImage',selectedFile);
 
         setIsLoading(true);
@@ -66,11 +66,11 @@ export const CreatePost = ({hasError,isPostsLoading,setPosts}) => {
     }
 
     const handleKeyDown = (e) => {
-        if (values.description<5){
-            setErrorMsg('Description must be at least 5 characters long!');
-            return;
-        }
         if (e.key === 'Enter') {
+            if (values.description.length>0 && values.description.length<5){
+                setErrorMsg('Description must be at least 5 characters long!');
+                return;
+            }
             onSubmit(e);
         }
     };
