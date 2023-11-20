@@ -119,6 +119,10 @@
     justify-content: center;
 }
 
+.item-container:hover{
+    cursor: pointer;
+}
+
 
 @media (max-width: 768px) {
     .header {
