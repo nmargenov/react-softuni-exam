@@ -61,7 +61,7 @@ export const Profile = () => {
         <>
             {isLoading &&
                 <div className={styles["loader"]}>
-                    <GlobalSpinner/>
+                    <GlobalSpinner />
                 </div>}
             {!isLoading && <div className={styles["main"]}>
                 <div className={styles["profile"]}>
