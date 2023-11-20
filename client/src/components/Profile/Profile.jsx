@@ -24,18 +24,17 @@ export const Profile = () => {
 
 
     useEffect(() => {
-        ;
         getUser(username)
-            .then((data) => {
-                setUser(data);
-                data.followers.includes(decodedUser._id) ? setIsFollowing(true) : setIsFollowing(false);
-                if (decodedUser) {
-                    data._id === decodedUser._id ? setIsOwner(true) : setIsOwner(false);
-                }
-                setIsLoading(false);
-            }).catch((err) => {
-                setIsLoading(false);
-            })
+        .then((data) => {
+            setUser(data);
+            data.followers.includes(decodedUser._id) ? setIsFollowing(true) : setIsFollowing(false);
+            if (decodedUser) {
+                data._id === decodedUser._id ? setIsOwner(true) : setIsOwner(false);
+            }
+            setIsLoading(false);
+        }).catch((err) => {
+            setIsLoading(false);
+        })
     }, [username]);
 
     const onFollow = async () => {
