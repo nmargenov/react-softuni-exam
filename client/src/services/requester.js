@@ -27,6 +27,7 @@ const requester = async (method, url, data) => {
     if (!request.ok) {
         if (request.status === Number('409')) {
             localStorage.removeItem('authToken');
+            window.location.reload();
         }
         const response = await request.json();
         throw new Error(response.message);
