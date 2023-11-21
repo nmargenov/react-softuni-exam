@@ -147,11 +147,13 @@
     display: flex;
     height: fit-content;
     margin-left: auto;
+    font-size: 20px;
+    justify-content: space-between;
+    width: 50px;
 }
 
-.actions i {
-    height: fit-content;
-    color: black;
+.actions > *{
+    cursor: pointer;
 }
 
 .spinner {
@@ -179,6 +181,13 @@
     justify-content: center;
 }
 
+
+.delete-spinner{
+    display: flex;
+    justify-content: center;
+    width: 50px;
+    height: 10px;
+}
 
 
 @media (max-width: 768px) {
