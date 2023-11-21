@@ -6,8 +6,13 @@
     align-items: center;
 }
 
-.main-container{
+.main-container {
     width: 100%;
     display: flex;
     justify-content: center;
+}
+
+.post-component {
+    width: 100%;
+    max-width: 740px;
 }

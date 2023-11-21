@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { decodeBuffer } from "../../../utils/imageHelper"
 import { timeAgo, isEdited } from "../../../utils/postHelper"
 import styles from './post.module.css';
@@ -15,6 +15,8 @@ export const Post = () => {
     const { isAuthenticated, decodedUser } = useContext(UserContext);
 
     const [isLiking, setIsLiking] = useState(false);
+    const [isProfileImageLoading, setIsProfileImageLoading] = useState(true);
+    const [isPostImageLoading, setIsPostImageLoading] = useState(true);
 
     function onLikeClick() {
         setIsLiking(true);
@@ -27,27 +29,50 @@ export const Post = () => {
             })
     }
 
+
+    function navigateToUserProfile(username) {
+        const targetUrl = `/profile/${username}`;
+
+        if (location.pathname !== targetUrl) {
+            navigate(targetUrl);
+        }
+    }
+
     function isLiked() {
-        return post.likedBy.includes(decodedUser._id);
+        return isAuthenticated && post.likedBy.includes(decodedUser._id);
     }
 
     const liked = isLiked();
 
+    function onProfileImageLoad() {
+        setIsProfileImageLoading(false);
+    }
+
+    function onPostImageLoad() {
+        setIsPostImageLoading(false);
+    }
+
     return (
         <div className={styles.container}>
-            <div className={styles['profile-image-div']}>
+            <div onClick={()=>navigateToUserProfile(post.owner.username)} className={styles['profile-image-div']}>
+                {isProfileImageLoading &&
+                    <div className={styles['profile-image-loading']}>
+                        <SmallSpinner />
+                    </div>}
                 <img
-                    className={styles['profile-image']}
+                    onLoad={onProfileImageLoad}
+                    onError={onProfileImageLoad}
+                    className={isProfileImageLoading ? styles['is-loading'] : styles['profile-image']}
                     src={decodeBuffer(post?.owner.profilePicture)}
                 />
             </div>
             <div className={styles.main}>
                 <div className={styles.header}>
-                    <div className={styles['owner-name']}>
+                    <div onClick={()=>navigateToUserProfile(post.owner.username)} className={styles['owner-name']}>
                         <p>{post.owner.firstName} {post.owner.lastName}</p>
                     </div>
                     <div className={styles['username-publish']}>
-                        <div className={styles['owner-username']}>
+                        <div onClick={()=>navigateToUserProfile(post.owner.username)} className={styles['owner-username']}>
                             <p>@{post.owner.username}</p>
                         </div>
                         <div className={styles['publish-time']}>
@@ -76,8 +101,15 @@ export const Post = () => {
                     <p className={styles['description']}>{post.description}</p>
                     {post.image && (
                         <div className={styles['post-image']}>
+                            {isPostImageLoading &&
+                                <div className={styles['post-image-loader']}>
+                                    <SmallSpinner />
+                                </div>
+                            }
                             <img
-                                className={styles['post-image']}
+                                onLoad={onPostImageLoad}
+                                onError={onPostImageLoad}
+                                className={isPostImageLoading ? styles['is-loading'] : styles['post-image']}
                                 src={decodeBuffer(post.image)}
                             />
                         </div>

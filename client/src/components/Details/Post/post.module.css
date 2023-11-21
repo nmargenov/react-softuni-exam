@@ -165,6 +165,21 @@
     padding-top: 3px;
 }
 
+.profile-image-loading{
+    width: 50px;
+    box-sizing: border-box;
+    padding-left: 17px;
+    padding-top: 5px;
+}
+
+.post-image-loader{
+    padding-right: 10%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+
 
 @media (max-width: 768px) {
     .header {

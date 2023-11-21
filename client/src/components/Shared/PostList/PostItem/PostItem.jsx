@@ -2,19 +2,24 @@ import { useState } from 'react';
 import { decodeBuffer } from '../../../../utils/imageHelper';
 import { isEdited, timeAgo } from '../../../../utils/postHelper';
 import styles from '../postList.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { SmallSpinner } from '../../../spinners/SmallSpinner';
 
 
 export const PostItem = ({ _id, description, image, likedBy, comments, owner, createdAt, lastEditedAt }) => {
 
     const navigate = useNavigate();
+    const location = useLocation(); 
     const [isPostImageLoading, setIsPostImageLoading] = useState(true);
     const [isProfileImageLoading, setIsProfileImageLoading] = useState(true);
 
     function navigateToUserProfile(username) {
-        navigate('/profile/' + username);
-    }
+        const targetUrl = `/profile/${username}`;
+        
+        if (location.pathname !== targetUrl) {
+          navigate(targetUrl);
+        }
+      }
 
     function navigateToPost(postID) {
         navigate('/post/' + postID);

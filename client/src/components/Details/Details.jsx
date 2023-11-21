@@ -30,7 +30,9 @@ export const Details = () => {
             {!isPostLoading && hasPostLoadingError && <Error />}
             {!isPostLoading && !hasPostLoadingError &&
                 <div className={styles['main-container']}>
-                    <Post />
+                    <div className={styles['post-component']}>
+                        <Post />
+                    </div>
                 </div>}
         </>
     );
