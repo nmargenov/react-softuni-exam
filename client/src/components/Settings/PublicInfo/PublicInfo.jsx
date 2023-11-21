@@ -15,7 +15,7 @@ export const PublicInfo = () => {
     const [previewUrl, setPreviewUrl] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
 
-    const initialValues={
+    const initialValues = {
         username: decodedUser.username,
         firstName: decodedUser.firstName,
         lastName: decodedUser.lastName,
@@ -121,6 +121,7 @@ export const PublicInfo = () => {
                                     value={values.username}
                                     autoComplete="off"
                                     type="text"
+                                    autoCapitalize="none"
                                     name="username"
                                     placeholder="Username"
                                     required
@@ -144,6 +145,7 @@ export const PublicInfo = () => {
                                     disabled={isPublicSaving || isPrivateSaving || isPasswordSaving}
                                     value={values.firstName}
                                     autoComplete="off"
+                                    autoCapitalize="none"
                                     type="text"
                                     name="firstName"
                                     placeholder="First Name"
@@ -169,6 +171,7 @@ export const PublicInfo = () => {
                                     autoComplete="off"
                                     type="text"
                                     name="lastName"
+                                    autoCapitalize="none"
                                     placeholder="Last Name"
                                     required
                                     minLength="2"
@@ -191,6 +194,7 @@ export const PublicInfo = () => {
                                     disabled={isPublicSaving || isPrivateSaving || isPasswordSaving}
                                     autoComplete="off"
                                     type="text"
+                                    autoCapitalize="none"
                                     name="bio"
                                     placeholder="Biography"
                                     maxLength="100"
@@ -210,7 +214,7 @@ export const PublicInfo = () => {
 
                                         src={decodeBuffer(decodedUser.profilePicture)}
 
-                                        alt=""
+                                        alt="pic"
                                     />
                                 </>)}
                         </div>

@@ -50,6 +50,7 @@ export const Login = () => {
                         type="text"
                         name="username"
                         placeholder="Username"
+                        autoCapitalize="none"
                         required
                         minLength="3"
                         maxLength="20"
@@ -71,6 +72,7 @@ export const Login = () => {
                     <input
                         type="password"
                         name="password"
+                        autoCapitalize="none"
                         placeholder="Password"
                         required
                         minLength="6"

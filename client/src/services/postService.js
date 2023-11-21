@@ -1,6 +1,6 @@
+import { BASE_URL } from "./BASE_URL";
 import { get, post } from "./requester";
 
-const BASE_URL = "http://localhost:5000/api";
 
 const paths = {
     posts: '/posts',

@@ -1,6 +1,5 @@
+import { BASE_URL } from "./BASE_URL";
 import { del, get, patch, post } from "./requester";
-
-const BASE_URL = 'http://localhost:5000/api';
 
 const paths = {
     register: '/users/register',

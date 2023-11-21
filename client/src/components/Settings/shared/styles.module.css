@@ -221,8 +221,10 @@ input[type="file"] {
 
   input[type="text"],
   input[type="date"],
-  input[type="password"] {
-    width: 95%;
+  input[type="email"],
+  input[type="password"],
+  textarea {
+    width: 95%  !important;
   }
 
   textarea {

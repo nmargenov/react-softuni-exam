@@ -60,6 +60,7 @@ export const Register = () => {
                         type="text"
                         name="username"
                         placeholder="Username"
+                        autoCapitalize="none"
                         required
                         minLength="3"
                         maxLength="20"
@@ -77,6 +78,7 @@ export const Register = () => {
                         type="password"
                         name="password"
                         placeholder="Password"
+                        autoCapitalize="none"
                         required
                         minLength="6"
                         maxLength="20"
@@ -93,6 +95,7 @@ export const Register = () => {
                     <input
                         type="password"
                         name="rePassword"
+                        autoCapitalize="none"
                         placeholder="Re-enter Password"
                         required
                         minLength="6"
@@ -110,6 +113,7 @@ export const Register = () => {
                     <input
                         type="email"
                         name="email"
+                        autoCapitalize="none"
                         placeholder="Email"
                         maxLength="50"
                         required
@@ -127,6 +131,7 @@ export const Register = () => {
                         type="text"
                         name="firstName"
                         placeholder="First Name"
+                        autoCapitalize="none"
                         required
                         maxLength="30"
                         className={`${values.firstName.length > 0 && values.firstName.length < 2 ? styles.invalidField : ""}`}
@@ -143,6 +148,7 @@ export const Register = () => {
                         type="text"
                         name="lastName"
                         placeholder="Last Name"
+                        autoCapitalize="none"
                         required
                         maxLength="30"
                         className={`${values.lastName.length > 0 && values.lastName.length < 2 ? styles.invalidField : ""}`}
@@ -159,6 +165,7 @@ export const Register = () => {
                         type="date"
                         name="birthdate"
                         placeholder="Birth Date"
+                        autoCapitalize="none"
                         required
                         className={`${birthdateValidator(values.birthdate) ? styles.invalidField : ""}`}
                         value={values.birthdate}

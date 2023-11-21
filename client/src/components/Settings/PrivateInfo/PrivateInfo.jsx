@@ -71,6 +71,7 @@ export const PrivateInfo = () => {
                                     type="email"
                                     name="email"
                                     placeholder="Email"
+                                    autoCapitalize='none'
                                     required
                                     minLength="3"
                                     maxLength="50"
@@ -91,6 +92,7 @@ export const PrivateInfo = () => {
                                     value={values.birthdate}
                                     autoComplete="off"
                                     type="date"
+                                    autoCapitalize='none'
                                     name="birthdate"
                                     placeholder="Birth Date"
                                     required

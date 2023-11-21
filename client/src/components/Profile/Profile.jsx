@@ -26,6 +26,8 @@ export const Profile = () => {
     const [hasError, setHasError] = useState(true);
     const [posts, setPosts] = useState([]);
     const [isPostsLoading, setIsPostsLoading] = useState(false);
+    const [errormsggg, seterrormsggg] = useState('');
+
 
     const { decodedUser, isAuthenticated } = useContext(UserContext);
 
@@ -44,9 +46,9 @@ export const Profile = () => {
                 setHasError(false);
                 document.title=`${data.firstName} ${data.lastName}`;
             }).catch((err) => {
+                setIsLoading(false);
                 document.title="Profile";
                 setHasError(true);
-                setIsLoading(false);
             })
     }, [username]);
 
@@ -92,7 +94,8 @@ export const Profile = () => {
                 <div className={styles["loader"]}>
                     <GlobalSpinner />
                 </div>}
-            {!isLoading && hasError && <Error />}
+            {/* {!isLoading && hasError && <Error />} */}
+            {!isLoading && hasError && <h1>{errormsggg}</h1>}
             {!isLoading && !hasError && <div className={styles["main"]}>
                 <div className={styles["profile"]}>
                     <div className={styles["profile-image"]}>
@@ -152,7 +155,7 @@ export const Profile = () => {
                     </div>
                 </div>
                 <div className={styles['choose-feed-component']}>
-                    <ChooseFeed checkOwner={true} ownerId={user._id} isLoading={isPostsLoading} feed={feed} setFeed={setFeed} valueOne={decodedUser?._id === user._id ? "My Posts" : `${user.username} Posts`} valueTwo={'Liked'} stateOne={'myPosts'} stateTwo={'liked'} />
+                    <ChooseFeed checkOwner={true} ownerId={user._id} isLoading={isPostsLoading} feed={feed} setFeed={setFeed} valueOne={decodedUser?._id === user._id ? "My Posts" : `${user.username}'s Posts`} valueTwo={'Liked'} stateOne={'myPosts'} stateTwo={'liked'} />
                 </div>
                 {!isPostsLoading && <div className={styles['post-list-component']}>
                     <PostList posts={posts} />

@@ -74,6 +74,7 @@ export const Password = () => {
                                     name="oldPassword"
                                     placeholder="Old Password"
                                     required
+                                    autoCapitalize='none'
                                     minLength="6"
                                     maxLength="20"
                                     onChange={onInputChange}
@@ -96,6 +97,7 @@ export const Password = () => {
                                     name="newPassword"
                                     placeholder="New Password"
                                     required
+                                    autoCapitalize='none'
                                     minLength="6"
                                     maxLength="20"
                                     onChange={onInputChange}
@@ -118,6 +120,7 @@ export const Password = () => {
                                     name="reNewPassword"
                                     placeholder="Repeat New Password"
                                     required
+                                    autoCapitalize='none'
                                     minLength="6"
                                     maxLength="20"
                                     onChange={onInputChange}
