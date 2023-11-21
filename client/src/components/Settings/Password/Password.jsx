@@ -6,9 +6,9 @@ import { SettingsContext } from '../../../contexts/SettingsContext';
 import { SmallSpinner } from '../../spinners/SmallSpinner';
 import { editPassword, editPrivateData } from '../../../services/userService';
 
-export const Password = () => {
+export const Password = ({userToEdit}) => {
 
-    const { setUser, decodedUser } = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
     const { isPasswordSaving, setIsPasswordSaving, isPublicSaving, isPrivateSaving } = useContext(SettingsContext);
 
     const formRef = useRef();
@@ -27,7 +27,7 @@ export const Password = () => {
 
         setIsPasswordSaving(true);
 
-        editPassword(decodedUser._id, values.oldPassword, values.newPassword, values.reNewPassword)
+        editPassword(userToEdit._id, values.oldPassword, values.newPassword, values.reNewPassword)
             .then((data) => {
                 setUser(data);
                 setErrorMsg('');

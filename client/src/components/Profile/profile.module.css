@@ -137,9 +137,9 @@
         margin-top: 20px;
     }
 
-    .profile-stats,
-    .profile-bio {
-        font-size: 12px;
+    .profile-stats {
+        font-size: 13px;
+        width: 190px;
     }
 
     h1 {
@@ -164,7 +164,7 @@
 
     .profile-info {
         width: 100%;
-        max-width: 250px;
+        max-width: 200px;
         padding: 20px;
     }
 

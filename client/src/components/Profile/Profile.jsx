@@ -26,7 +26,6 @@ export const Profile = () => {
     const [hasError, setHasError] = useState(true);
     const [posts, setPosts] = useState([]);
     const [isPostsLoading, setIsPostsLoading] = useState(false);
-    const [errormsggg, seterrormsggg] = useState('');
 
 
     const { decodedUser, isAuthenticated } = useContext(UserContext);
@@ -94,8 +93,7 @@ export const Profile = () => {
                 <div className={styles["loader"]}>
                     <GlobalSpinner />
                 </div>}
-            {/* {!isLoading && hasError && <Error />} */}
-            {!isLoading && hasError && <h1>{errormsggg}</h1>}
+            {!isLoading && hasError && <Error />}
             {!isLoading && !hasError && <div className={styles["main"]}>
                 <div className={styles["profile"]}>
                     <div className={styles["profile-image"]}>

@@ -9,18 +9,18 @@ import { useForm } from '../../../hooks/useForm';
 import { editPublicData, removeExistingImage } from '../../../services/userService';
 import { SmallSpinner } from '../../spinners/SmallSpinner';
 
-export const PublicInfo = () => {
-    const { setUser, decodedUser } = useContext(UserContext);
+export const PublicInfo = ({userToEdit}) => {
+    const { setUser } = useContext(UserContext);
     const { isPasswordSaving, isPrivateSaving, isPublicSaving, setIsPublicSaving } = useContext(SettingsContext);
     const [previewUrl, setPreviewUrl] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
 
     const initialValues = {
-        username: decodedUser.username,
-        firstName: decodedUser.firstName,
-        lastName: decodedUser.lastName,
-        bio: decodedUser.bio,
-        profilePicture: decodedUser.profilePicture
+        username: userToEdit.username,
+        firstName: userToEdit.firstName,
+        lastName: userToEdit.lastName,
+        bio: userToEdit.bio,
+        profilePicture: userToEdit.profilePicture
     }
 
     const { values, onInputChange, onSubmitHandler, errorMsg, setErrorMsg } = useForm(initialValues);
@@ -46,7 +46,7 @@ export const PublicInfo = () => {
 
     function onRemoveExistingImage() {
         setIsPublicSaving(true);
-        removeExistingImage(decodedUser._id)
+        removeExistingImage(userToEdit._id)
             .then((data) => {
                 setIsPublicSaving(false);
                 setErrorMsg('');
@@ -68,7 +68,7 @@ export const PublicInfo = () => {
 
         setIsPublicSaving(true);
 
-        editPublicData(decodedUser._id, formData)
+        editPublicData(userToEdit._id, formData)
             .then((data) => {
                 setUser(data);
                 setPreviewUrl(false);
@@ -212,7 +212,7 @@ export const PublicInfo = () => {
                                 <>
                                     <img
 
-                                        src={decodeBuffer(decodedUser.profilePicture)}
+                                        src={decodeBuffer(userToEdit.profilePicture)}
 
                                         alt="pic"
                                     />
@@ -230,7 +230,7 @@ export const PublicInfo = () => {
                             />
                             {!previewUrl && !isPublicSaving && !isPrivateSaving && !isPasswordSaving && <FontAwesomeIcon className={styles['icon']} icon={faUpload} onClick={() => fileInputRef.current.click()} />}
                             {previewUrl && !isPublicSaving && !isPrivateSaving && !isPasswordSaving && <FontAwesomeIcon className={styles['cancel-icon']} disabled={isPublicSaving || isPasswordSaving || isPrivateSaving} onClick={onClearPreview} icon={faTimesCircle} />}
-                            {hasProfilePicture(decodedUser.profilePicture) && !previewUrl && !isPublicSaving && !isPrivateSaving && !isPasswordSaving && <button disabled={isPublicSaving || isPrivateSaving || isPasswordSaving} onClick={onRemoveExistingImage} className={styles["remove-existing-image"]}>
+                            {hasProfilePicture(userToEdit.profilePicture) && !previewUrl && !isPublicSaving && !isPrivateSaving && !isPasswordSaving && <button disabled={isPublicSaving || isPrivateSaving || isPasswordSaving} onClick={onRemoveExistingImage} className={styles["remove-existing-image"]}>
                                 Remove existing image
                             </button>}
                         </div>

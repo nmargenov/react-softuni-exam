@@ -8,16 +8,16 @@ import { editPrivateData } from '../../../services/userService';
 import { birthdateValidator, isValidEmail } from '../../../utils/fieldsUtil';
 
 
-export const PrivateInfo = () => {
+export const PrivateInfo = ({userToEdit}) => {
 
-    const { setUser, decodedUser } = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
     const { isPasswordSaving, isPublicSaving, isPrivateSaving, setIsPrivateSaving } = useContext(SettingsContext);
 
     const formRef = useRef();
 
     const initialValues = {
-        email: decodedUser.email,
-        birthdate: decodedUser.birthdate,
+        email: userToEdit.email,
+        birthdate: userToEdit.birthdate,
     }
 
     const { values, onInputChange, onSubmitHandler, errorMsg, setErrorMsg } = useForm(initialValues);
@@ -27,7 +27,7 @@ export const PrivateInfo = () => {
 
         setIsPrivateSaving(true);
 
-        editPrivateData(decodedUser._id, values.email, values.birthdate)
+        editPrivateData(userToEdit._id, values.email, values.birthdate)
             .then((data) => {
                 setUser(data);
                 setErrorMsg('');
