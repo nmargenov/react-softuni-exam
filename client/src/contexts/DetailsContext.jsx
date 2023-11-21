@@ -9,6 +9,10 @@ export const DetailsProvider = ({
     const [post,setPost] = useState(null);
     const [isPostLoading,setIsPostLoading] = useState(true);
     const [hasPostLoadingError,setHasPostLoadingError] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
+
    
    
     const context = {
@@ -18,6 +22,10 @@ export const DetailsProvider = ({
         setIsPostLoading,
         hasPostLoadingError,
         setHasPostLoadingError,
+        isDeleting,
+        setIsDeleting,
+        isEditOpen,
+        setIsEditOpen
     }
 
     return(

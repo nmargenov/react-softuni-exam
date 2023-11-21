@@ -1,5 +1,5 @@
 import { BASE_URL } from "./BASE_URL";
-import { del, get, post } from "./requester";
+import { del, get, patch, post } from "./requester";
 
 
 const paths = {
@@ -44,4 +44,9 @@ export const likePost = (postId,userId)=>{
 export const deletePost =  (postId) =>{
     const url = BASE_URL+paths.post.replace(':postId',postId);
     return del(url);
+}
+
+export const editPost = (postId, formData)=>{
+    const url = BASE_URL + paths.post.replace(':postId',postId);
+    return patch(url,formData);
 }

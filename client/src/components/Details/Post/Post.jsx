@@ -5,14 +5,15 @@ import styles from './post.module.css';
 import { DetailsContext } from "../../../contexts/DetailsContext";
 import { UserContext } from "../../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faEdit, faHeart, faPen, faTrash, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faHeart, faPen, faTrash, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { deletePost, likePost } from "../../../services/postService";
 import { SmallSpinner } from "../../spinners/SmallSpinner";
 import { useNavigate } from "react-router";
+import { EditPost } from "../EditPost/EditPost";
 
 export const Post = () => {
 
-    const { post, setPost } = useContext(DetailsContext);
+    const { post, setPost,isDeleting,setIsDeleting,isEditOpen,setIsEditOpen } = useContext(DetailsContext);
     const { isAuthenticated, decodedUser } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -20,8 +21,6 @@ export const Post = () => {
     const [isProfileImageLoading, setIsProfileImageLoading] = useState(true);
     const [isPostImageLoading, setIsPostImageLoading] = useState(true);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-    const [isDeleting, setIsDeleting] = useState(false);
-    const [isEditOpen, setIsEditOpen] = useState(false);
 
     function onLikeClick() {
         setIsLiking(true);
@@ -56,14 +55,6 @@ export const Post = () => {
 
     function onEditOpen() {
         setIsEditOpen(true);
-    }
-
-    function onEditCancel() {
-        setIsEditOpen(false);
-    }
-    function onEditAccept() {
-        setIsEditOpen(false);
-        console.log('edited');
     }
 
     function isLiked() {
@@ -139,20 +130,8 @@ export const Post = () => {
                                 <SmallSpinner />
                             </div>}
                     </div>
-                    {/* {(
-                        <div className={styles['actions']}>
-                            {<i onClick={onEdit} className="material-icons">edit</i>}
-                            {!editPost && (
-                                <>
-                                    {!deletePost && <i onClick={onDelete} className="material-icons">delete</i>}
-                                    {deletePost && <i onClick={onDeleteCancel} className="material-icons">cancel</i>}
-                                    {deletePost && <i onClick={onDeleteAccept} className="material-icons">done</i>}
-                                </>
-                            )}
-                        </div>
-                    )} */}
                 </div>
-                <div className={styles['content']}>
+               {!isEditOpen && <div className={styles['content']}>
                     <p className={styles['description']}>{post.description}</p>
                     {post.image && (
                         <div className={styles['post-image']}>
@@ -169,8 +148,9 @@ export const Post = () => {
                             />
                         </div>
                     )}
-                </div>
-                <div className={styles['footer']}>
+                </div>}
+                {isEditOpen && <EditPost/>}
+                {!isEditOpen && <div className={styles['footer']}>
                     {isAuthenticated && (
                         <div className={styles['like']}>
                             {isLiking &&
@@ -186,7 +166,7 @@ export const Post = () => {
                     <div className={styles['comments']}>
                         <p>{post.comments.length} comments</p>
                     </div>
-                </div>
+                </div>}
             </div>
         </div>
     );
