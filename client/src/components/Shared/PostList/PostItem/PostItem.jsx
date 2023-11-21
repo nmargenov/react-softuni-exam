@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { decodeBuffer } from '../../../../utils/imageHelper';
 import { isEdited, timeAgo } from '../../../../utils/postHelper';
 import styles from '../postList.module.css';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { SmallSpinner } from '../../../spinners/SmallSpinner';
 
 
@@ -10,6 +10,7 @@ export const PostItem = ({ _id, description, image, likedBy, comments, owner, cr
 
     const navigate = useNavigate();
     const [isPostImageLoading, setIsPostImageLoading] = useState(true);
+    const [isProfileImageLoading, setIsProfileImageLoading] = useState(true);
 
     function navigateToUserProfile(username) {
         navigate('/profile/' + username);
@@ -19,14 +20,19 @@ export const PostItem = ({ _id, description, image, likedBy, comments, owner, cr
         navigate('/post/' + postID);
     }
 
-    function onLoad() {
-        setIsPostImageLoading(false)
+    function onPostImageLoad() {
+        setIsPostImageLoading(false);
+    }
+
+    function onProfileImageLoad(){
+        setIsProfileImageLoading(false);
     }
 
     return (
         <div onClick={() => navigateToPost(_id)} className={styles['item-container']}>
             <div className={styles['profile-image-div']}>
-                <img onClick={(e) => { e.stopPropagation(); navigateToUserProfile(owner.username) }} className={styles['profile-image']} src={decodeBuffer(owner.profilePicture)} />
+                {isProfileImageLoading && <div className={styles['profile-image-loading']}><SmallSpinner/></div>}
+                <img onClick={(e) => { e.stopPropagation(); navigateToUserProfile(owner.username) }} onLoad={onProfileImageLoad} onError={onProfileImageLoad}  className={isProfileImageLoading ? styles['is-loading'] : styles['profile-image']} src={decodeBuffer(owner.profilePicture)} />
             </div>
             <div className={styles['main']}>
                 <div className={styles['header']}>
@@ -48,7 +54,7 @@ export const PostItem = ({ _id, description, image, likedBy, comments, owner, cr
                 <div className={styles['content']}>
                     <p>{description}</p>
                     {image && <div className={styles['post-image']}>
-                        <img className={isPostImageLoading ? styles['is-loading'] : styles['post-image']} onLoad={onLoad} onError={onLoad} src={decodeBuffer(image)} alt="" />
+                        <img className={isPostImageLoading ? styles['is-loading'] : styles['post-image']} onLoad={onPostImageLoad} onError={onPostImageLoad} src={decodeBuffer(image)} alt="" />
                     </div>}
                     {image && isPostImageLoading &&
                         <div className={styles['post-image-loader']}>
