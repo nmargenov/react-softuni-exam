@@ -1,0 +1,159 @@
+.container {
+    background-color: #e2e2e2;
+    display: flex;
+    max-width: 700px;
+    min-width: 250px;
+    margin: 0 20px;
+    margin-top: 30px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+
+.profile-image-div {
+    width: fit-content;
+    margin: 10px 15px;
+}
+
+.profile-image {
+    width: 50px;
+    height: 50px;
+    object-fit: scale-down;
+    border-radius: 50%;
+}
+
+.main {
+    margin: 10px 15px;
+    margin-left: 5px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.header {
+    align-items: center;
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.owner-name {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.owner-username {
+    color: #5b7083;
+    margin-right: 10px;
+}
+
+.publish-time {
+    color: #5b7083;
+    margin-right: 10px;
+}
+
+.content {
+    display: flex;
+    max-width: 100%;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
+
+.post-image {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.footer {
+    display: flex;
+}
+
+.likes {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.comments {
+    font-weight: bold;
+}
+
+.post-image {
+    width: 100%;
+}
+
+.username-publish {
+    display: flex;
+}
+
+.edited {
+    display: flex;
+    align-items: center;
+}
+
+.edited p {
+    color: #5b7083;
+    font-size: 15px;
+}
+
+.edited i {
+    font-size: 16px;
+    padding-bottom: 3px;
+}
+
+.owner-username:hover,
+.owner-name:hover,
+.profile-image:hover {
+    cursor: pointer;
+}
+
+.is-loading {
+    display: none;
+}
+
+.isLiked {
+    color: red !important;
+}
+
+.footer i {
+    margin: 0 !important;
+    color: white;
+}
+
+i:hover {
+    cursor: pointer;
+    ;
+}
+
+.like {
+    margin-right: 5px;
+}
+
+.liking {
+    color: black !important;
+}
+
+.actions {
+    display: flex;
+    height: fit-content;
+    margin-left: auto;
+}
+
+.actions i {
+    height: fit-content;
+    color: black;
+}
+
+.spinner {
+    display: flex;
+    justify-content: center;
+}
+
+
+@media (max-width: 768px) {
+    .header {
+        align-items: baseline;
+        flex-direction: column;
+    }
+
+    .actions {
+        margin-left: 0;
+    }
+}

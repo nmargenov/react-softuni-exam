@@ -11,6 +11,8 @@ import { Settings } from "./components/Settings/Settings";
 import { MustBeGuestGuard } from "./guards/MustBeGuestGuard";
 import { MustBeAuthGuard } from "./guards/MustBeAuthGuard";
 import { Feed } from "./components/Feed/Feed";
+import { Details } from "./components/Details/Details";
+import { DetailsProvider } from "./contexts/DetailsContext";
 
 function App() {
 
@@ -20,7 +22,7 @@ function App() {
       <div className={styles["main"]}>
         <Routes>
           <Route path='/' element={<Navigate to='/feed' />} />
-          <Route path='/feed' element={<Feed/>} />
+          <Route path='/feed' element={<Feed />} />
           <Route path='/login' element={
             <MustBeGuestGuard>
               <Login />
@@ -37,6 +39,7 @@ function App() {
               <Settings />
             </MustBeAuthGuard>}
           />
+          <Route path="/post/:postId" element={<DetailsProvider><Details /></DetailsProvider>} />
         </Routes>
       </div>
       <Footer />

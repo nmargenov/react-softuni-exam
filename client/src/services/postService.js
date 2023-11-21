@@ -30,3 +30,8 @@ export const getLikedPosts =(userId) =>{
     const url = BASE_URL+ paths.likedPosts.replace(':userId',userId);
     return get(url);
 }
+
+export const getPostById = (postId)=>{
+    const url = BASE_URL+paths.post.replace(':postId',postId);
+    return get(url);
+}
