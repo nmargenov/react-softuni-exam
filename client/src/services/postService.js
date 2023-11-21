@@ -50,3 +50,8 @@ export const editPost = (postId, formData)=>{
     const url = BASE_URL + paths.post.replace(':postId',postId);
     return patch(url,formData);
 }
+
+export const removeExistingImage = (postId) =>{
+    const url = BASE_URL + paths.deleteExistingImage.replace(':postId',postId);
+    return del(url);
+}

@@ -1,133 +1,150 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  textarea {
-    width: 100%;
-    font-size: 18px;
-    height: 100px;
-    resize: none;
-    border: none;
-    outline: none;
-    background-color: #e2e2e2;
-  }
-  
-  .image-div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.container textarea {
+  width: 100%;
+  font-size: 18px;
+  height: 100px;
+  resize: none;
+  border: none;
+  outline: none;
+  background-color: #e2e2e2;
+}
+
+.image-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.remove-existing-btn,
+.clear-btn {
+  max-width: fit-content;
+  background-color: rgb(236, 81, 81);
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.remove-existing-btn{
+  margin-top: 10px;
+}
+
+.edit-save-btn,
+.edit-upload-btn {
+  background-color: #1da1f2;
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.save-btn:hover,
+.upload-btn:hover {
+  background-color: #69baec;
+}
+
+.save-btn:active,
+.upload-btn:active {
+  background-color: #1da1f2;
+}
+
+.clear-btn:hover {
+  background-color: rgb(228, 139, 139);
+}
+
+.clear-btn:active {
+  background-color: rgb(236, 81, 81);
+}
+
+img {
+  width: 100%;
+}
+
+textarea:disabled {
+  background-color: #e2e2e2;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.buttons {
+  margin-top: 10px
+}
+
+.buttons i {
+  font-size: 30px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+}
+
+.save-cancel-btn {
+  display: flex;
+}
+
+.cancel-btn {
+  margin-top: 0px !important;
+  margin-right: 5px;
+}
+
+.error-div {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.errorMsg {
+  color: red;
+}
+
+.remove-actions {
+  display: flex;
+  margin-top: 10px;
+  font-size: 30px;
+  width: 70px;
+  justify-content: space-between;
+}
+
+.remove-actions>* {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
   .actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
+    flex-direction: column;
   }
-  
+
+  .save-cancel-btn {
+    margin-top: 10px;
+    flex-direction: column;
+  }
+
   .clear-btn {
-    max-width: fit-content;
-    background-color: rgb(236, 81, 81);
-    color: #ffffff;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .save-btn {
     margin-top: 10px;
   }
-  
-  .save-btn,
-  .upload-btn {
-    background-color: #1da1f2;
-    color: #ffffff;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .save-btn:hover,
-  .upload-btn:hover {
-    background-color: #69baec;
-  }
-  
-  .save-btn:active,
-  .upload-btn:active {
-    background-color: #1da1f2;
-  }
-  
-  .clear-btn:hover {
-    background-color: rgb(228, 139, 139);
-  }
-  
-  .clear-btn:active {
-    background-color: rgb(236, 81, 81);
-  }
-  img {
-    width: 100%;
-  }
-  
-  textarea:disabled {
-    background-color: #e2e2e2;
-  }
-  
-  input[type="file"]{
-      display: none;
-  }
-  
-  .buttons{
-    margin-top:10px
-  }
-  
-  .buttons i{
-    font-size: 30px;
-  }
-  
-  .spinner{
-    display: flex;
-    justify-content: center;
-  }
-  
-  .save-cancel-btn{
-    display: flex;
-  }
-  
-  .cancel-btn{
-    margin-top: 0px !important;
-    margin-right: 5px;
-  }
-  
-  .error-div{
-    display: flex;
-    justify-content: center;
-    text-align: center;
-  }
-  
-  .errorMsg{
-    color:red;
-  }
-  
-  @media (max-width: 768px) {
-    .actions {
-      flex-direction: column;
-    }
-  
-    .save-cancel-btn{
-      margin-top: 10px;
-      flex-direction: column;
-    }
-  
-    .clear-btn {
-      width: 100%;
-      max-width: 100%;
-    }
-  
-    .save-btn {
-      margin-top: 10px;
-    }
-  }
-  
+}
