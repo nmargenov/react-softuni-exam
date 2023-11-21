@@ -1,14 +1,37 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { decodeBuffer } from "../../../utils/imageHelper"
 import { timeAgo, isEdited } from "../../../utils/postHelper"
 import styles from './post.module.css';
 import { DetailsContext } from "../../../contexts/DetailsContext";
 import { UserContext } from "../../../contexts/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { likePost } from "../../../services/postService";
+import { SmallSpinner } from "../../spinners/SmallSpinner";
 
 export const Post = () => {
 
-    const {post} = useContext(DetailsContext);
-    const {isAuthenticated} = useContext(UserContext);
+    const { post, setPost } = useContext(DetailsContext);
+    const { isAuthenticated, decodedUser } = useContext(UserContext);
+
+    const [isLiking, setIsLiking] = useState(false);
+
+    function onLikeClick() {
+        setIsLiking(true);
+        likePost(post._id, decodedUser._id)
+            .then((data) => {
+                setPost(data);
+                setIsLiking(false);
+            }).catch((err) => {
+                setIsLiking(false);
+            })
+    }
+
+    function isLiked() {
+        return post.likedBy.includes(decodedUser._id);
+    }
+
+    const liked = isLiked();
 
     return (
         <div className={styles.container}>
@@ -63,7 +86,11 @@ export const Post = () => {
                 <div className={styles['footer']}>
                     {isAuthenticated && (
                         <div className={styles['like']}>
-                            like
+                            {isLiking &&
+                                <div className={styles['like-spinner']}>
+                                    <SmallSpinner />
+                                </div>}
+                            {!isLiking && <FontAwesomeIcon onClick={onLikeClick} className={liked ? styles['isLiked'] : styles['isNotLiked']} icon={faHeart} />}
                         </div>
                     )}
                     <div className={styles['likes']}>

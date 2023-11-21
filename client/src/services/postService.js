@@ -35,3 +35,8 @@ export const getPostById = (postId)=>{
     const url = BASE_URL+paths.post.replace(':postId',postId);
     return get(url);
 }
+
+export const likePost = (postId,userId)=>{
+    const url = BASE_URL+paths.like.replace(':postId',postId);
+    return post(url,{userId});
+}

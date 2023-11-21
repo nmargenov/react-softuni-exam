@@ -10,7 +10,7 @@ import { Error } from "../Error/Error";
 export const Details = () => {
     const { postId } = useParams(':postId');
 
-    const { setPost, setIsPostLoading, isPostLoading,setHasPostLoadingError,hasPostLoadingError } = useContext(DetailsContext);
+    const { setPost, setIsPostLoading, isPostLoading, setHasPostLoadingError, hasPostLoadingError } = useContext(DetailsContext);
 
     useEffect(() => {
         setIsPostLoading(true);
@@ -26,9 +26,12 @@ export const Details = () => {
     }, [])
     return (
         <>
-            {isPostLoading && <div className={styles['loader']}><GlobalSpinner/></div>}
+            {isPostLoading && <div className={styles['loader']}><GlobalSpinner /></div>}
             {!isPostLoading && hasPostLoadingError && <Error />}
-            {!isPostLoading && !hasPostLoadingError && <Post />}
+            {!isPostLoading && !hasPostLoadingError &&
+                <div className={styles['main-container']}>
+                    <Post />
+                </div>}
         </>
     );
 }
