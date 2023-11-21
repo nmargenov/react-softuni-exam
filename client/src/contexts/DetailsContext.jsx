@@ -8,6 +8,7 @@ export const DetailsProvider = ({
 
     const [post,setPost] = useState(null);
     const [isPostLoading,setIsPostLoading] = useState(true);
+    const [hasPostLoadingError,setHasPostLoadingError] = useState(false);
    
    
     const context = {
@@ -15,6 +16,8 @@ export const DetailsProvider = ({
         setPost,
         isPostLoading,
         setIsPostLoading,
+        hasPostLoadingError,
+        setHasPostLoadingError,
     }
 
     return(

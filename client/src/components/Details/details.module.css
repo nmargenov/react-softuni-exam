@@ -1,0 +1,7 @@
+.loader {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    min-height: calc(100vh - (198px));
+    align-items: center;
+}
