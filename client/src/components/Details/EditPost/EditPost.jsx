@@ -6,10 +6,11 @@ import { useForm } from '../../../hooks/useForm';
 import { editPost, removeExistingImage } from '../../../services/postService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { SmallSpinner } from '../../spinners/SmallSpinner';
 
 export const EditPost = () => {
 
-    const { post, setPost, isEditing, setIsEditing, setIsEditOpen } = useContext(DetailsContext);
+    const { post, setPost, isEditing, setIsEditing, setIsEditOpen, setIsPostImageLoading } = useContext(DetailsContext);
 
     const fileInputRef = useRef();
     const formRef = useRef();
@@ -34,11 +35,17 @@ export const EditPost = () => {
         const formData = new FormData();
         formData.append('description', values.description.trim());
         formData.append('postImage', selectedFile);
-
+        setIsEditing(true);
         editPost(post._id, formData)
             .then((data) => {
                 setPost(data);
                 setIsEditOpen(false);
+                setIsEditing(false);
+                setIsPostImageLoading(true);
+                setErrorMsg('');
+            }).catch((err)=>{
+                setIsEditing(false);
+                setErrorMsg(err.message);
             })
 
     }
@@ -59,10 +66,12 @@ export const EditPost = () => {
     }
 
     function onRemovePhotoAccept() {
+        setIsEditing(true);
         removeExistingImage(post._id)
             .then((data) => {
                 setPost(data);
                 setIsRemovePhoto(false);
+                setIsEditing(false);
                 setIsEditOpen(false);
             })
     }
@@ -75,9 +84,19 @@ export const EditPost = () => {
         setIsRemovePhoto(false);
     }
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            if (values.description.length>0 && values.description.length<5){
+                setErrorMsg('Description must be at least 5 characters long!');
+                return;
+            }
+            onSubmit(e);
+        }
+    };
+
     return (
         <div className={styles.container}>
-            <form ref={formRef} onSubmit={onSubmit}>
+            <form onKeyDown={handleKeyDown} ref={formRef} onSubmit={onSubmit}>
                 {errorMsg && (
                     <div className={styles['error-div']}>
                         <p className={styles.errorMsg}>{errorMsg}</p>
@@ -87,6 +106,7 @@ export const EditPost = () => {
                     <textarea
                         onChange={onInputChange}
                         value={values.description}
+                        disabled={isEditing}
                         name="description"
                         placeholder="What's happening"
                     ></textarea>
@@ -95,10 +115,10 @@ export const EditPost = () => {
             {post.image && !previewUrl && (
                 <div className={styles['image-div']}>
                     <img src={decodeBuffer(post.image)} alt="" />
-                    {!isRemovePhoto && <button onClick={onRemovePhotoClick} className={styles['remove-existing-btn']}>
+                    {!isRemovePhoto && !isEditing && <button onClick={onRemovePhotoClick} className={styles['remove-existing-btn']}>
                         Remove existing photo
                     </button>}
-                    {isRemovePhoto &&
+                    {isRemovePhoto && !isEditing &&
                         <div className={styles['remove-actions']}>
                             <FontAwesomeIcon onClick={onRemovePhotoAccept} icon={faCheck} />
                             <FontAwesomeIcon onClick={onRemovePhotoCancel} icon={faXmark} />
@@ -130,21 +150,22 @@ export const EditPost = () => {
                             style={{ display: 'none' }}
                         />
                         {!isRemovePhoto && <>
-                        {<button onClick={() => fileInputRef.current.click()} className={styles['edit-upload-btn']}>
-                            {post.image || previewUrl ? 'Change Photo' : 'Upload photo'}
-                        </button>}
-                        <div className={styles['save-cancel-btn']}>
-                            <button onClick={onCancel} className={styles['clear-btn']}>
-                                Cancel
-                            </button>
-                            <button onClick={() => formRef.current.requestSubmit()} type='submit' className={styles['edit-save-btn']}>
-                                Save
-                            </button>
-                        </div>
+                            {<button onClick={() => fileInputRef.current.click()} className={styles['edit-upload-btn']}>
+                                {post.image || previewUrl ? 'Change Photo' : 'Upload photo'}
+                            </button>}
+                            <div className={styles['save-cancel-btn']}>
+                                <button onClick={onCancel} className={styles['clear-btn']}>
+                                    Cancel
+                                </button>
+                                <button onClick={() => formRef.current.requestSubmit()} type='submit' className={styles['edit-save-btn']}>
+                                    Save
+                                </button>
+                            </div>
                         </>}
                     </div>
                 )
             }
+            {isEditing && <div className={styles['editing-loader']}><SmallSpinner/></div>}
         </div >
     );
 };

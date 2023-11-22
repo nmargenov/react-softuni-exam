@@ -12,6 +12,8 @@ export const DetailsProvider = ({
     const [isDeleting, setIsDeleting] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
+    const [isPostImageLoading, setIsPostImageLoading] = useState(true);
+    
 
    
    
@@ -25,7 +27,11 @@ export const DetailsProvider = ({
         isDeleting,
         setIsDeleting,
         isEditOpen,
-        setIsEditOpen
+        setIsEditOpen,
+        isPostImageLoading,
+        setIsPostImageLoading,
+        isEditing,
+        setIsEditing
     }
 
     return(

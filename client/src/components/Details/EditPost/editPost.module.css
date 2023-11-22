@@ -73,11 +73,11 @@
   background-color: rgb(236, 81, 81);
 }
 
-img {
+.container img {
   width: 100%;
 }
 
-textarea:disabled {
+.container textarea:disabled {
   background-color: #e2e2e2;
 }
 
@@ -125,6 +125,14 @@ input[type="file"] {
   justify-content: space-between;
 }
 
+.editing-loader{
+  width: 85%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
 .remove-actions>* {
   cursor: pointer;
 }
@@ -144,7 +152,7 @@ input[type="file"] {
     max-width: 100%;
   }
 
-  .save-btn {
+  .edit-save-btn {
     margin-top: 10px;
   }
 }

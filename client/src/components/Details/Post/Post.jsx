@@ -13,13 +13,12 @@ import { EditPost } from "../EditPost/EditPost";
 
 export const Post = () => {
 
-    const { post, setPost,isDeleting,setIsDeleting,isEditOpen,setIsEditOpen } = useContext(DetailsContext);
+    const { post, setPost,isDeleting,setIsDeleting,isEditOpen,setIsEditOpen, isPostImageLoading,setIsPostImageLoading } = useContext(DetailsContext);
     const { isAuthenticated, decodedUser } = useContext(UserContext);
     const navigate = useNavigate();
 
     const [isLiking, setIsLiking] = useState(false);
     const [isProfileImageLoading, setIsProfileImageLoading] = useState(true);
-    const [isPostImageLoading, setIsPostImageLoading] = useState(true);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
     function onLikeClick() {
@@ -144,7 +143,7 @@ export const Post = () => {
                                 onLoad={onPostImageLoad}
                                 onError={onPostImageLoad}
                                 className={isPostImageLoading ? styles['is-loading'] : styles['post-image']}
-                                src={decodeBuffer(post.image)}
+                                src={decodeBuffer(post?.image)}
                             />
                         </div>
                     )}
