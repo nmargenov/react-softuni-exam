@@ -8,6 +8,7 @@ import styles from './details.module.css';
 import { Error } from "../Error/Error";
 import { AddComment } from "./AddComment/AddComment";
 import { UserContext } from "../../contexts/AuthContext";
+import { CommentList } from "./CommentList/CommentList";
 
 export const Details = () => {
     const { postId } = useParams(':postId');
@@ -40,6 +41,7 @@ export const Details = () => {
                     {isAuthenticated && <div className={styles['add-comment-component']}>
                         <AddComment />
                     </div>}
+                    <CommentList/>
                 </div>}
         </>
     );
