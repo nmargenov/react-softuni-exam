@@ -7,9 +7,12 @@ import { GlobalSpinner } from "../Spinners/GlobalSpinner/GlobalSpinner";
 import styles from './details.module.css';
 import { Error } from "../Error/Error";
 import { AddComment } from "./AddComment/AddComment";
+import { UserContext } from "../../contexts/AuthContext";
 
 export const Details = () => {
     const { postId } = useParams(':postId');
+
+    const {isAuthenticated} = useContext(UserContext);
 
     const { setPost, setIsPostLoading, isPostLoading, setHasPostLoadingError, hasPostLoadingError } = useContext(DetailsContext);
 
@@ -34,9 +37,9 @@ export const Details = () => {
                     <div className={styles['post-component']}>
                         <Post />
                     </div>
-                    <div className={styles['add-comment-component']}>
+                    {isAuthenticated && <div className={styles['add-comment-component']}>
                         <AddComment />
-                    </div>
+                    </div>}
                 </div>}
         </>
     );
