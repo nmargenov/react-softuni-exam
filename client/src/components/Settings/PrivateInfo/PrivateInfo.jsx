@@ -6,9 +6,9 @@ import { SettingsContext } from '../../../contexts/SettingsContext';
 import { SmallSpinner } from '../../spinners/SmallSpinner';
 import { editPrivateData } from '../../../services/userService';
 import { birthdateValidator, isValidEmail } from '../../../utils/fieldsUtil';
+import * as jwt from 'jwt-decode';
 
-
-export const PrivateInfo = ({userToEdit}) => {
+export const PrivateInfo = ({userToEdit,setUserToEdit}) => {
 
     const { setUser } = useContext(UserContext);
     const { isPasswordSaving, isPublicSaving, isPrivateSaving, setIsPrivateSaving } = useContext(SettingsContext);
@@ -30,6 +30,7 @@ export const PrivateInfo = ({userToEdit}) => {
         editPrivateData(userToEdit._id, values.email, values.birthdate)
             .then((data) => {
                 setUser(data);
+                setUserToEdit(jwt.jwtDecode(data));
                 setErrorMsg('');
                 setIsPrivateSaving(false);
             }).catch((err) => {

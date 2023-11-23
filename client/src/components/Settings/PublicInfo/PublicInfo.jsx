@@ -8,8 +8,9 @@ import styles from "../shared/styles.module.css";
 import { useForm } from '../../../hooks/useForm';
 import { editPublicData, removeExistingImage } from '../../../services/userService';
 import { SmallSpinner } from '../../spinners/SmallSpinner';
+import * as jwt from 'jwt-decode';
 
-export const PublicInfo = ({userToEdit}) => {
+export const PublicInfo = ({userToEdit,setUserToEdit}) => {
     const { setUser } = useContext(UserContext);
     const { isPasswordSaving, isPrivateSaving, isPublicSaving, setIsPublicSaving } = useContext(SettingsContext);
     const [previewUrl, setPreviewUrl] = useState('');
@@ -48,9 +49,10 @@ export const PublicInfo = ({userToEdit}) => {
         setIsPublicSaving(true);
         removeExistingImage(userToEdit._id)
             .then((data) => {
-                setIsPublicSaving(false);
                 setErrorMsg('');
                 setUser(data);
+                setUserToEdit(jwt.jwtDecode(data));
+                setIsPublicSaving(false);
             }).catch((err) => {
                 setIsPublicSaving(false);
                 setErrorMsg(err.message);
@@ -71,6 +73,7 @@ export const PublicInfo = ({userToEdit}) => {
         editPublicData(userToEdit._id, formData)
             .then((data) => {
                 setUser(data);
+                setUserToEdit(jwt.jwtDecode(data));
                 setPreviewUrl(false);
                 setSelectedFile(null);
                 setErrorMsg('');

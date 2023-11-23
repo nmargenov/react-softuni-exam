@@ -37,9 +37,9 @@ export const Settings = () => {
             {!isLoading && hasError && <Error />}
             {!isLoading && !hasError && <div className={styles["main"]}>
                 <SettingsProvider>
-                    <PublicInfo userToEdit={user} />
-                    <PrivateInfo userToEdit={user} />
-                    <Password userToEdit={user} />
+                    <PublicInfo userToEdit={user} setUserToEdit={setUser}/>
+                    <PrivateInfo userToEdit={user} setUserToEdit={setUser}/>
+                    <Password userToEdit={user} setUserToEdit={setUser}/>
                 </SettingsProvider>
             </div>}
         </>
