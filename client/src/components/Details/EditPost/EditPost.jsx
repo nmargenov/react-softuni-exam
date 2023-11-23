@@ -10,7 +10,7 @@ import { SmallSpinner } from '../../spinners/SmallSpinner';
 
 export const EditPost = () => {
 
-    const { post, setPost, isEditing, setIsEditing, setIsEditOpen, setIsPostImageLoading } = useContext(DetailsContext);
+    const { post, setPost, isEditing, setIsEditing, isCommenting, setIsEditOpen, setIsPostImageLoading } = useContext(DetailsContext);
 
     const fileInputRef = useRef();
     const formRef = useRef();
@@ -43,7 +43,7 @@ export const EditPost = () => {
                 setIsEditing(false);
                 setIsPostImageLoading(true);
                 setErrorMsg('');
-            }).catch((err)=>{
+            }).catch((err) => {
                 setIsEditing(false);
                 setErrorMsg(err.message);
             })
@@ -86,7 +86,7 @@ export const EditPost = () => {
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-            if (values.description.length>0 && values.description.length<5){
+            if (values.description.length > 0 && values.description.length < 5) {
                 setErrorMsg('Description must be at least 5 characters long!');
                 return;
             }
@@ -115,10 +115,10 @@ export const EditPost = () => {
             {post.image && !previewUrl && (
                 <div className={styles['image-div']}>
                     <img src={decodeBuffer(post.image)} alt="" />
-                    {!isRemovePhoto && !isEditing && <button onClick={onRemovePhotoClick} className={styles['remove-existing-btn']}>
+                    {!isRemovePhoto && !isCommenting && !isEditing && <button onClick={onRemovePhotoClick} className={styles['remove-existing-btn']}>
                         Remove existing photo
                     </button>}
-                    {isRemovePhoto && !isEditing &&
+                    {isRemovePhoto && !isCommenting && !isEditing &&
                         <div className={styles['remove-actions']}>
                             <FontAwesomeIcon onClick={onRemovePhotoAccept} icon={faCheck} />
                             <FontAwesomeIcon onClick={onRemovePhotoCancel} icon={faXmark} />
@@ -131,7 +131,7 @@ export const EditPost = () => {
                 previewUrl && (
                     <div className={styles['image-div']}>
                         <img src={previewUrl} alt="" />
-                        {(
+                        {(!isCommenting &&
                             <button type='none' onClick={onFileClear} className={styles['remove-existing-btn']}>
                                 Remove selected photo
                             </button>
@@ -140,7 +140,7 @@ export const EditPost = () => {
                 )
             }
             {
-                !isEditing && (
+                !isEditing && !isCommenting && (
                     <div className={styles.actions}>
                         <input
                             type="file"
@@ -165,7 +165,7 @@ export const EditPost = () => {
                     </div>
                 )
             }
-            {isEditing && <div className={styles['editing-loader']}><SmallSpinner/></div>}
+            {isEditing && <div className={styles['editing-loader']}><SmallSpinner /></div>}
         </div >
     );
 };

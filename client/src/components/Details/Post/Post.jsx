@@ -13,7 +13,7 @@ import { EditPost } from "../EditPost/EditPost";
 
 export const Post = () => {
 
-    const { post, setPost,isDeleting,setIsDeleting,isEditOpen,setIsEditOpen, isPostImageLoading,setIsPostImageLoading } = useContext(DetailsContext);
+    const { post, setPost,isDeleting,setIsDeleting,isEditOpen,setIsEditOpen,isCommenting, isPostImageLoading,setIsPostImageLoading } = useContext(DetailsContext);
     const { isAuthenticated, decodedUser } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -22,6 +22,9 @@ export const Post = () => {
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
     function onLikeClick() {
+        if(isCommenting){
+            return;
+        }
         setIsLiking(true);
         likePost(post._id, decodedUser._id)
             .then((data) => {
@@ -115,10 +118,10 @@ export const Post = () => {
                         </div>
                     )}
                     <div className={styles['actions']}>
-                        {isOwner() && !isDeleting && <>
+                        {isOwner() && !isDeleting && !isCommenting && <>
                             {!isDeleteOpen && !isEditOpen && <FontAwesomeIcon onClick={onEditOpen} icon={faPen} />}
                             {!isDeleteOpen && !isEditOpen && <FontAwesomeIcon onClick={onDeleteOpen} icon={faTrash} />}
-                            {isDeleteOpen &&
+                            {isDeleteOpen && !isCommenting &&
                                 <>
                                     <FontAwesomeIcon onClick={onDeleteAccept} icon={faCheck} />
                                     <FontAwesomeIcon onClick={onDeleteCancel} icon={faXmark} />

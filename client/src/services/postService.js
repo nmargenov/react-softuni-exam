@@ -55,3 +55,8 @@ export const removeExistingImage = (postId) =>{
     const url = BASE_URL + paths.deleteExistingImage.replace(':postId',postId);
     return del(url);
 }
+
+export const writeComment = (postId,userId,comment) =>{
+    const url = BASE_URL+paths.comment.replace(':postId',postId);
+    return post(url,{userId,comment});
+}
