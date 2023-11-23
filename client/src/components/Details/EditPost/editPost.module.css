@@ -55,20 +55,22 @@
   cursor: pointer;
 }
 
-.save-btn:hover,
-.upload-btn:hover {
+.edit-save-btn:hover,
+.edit-upload-btn:hover {
   background-color: #69baec;
 }
 
-.save-btn:active,
-.upload-btn:active {
+.edit-save-btn:active,
+.edit-upload-btn:active {
   background-color: #1da1f2;
 }
 
+.remove-existing-btn:hover,
 .clear-btn:hover {
   background-color: rgb(228, 139, 139);
 }
 
+.remove-existing-btn:active,
 .clear-btn:active {
   background-color: rgb(236, 81, 81);
 }
