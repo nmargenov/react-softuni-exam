@@ -13,7 +13,8 @@ export const DetailsProvider = ({
     const [isEditing, setIsEditing] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isPostImageLoading, setIsPostImageLoading] = useState(true);
-    const [isCommenting, setIsCommenting] = useState(false);  
+    const [isCommenting, setIsCommenting] = useState(false);
+    const [isDeletingComment, setIsDeletingComment] = useState(false);
    
     const context = {
         post,
@@ -31,8 +32,10 @@ export const DetailsProvider = ({
         isEditing,
         setIsEditing,
         isCommenting,
-        setIsCommenting
-    }
+        setIsCommenting,
+        isDeletingComment,
+        setIsDeletingComment
+        }
 
     return(
         <>

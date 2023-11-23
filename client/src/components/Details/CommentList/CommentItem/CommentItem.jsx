@@ -6,11 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useState } from "react";
 import { deleteComment } from "../../../../services/postService";
 import { DetailsContext } from "../../../../contexts/DetailsContext";
+import { SmallSpinner } from "../../../spinners/SmallSpinner";
 
 export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) => {
 
-  const {post,setPost} = useContext(DetailsContext);
+  const {post,setPost,isEditing,isDeleting,isCommenting, isDeletingComment:isDeletingGlobalComment, setIsDeletingComment:setIsDeletingGlobalComment} = useContext(DetailsContext);
 
+  const [isDeletingComment, setIsDeletingComment] = useState(false);
   const [isDeleteOpen,setIsDeleteOpen] = useState(false);
 
   function onDeleteOpen(){
@@ -22,6 +24,8 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
   }
 
   function onDeleteAccept(){
+    setIsDeletingComment(true);
+    setIsDeletingGlobalComment(true);
     deleteComment(post._id,_id)
       .then((data)=>{
         setPost(data);
@@ -63,6 +67,7 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
               <i className={`material-icons ${styles.materialIcons}`}>edit</i>
             </div>
           )}
+          {!isEditing && !isDeleting&&!isCommenting&&!isDeletingGlobalComment &&
           <div className={styles['comments-component-actions']}>
             {!isDeleteOpen && <><FontAwesomeIcon icon={faPen} />
             <FontAwesomeIcon onClick={onDeleteOpen} icon={faTrash} /></>}
@@ -70,7 +75,10 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
               <FontAwesomeIcon onClick={onDeleteAccept} icon={faCheck} />
               <FontAwesomeIcon onClick={onDeleteClose} icon={faXmark} />
             </>}
-          </div>
+          </div>}
+          {isDeletingComment && <div className={styles['spinner-div']}>
+            <SmallSpinner/>
+          </div>}
           {/* {isOwner(comment._id) && !isDeleting[comment._id] && !editState[comment._id] && (
                   <div className={styles.actions}>
                     {!deleteState[comment._id] && (

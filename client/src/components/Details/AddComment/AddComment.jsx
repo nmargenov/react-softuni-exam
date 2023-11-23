@@ -6,13 +6,14 @@ import { useParams } from 'react-router';
 import { UserContext } from '../../../contexts/AuthContext';
 import { DetailsContext } from '../../../contexts/DetailsContext';
 import { SmallSpinner } from '../../spinners/SmallSpinner';
+import { isEdited } from '../../../utils/postHelper';
 
 export const AddComment = () => {
 
     const { postId } = useParams(':postId');
 
     const { decodedUser } = useContext(UserContext);
-    const { setPost, isCommenting, setIsCommenting } = useContext(DetailsContext);
+    const { setPost, isCommenting,isDeleting, isEditing, isDeletingComment, setIsCommenting } = useContext(DetailsContext);
 
     const [errorMsg, setErrorMsg] = useState('');
 
@@ -58,13 +59,13 @@ export const AddComment = () => {
                 <div className={styles['comment']}>
                     <textarea
                         onChange={onInputChange}
-                        disabled={isCommenting}
+                        disabled={isCommenting||isDeleting||isEditing||isDeletingComment}
                         value={values.comment}
                         name='comment'
                         placeholder='Write your comment here...'></textarea>
                 </div>
                 {!isCommenting && <div className={styles['upload']}>
-                    <button disabled={isCommenting} type='submit'>Comment</button>
+                    <button disabled={isCommenting||isDeleting||isEditing||isDeletingComment} type='submit'>Comment</button>
                 </div>}
                 {isCommenting && <div className={styles['spinner-div']}>
                     <SmallSpinner/>

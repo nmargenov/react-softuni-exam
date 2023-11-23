@@ -13,7 +13,7 @@ import { EditPost } from "../EditPost/EditPost";
 
 export const Post = () => {
 
-    const { post, setPost,isDeleting,setIsDeleting,isEditOpen,setIsEditOpen,isCommenting, isPostImageLoading,setIsPostImageLoading } = useContext(DetailsContext);
+    const { post, setPost,isDeleting,setIsDeleting,isEditOpen,setIsEditOpen,isCommenting, isDeletingComment, isPostImageLoading,setIsPostImageLoading } = useContext(DetailsContext);
     const { isAuthenticated, decodedUser } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -118,10 +118,10 @@ export const Post = () => {
                         </div>
                     )}
                     <div className={styles['actions']}>
-                        {isOwner() && !isDeleting && !isCommenting && <>
+                        {isOwner() && !isDeleting && !isCommenting && !isDeletingComment && <>
                             {!isDeleteOpen && !isEditOpen && <FontAwesomeIcon onClick={onEditOpen} icon={faPen} />}
                             {!isDeleteOpen && !isEditOpen && <FontAwesomeIcon onClick={onDeleteOpen} icon={faTrash} />}
-                            {isDeleteOpen && !isCommenting &&
+                            {isDeleteOpen && !isCommenting && !isDeletingComment &&
                                 <>
                                     <FontAwesomeIcon onClick={onDeleteAccept} icon={faCheck} />
                                     <FontAwesomeIcon onClick={onDeleteCancel} icon={faXmark} />
