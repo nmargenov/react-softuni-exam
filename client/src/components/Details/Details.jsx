@@ -6,6 +6,7 @@ import { DetailsContext } from "../../contexts/DetailsContext";
 import { GlobalSpinner } from "../Spinners/GlobalSpinner/GlobalSpinner";
 import styles from './details.module.css';
 import { Error } from "../Error/Error";
+import { AddComment } from "./AddComment/AddComment";
 
 export const Details = () => {
     const { postId } = useParams(':postId');
@@ -32,6 +33,9 @@ export const Details = () => {
                 <div className={styles['main-container']}>
                     <div className={styles['post-component']}>
                         <Post />
+                    </div>
+                    <div className={styles['add-comment-component']}>
+                        <AddComment />
                     </div>
                 </div>}
         </>

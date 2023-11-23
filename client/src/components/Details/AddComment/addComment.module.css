@@ -1,0 +1,67 @@
+.add-comment-container {
+    background-color: #e2e2e2;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 20px;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    min-width: 250px;
+    padding-left: 20px;
+    padding-top: 20px;
+}
+
+.add-comment-container textarea {
+    width: 100%;
+    height: 100px;
+    resize: none;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background-color: #e2e2e2;
+}
+
+.upload {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.add-comment-container button {
+    background-color: #1da1f2;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.add-comment-container button:hover {
+    background-color: #69baec;
+}
+
+.add-comment-container button:active {
+    background-color: #1da1f2;
+}
+
+.error-msg-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.errorMsg {
+    color: red;
+}
+
+.loader {
+    display: flex;
+    justify-content: center;
+}

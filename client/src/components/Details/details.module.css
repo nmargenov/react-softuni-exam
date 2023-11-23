@@ -9,10 +9,17 @@
 .main-container {
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .post-component {
+    width: 100%;
+    max-width: 740px;
+}
+
+.add-comment-component{
+    display: flex;
     width: 100%;
     max-width: 740px;
 }
