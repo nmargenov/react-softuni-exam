@@ -60,3 +60,8 @@ export const writeComment = (postId,userId,comment) =>{
     const url = BASE_URL+paths.comment.replace(':postId',postId);
     return post(url,{userId,comment});
 }
+
+export const deleteComment = (postId,commentId) => {
+    const url = BASE_URL+paths.commentWithId.replace(':postId',postId).replace(':commentId',commentId);
+    return del(url);
+}

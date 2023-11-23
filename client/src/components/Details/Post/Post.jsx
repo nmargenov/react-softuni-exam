@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { decodeBuffer } from "../../../utils/imageHelper"
 import { timeAgo, isEdited } from "../../../utils/postHelper"
 import styles from './post.module.css';
