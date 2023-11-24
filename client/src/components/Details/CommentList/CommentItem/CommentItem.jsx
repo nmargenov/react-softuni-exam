@@ -44,8 +44,8 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
         setIsDeletingGlobalComment(false);
       })
   }
-  
-  function onEditOpen(){
+
+  function onEditOpen() {
     setIsEditCommentOpen(true);
   }
 
@@ -72,27 +72,27 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
         />
       </div>
       <div className={styles['comments-component-main']}>
-        <div className={styles['comments-component-author-div']}>
-          <div
-            className={styles['comments-component-author-name']}
-            onClick={() => navigateToUserProfile(owner.username)}
-          >
-            <p>{`${owner.firstName} ${owner.lastName}`}</p>
-          </div>
-          <div
-            className={styles['comments-component-author-username']}
-            onClick={() => navigateToUserProfile(owner.username)}
-          >
-            <p>@{owner.username}</p>
-          </div>
-          <div className={styles['comments-component-publish-time']}>
-            <p>{timeAgo(createdAt)}</p>
-          </div>
-          {isEdited(createdAt, lastEditedAt) && (
-            <div className={styles.edited}>
-              <p>Edited</p>
+          <div className={styles['comments-component-author-div']}>
+            <div
+              className={styles['comments-component-author-name']}
+              onClick={() => navigateToUserProfile(owner.username)}
+            >
+              <p>{`${owner.firstName} ${owner.lastName}`}</p>
             </div>
-          )}
+            <div
+              className={styles['comments-component-author-username']}
+              onClick={() => navigateToUserProfile(owner.username)}
+            >
+              <p>@{owner.username}</p>
+            </div>
+            <div className={styles['comments-component-publish-time']}>
+              <p>{timeAgo(createdAt)}</p>
+            </div>
+            {isEdited(createdAt, lastEditedAt) && (
+              <div className={styles.edited}>
+                <p>Edited</p>
+              </div>
+            )}
           {isAuthenticated && isOwner() && !isEditing && !isDeleting && !isCommenting && !isDeletingGlobalComment &&
             !isEditingComment && <div className={styles['comments-component-actions']}>
               {!isDeleteOpen && !isEditCommentOpen &&
@@ -110,7 +110,7 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
         </div>
         {!isEditCommentOpen ? <div className={styles['comment']}>
           <p>{comment}</p>
-        </div>:<EditComment _id={_id} comment={comment} setIsOpen={setIsEditCommentOpen}/>}
+        </div> : <EditComment _id={_id} comment={comment} setIsOpen={setIsEditCommentOpen} />}
       </div>
     </div>
   )

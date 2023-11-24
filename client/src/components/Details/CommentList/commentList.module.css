@@ -118,8 +118,12 @@ i:hover {
         align-items: baseline;
         flex-direction: column;
     }
-
-    .actions {
-        margin-left: 0;
+    .comments-component-author-div{
+        display: flex;
+        flex-direction: column;
+    }
+    .comments-component-actions {
+        margin-left: 0px;
+        margin:5px 0;
     }
 }
