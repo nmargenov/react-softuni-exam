@@ -7,31 +7,40 @@ import { useContext, useState } from "react";
 import { deleteComment } from "../../../../services/postService";
 import { DetailsContext } from "../../../../contexts/DetailsContext";
 import { SmallSpinner } from "../../../spinners/SmallSpinner";
+import { UserContext } from "../../../../contexts/AuthContext";
 
 export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) => {
 
-  const {post,setPost,isEditing,isDeleting,isCommenting, isDeletingComment:isDeletingGlobalComment, setIsDeletingComment:setIsDeletingGlobalComment} = useContext(DetailsContext);
+  const { post, setPost, isEditing, isDeleting, isCommenting, isDeletingComment: isDeletingGlobalComment, setIsDeletingComment: setIsDeletingGlobalComment } = useContext(DetailsContext);
+  const { isAuthenticated, decodedUser } = useContext(UserContext);
 
   const [isDeletingComment, setIsDeletingComment] = useState(false);
-  const [isDeleteOpen,setIsDeleteOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-  function onDeleteOpen(){
+  function onDeleteOpen() {
     setIsDeleteOpen(true);
   }
 
-  function onDeleteClose(){
+  function onDeleteClose() {
     setIsDeleteOpen(false);
   }
 
-  function onDeleteAccept(){
+  function onDeleteAccept() {
     setIsDeletingComment(true);
     setIsDeletingGlobalComment(true);
-    deleteComment(post._id,_id)
-      .then((data)=>{
+    deleteComment(post._id, _id)
+      .then((data) => {
         setPost(data);
-      }).catch((err)=>{
-
+        setIsDeletingComment(false);
+        setIsDeletingGlobalComment(false);
+      }).catch((err) => {
+        setIsDeletingComment(false);
+        setIsDeletingGlobalComment(false);
       })
+  }
+
+  function isOwner() {
+    return owner._id === decodedUser._id;
   }
 
   return (
@@ -67,17 +76,17 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
               <i className={`material-icons ${styles.materialIcons}`}>edit</i>
             </div>
           )}
-          {!isEditing && !isDeleting&&!isCommenting&&!isDeletingGlobalComment &&
-          <div className={styles['comments-component-actions']}>
-            {!isDeleteOpen && <><FontAwesomeIcon icon={faPen} />
-            <FontAwesomeIcon onClick={onDeleteOpen} icon={faTrash} /></>}
-            {isDeleteOpen && <>
-              <FontAwesomeIcon onClick={onDeleteAccept} icon={faCheck} />
-              <FontAwesomeIcon onClick={onDeleteClose} icon={faXmark} />
-            </>}
-          </div>}
+          {isAuthenticated && isOwner() && !isEditing && !isDeleting && !isCommenting && !isDeletingGlobalComment &&
+            <div className={styles['comments-component-actions']}>
+              {!isDeleteOpen && <><FontAwesomeIcon icon={faPen} />
+                <FontAwesomeIcon onClick={onDeleteOpen} icon={faTrash} /></>}
+              {isDeleteOpen && <>
+                <FontAwesomeIcon onClick={onDeleteAccept} icon={faCheck} />
+                <FontAwesomeIcon onClick={onDeleteClose} icon={faXmark} />
+              </>}
+            </div>}
           {isDeletingComment && <div className={styles['spinner-div']}>
-            <SmallSpinner/>
+            <SmallSpinner />
           </div>}
           {/* {isOwner(comment._id) && !isDeleting[comment._id] && !editState[comment._id] && (
                   <div className={styles.actions}>
