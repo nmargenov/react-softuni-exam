@@ -9,14 +9,17 @@ import { DetailsContext } from "../../../../contexts/DetailsContext";
 import { SmallSpinner } from "../../../spinners/SmallSpinner";
 import { UserContext } from "../../../../contexts/AuthContext";
 import { useNavigate } from "react-router";
+import { EditComment } from "../../EditComment/EditComment";
 
 export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) => {
 
-  const { post, setPost, isEditing, isDeleting, isCommenting, isDeletingComment: isDeletingGlobalComment, setIsDeletingComment: setIsDeletingGlobalComment } = useContext(DetailsContext);
+  const { post, setPost, isEditing, isDeleting, isCommenting, isDeletingComment: isDeletingGlobalComment,
+    setIsDeletingComment: setIsDeletingGlobalComment, isEditingComment } = useContext(DetailsContext);
   const { isAuthenticated, decodedUser } = useContext(UserContext);
 
   const [isDeletingComment, setIsDeletingComment] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isEditCommentOpen, setIsEditCommentOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -41,6 +44,10 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
         setIsDeletingGlobalComment(false);
       })
   }
+  
+  function onEditOpen(){
+    setIsEditCommentOpen(true);
+  }
 
   function isOwner() {
     return owner._id === decodedUser._id;
@@ -48,7 +55,7 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
 
   function navigateToUserProfile(username) {
     const targetUrl = `/profile/${username}`;
-    
+
     if (location.pathname !== targetUrl) {
       navigate(targetUrl);
     }
@@ -61,7 +68,7 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
           className={styles.image}
           src={decodeBuffer(owner?.profilePicture)}
           alt="profile"
-        onClick={() => navigateToUserProfile(owner.username)}
+          onClick={() => navigateToUserProfile(owner.username)}
         />
       </div>
       <div className={styles['comments-component-main']}>
@@ -84,13 +91,14 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
           {isEdited(createdAt, lastEditedAt) && (
             <div className={styles.edited}>
               <p>Edited</p>
-              <i className={`material-icons ${styles.materialIcons}`}>edit</i>
             </div>
           )}
           {isAuthenticated && isOwner() && !isEditing && !isDeleting && !isCommenting && !isDeletingGlobalComment &&
-            <div className={styles['comments-component-actions']}>
-              {!isDeleteOpen && <><FontAwesomeIcon icon={faPen} />
-                <FontAwesomeIcon onClick={onDeleteOpen} icon={faTrash} /></>}
+            !isEditingComment && <div className={styles['comments-component-actions']}>
+              {!isDeleteOpen && !isEditCommentOpen &&
+                <>
+                  <FontAwesomeIcon onClick={onEditOpen} icon={faPen} />
+                  <FontAwesomeIcon onClick={onDeleteOpen} icon={faTrash} /></>}
               {isDeleteOpen && <>
                 <FontAwesomeIcon onClick={onDeleteAccept} icon={faCheck} />
                 <FontAwesomeIcon onClick={onDeleteClose} icon={faXmark} />
@@ -100,9 +108,9 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
             <SmallSpinner />
           </div>}
         </div>
-        <div className={styles['comment']}>
+        {!isEditCommentOpen ? <div className={styles['comment']}>
           <p>{comment}</p>
-        </div>
+        </div>:<EditComment _id={_id} comment={comment} setIsOpen={setIsEditCommentOpen}/>}
       </div>
     </div>
   )

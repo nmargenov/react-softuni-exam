@@ -13,7 +13,7 @@ export const AddComment = () => {
     const { postId } = useParams(':postId');
 
     const { decodedUser } = useContext(UserContext);
-    const { setPost, isCommenting,isDeleting, isEditing, isDeletingComment, setIsCommenting } = useContext(DetailsContext);
+    const { setPost, isCommenting,isDeleting, isEditing, isDeletingComment, setIsCommenting, isEditingComment } = useContext(DetailsContext);
 
     const [errorMsg, setErrorMsg] = useState('');
 
@@ -59,13 +59,13 @@ export const AddComment = () => {
                 <div className={styles['comment']}>
                     <textarea
                         onChange={onInputChange}
-                        disabled={isCommenting||isDeleting||isEditing||isDeletingComment}
+                        disabled={isCommenting||isDeleting||isEditing||isDeletingComment||isEditingComment}
                         value={values.comment}
                         name='comment'
                         placeholder='Write your comment here...'></textarea>
                 </div>
                 {!isCommenting && <div className={styles['upload']}>
-                    <button disabled={isCommenting||isDeleting||isEditing||isDeletingComment} type='submit'>Comment</button>
+                    <button disabled={isCommenting||isDeleting||isEditing||isDeletingComment||isEditingComment} type='submit'>Comment</button>
                 </div>}
                 {isCommenting && <div className={styles['spinner-div']}>
                     <SmallSpinner/>

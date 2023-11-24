@@ -1,0 +1,92 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.textarea-div textarea {
+    width: 100%;
+    font-size: 18px;
+    height: 100px;
+    margin-top: 5px;
+    resize: none;
+    border: none;
+    outline: none;
+    background-color: #e2e2e2;
+}
+
+.save-btn {
+    background-color: #1da1f2;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+
+.cancel-btn {
+    background-color: rgb(236, 81, 81);
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.spinner-div {
+    display: flex;
+    width: 90%;
+    justify-content: center;
+    height: 50px;
+}
+
+.actions {
+    display: flex;
+    justify-content: end;
+}
+
+.error-div {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.errorMsg {
+    color: red;
+}
+
+
+.save-btn:hover {
+    background-color: #69baec;
+}
+
+.save-btn:active {
+    background-color: #1da1f2;
+}
+
+.cancel-btn:hover {
+    background-color: rgb(228, 139, 139);
+}
+
+.cancel-btn:active {
+    background-color: rgb(236, 81, 81);
+}
+
+
+@media (max-width: 768px) {
+    .actions {
+        flex-direction: column;
+        padding-right: 30px;
+    }
+
+    .save-btn {
+        margin-top: 10px;
+        margin-left: 0px;
+    }
+}

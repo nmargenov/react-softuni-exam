@@ -15,6 +15,7 @@ export const DetailsProvider = ({
     const [isPostImageLoading, setIsPostImageLoading] = useState(true);
     const [isCommenting, setIsCommenting] = useState(false);
     const [isDeletingComment, setIsDeletingComment] = useState(false);
+    const [isEditingComment, setIsEditingComment] = useState(false);
    
     const context = {
         post,
@@ -34,7 +35,9 @@ export const DetailsProvider = ({
         isCommenting,
         setIsCommenting,
         isDeletingComment,
-        setIsDeletingComment
+        setIsDeletingComment,
+        isEditingComment,
+        setIsEditingComment
         }
 
     return(

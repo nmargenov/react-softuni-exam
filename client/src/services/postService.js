@@ -65,3 +65,8 @@ export const deleteComment = (postId,commentId) => {
     const url = BASE_URL+paths.commentWithId.replace(':postId',postId).replace(':commentId',commentId);
     return del(url);
 }
+
+export const editComment = (postId,commentId,comment)=>{
+    const url = BASE_URL+paths.commentWithId.replace(':postId',postId).replace(':commentId',commentId);
+    return patch(url,{comment});
+}

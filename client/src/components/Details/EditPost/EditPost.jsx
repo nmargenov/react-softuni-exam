@@ -10,7 +10,7 @@ import { SmallSpinner } from '../../spinners/SmallSpinner';
 
 export const EditPost = () => {
 
-    const { post, setPost, isEditing, setIsEditing, isCommenting, isDeletingComment, setIsEditOpen, setIsPostImageLoading } = useContext(DetailsContext);
+    const { post, setPost, isEditing, setIsEditing, isCommenting, isDeletingComment, setIsEditOpen, setIsPostImageLoading, isEditingComment } = useContext(DetailsContext);
 
     const fileInputRef = useRef();
     const formRef = useRef();
@@ -115,10 +115,10 @@ export const EditPost = () => {
             {post.image && !previewUrl && (
                 <div className={styles['image-div']}>
                     <img src={decodeBuffer(post.image)} alt="" />
-                    {!isRemovePhoto && !isCommenting && !isEditing && !isDeletingComment && <button onClick={onRemovePhotoClick} className={styles['remove-existing-btn']}>
+                    {!isRemovePhoto && !isCommenting && !isEditing && !isDeletingComment && !isEditingComment && <button onClick={onRemovePhotoClick} className={styles['remove-existing-btn']}>
                         Remove existing photo
                     </button>}
-                    {isRemovePhoto && !isCommenting && !isEditing && !isDeletingComment &&
+                    {isRemovePhoto && !isCommenting && !isEditing && !isDeletingComment && !isEditingComment &&
                         <div className={styles['remove-actions']}>
                             <FontAwesomeIcon onClick={onRemovePhotoAccept} icon={faCheck} />
                             <FontAwesomeIcon onClick={onRemovePhotoCancel} icon={faXmark} />
@@ -131,7 +131,7 @@ export const EditPost = () => {
                 previewUrl && (
                     <div className={styles['image-div']}>
                         <img src={previewUrl} alt="" />
-                        {(!isCommenting && !isDeletingComment &&
+                        {(!isCommenting && !isDeletingComment && !isEditingComment &&
                             <button type='none' onClick={onFileClear} className={styles['remove-existing-btn']}>
                                 Remove selected photo
                             </button>
@@ -140,7 +140,7 @@ export const EditPost = () => {
                 )
             }
             {
-                !isEditing && !isCommenting && !isDeletingComment &&(
+                !isEditing && !isCommenting && !isDeletingComment && !isEditingComment &&(
                     <div className={styles.actions}>
                         <input
                             type="file"

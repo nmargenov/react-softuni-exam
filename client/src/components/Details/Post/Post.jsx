@@ -13,7 +13,7 @@ import { EditPost } from "../EditPost/EditPost";
 
 export const Post = () => {
 
-    const { post, setPost,isDeleting,setIsDeleting,isEditOpen,setIsEditOpen,isCommenting, isDeletingComment, isPostImageLoading,setIsPostImageLoading } = useContext(DetailsContext);
+    const { post, setPost,isDeleting,setIsDeleting,isEditOpen,setIsEditOpen,isCommenting, isDeletingComment, isPostImageLoading,setIsPostImageLoading, isEditingComment } = useContext(DetailsContext);
     const { isAuthenticated, decodedUser } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ export const Post = () => {
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
     function onLikeClick() {
-        if(isCommenting){
+        if(isCommenting || isDeletingComment || isEditingComment){
             return;
         }
         setIsLiking(true);
@@ -118,10 +118,10 @@ export const Post = () => {
                         </div>
                     )}
                     <div className={styles['actions']}>
-                        {isOwner() && !isDeleting && !isCommenting && !isDeletingComment && <>
+                        {isOwner() && !isDeleting && !isCommenting && !isDeletingComment && !isEditingComment && <>
                             {!isDeleteOpen && !isEditOpen && <FontAwesomeIcon onClick={onEditOpen} icon={faPen} />}
                             {!isDeleteOpen && !isEditOpen && <FontAwesomeIcon onClick={onDeleteOpen} icon={faTrash} />}
-                            {isDeleteOpen && !isCommenting && !isDeletingComment &&
+                            {isDeleteOpen && !isCommenting && !isDeletingComment && !isEditingComment &&
                                 <>
                                     <FontAwesomeIcon onClick={onDeleteAccept} icon={faCheck} />
                                     <FontAwesomeIcon onClick={onDeleteCancel} icon={faXmark} />
