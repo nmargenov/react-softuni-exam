@@ -22,9 +22,11 @@ export const Details = () => {
         getPostById(postId)
             .then((data) => {
                 setPost(data);
+        document.title=`${data.owner.username}'s post`;
                 setIsPostLoading(false);
                 setHasPostLoadingError(false);
             }).catch((err) => {
+        document.title=`Post`;
                 setIsPostLoading(false);
                 setHasPostLoadingError(true);
             });

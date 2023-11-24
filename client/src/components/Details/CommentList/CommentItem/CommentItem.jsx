@@ -8,6 +8,7 @@ import { deleteComment } from "../../../../services/postService";
 import { DetailsContext } from "../../../../contexts/DetailsContext";
 import { SmallSpinner } from "../../../spinners/SmallSpinner";
 import { UserContext } from "../../../../contexts/AuthContext";
+import { useNavigate } from "react-router";
 
 export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) => {
 
@@ -16,6 +17,8 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
 
   const [isDeletingComment, setIsDeletingComment] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   function onDeleteOpen() {
     setIsDeleteOpen(true);
@@ -43,6 +46,14 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
     return owner._id === decodedUser._id;
   }
 
+  function navigateToUserProfile(username) {
+    const targetUrl = `/profile/${username}`;
+    
+    if (location.pathname !== targetUrl) {
+      navigate(targetUrl);
+    }
+  }
+
   return (
     <div className={styles['comments-component-container']}>
       <div className={styles['image-div']}>
@@ -50,20 +61,20 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
           className={styles.image}
           src={decodeBuffer(owner?.profilePicture)}
           alt="profile"
-        // onClick={() => navigateToUserProfile(comment.owner.username)}
+        onClick={() => navigateToUserProfile(owner.username)}
         />
       </div>
       <div className={styles['comments-component-main']}>
         <div className={styles['comments-component-author-div']}>
           <div
             className={styles['comments-component-author-name']}
-          //   onClick={() => navigateToUserProfile(comment.owner.username)}
+            onClick={() => navigateToUserProfile(owner.username)}
           >
             <p>{`${owner.firstName} ${owner.lastName}`}</p>
           </div>
           <div
             className={styles['comments-component-author-username']}
-          //   onClick={() => navigateToUserProfile(comment.owner.username)}
+            onClick={() => navigateToUserProfile(owner.username)}
           >
             <p>@{owner.username}</p>
           </div>
@@ -88,22 +99,6 @@ export const CommentItem = ({ _id, owner, comment, createdAt, lastEditedAt }) =>
           {isDeletingComment && <div className={styles['spinner-div']}>
             <SmallSpinner />
           </div>}
-          {/* {isOwner(comment._id) && !isDeleting[comment._id] && !editState[comment._id] && (
-                  <div className={styles.actions}>
-                    {!deleteState[comment._id] && (
-                      <i onClick={() => onEdit(comment._id)} className={`material-icons ${styles.materialIcons}`}>edit</i>
-                    )}
-                    {!deleteState[comment._id] && (
-                      <i onClick={() => onDelete(comment._id)} className={`material-icons ${styles.materialIcons}`}>delete</i>
-                    )}
-                    {deleteState[comment._id] && (
-                      <>
-                        <i onClick={() => onDeleteCancel(comment._id)} className={`material-icons ${styles.materialIcons}`}>cancel</i>
-                        <i onClick={() => onDeleteAccept(comment._id)} className={`material-icons ${styles.materialIcons}`}>done</i>
-                      </>
-                    )}
-                  </div>
-                )} */}
         </div>
         <div className={styles['comment']}>
           <p>{comment}</p>

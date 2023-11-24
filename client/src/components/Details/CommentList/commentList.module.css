@@ -86,8 +86,8 @@
 }
 
 .image:hover,
-.author-username:hover,
-.author-name:hover,
+.comments-component-author-username:hover,
+.comments-component-author-name:hover,
 i:hover {
     cursor: pointer;
 }
