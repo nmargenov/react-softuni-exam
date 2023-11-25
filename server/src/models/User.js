@@ -51,6 +51,16 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:'User',
     }],
+    likedPosts: [{
+        postId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Post',
+        },
+        likedAt: {
+            type: Date,
+            default: Date.now,
+        },
+    }],
     profilePicture: {
         data: {
             type: Buffer,

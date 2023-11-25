@@ -32,7 +32,7 @@ exports.createPost = async (description, owner, image) => {
         }
     }
     const createdPost = await Post.create(post);
-    return createdPost.populate({path:'owner',select:'-password'});
+    return createdPost.populate({ path: 'owner', select: '-password' });
 };
 
 exports.getPostById = (postId) => {
@@ -53,10 +53,14 @@ exports.likePost = async (postId, userId) => {
     const post = await Post.findById(postId);
 
     if (checkIfLiked(post, userId)) {
+        await User.findByIdAndUpdate(userId, { $pull: { likedPosts: {postId} } }, { runValidators: true, new: true });
+
         return Post.findByIdAndUpdate(postId, { $pull: { likedBy: userId } }, { runValidators: true, new: true })
             .populate({ path: 'owner', select: '-password' })
             .populate({ path: 'comments', populate: { path: 'owner', select: '-password' } });
     } else {
+        await User.findByIdAndUpdate(userId, { $push: { likedPosts: {postId:postId,likedAt:Date.now()} } }, { runValidators: true, new: true });
+
         return Post.findByIdAndUpdate(postId, { $push: { likedBy: userId } }, { new: true })
             .populate({ path: 'owner', select: '-password' })
             .populate({ path: 'comments', populate: { path: 'owner', select: '-password' } });
@@ -74,6 +78,8 @@ exports.deletePostById = async (postId, loggedInUser) => {
         const path = post.image.data.toString().replace(/\\/g, '/');
         fs.unlinkSync(path);
     }
+
+    await User.findByIdAndUpdate(loggedInUser, { $pull: { likedPosts: {postId} } }, { runValidators: true, new: true });
 
     return Post.findByIdAndDelete(postId);
 };
@@ -136,7 +142,7 @@ exports.deleteComment = async (postId, commentId, loggedInUser) => {
     const post = await Post.findById(postId).populate({ path: 'comments', populate: { path: 'owner' } });
     const filteredPost = post.comments.filter(p => p._id.toString() == commentId);
 
-    if (filteredPost.length==0 || filteredPost[0].owner._id.toString() != loggedInUser) {
+    if (filteredPost.length == 0 || filteredPost[0].owner._id.toString() != loggedInUser) {
         throw new Error("Unautorized!");
     }
 
@@ -149,7 +155,7 @@ exports.editComment = async (postId, commentId, comment, loggedInUser) => {
     const post = await Post.findById(postId).populate({ path: 'comments', populate: { path: 'owner' } });
     const filteredPost = post.comments.filter(p => p._id.toString() == commentId);
 
-    if (filteredPost.length==0  || filteredPost[0].owner._id.toString() != loggedInUser) {
+    if (filteredPost.length == 0 || filteredPost[0].owner._id.toString() != loggedInUser) {
         throw new Error("Unautorized!");
     }
     filteredPost[0].comment = comment.trim();
@@ -164,14 +170,18 @@ exports.editComment = async (postId, commentId, comment, loggedInUser) => {
     return populatedPost;
 }
 
-exports.getLikedPostsByUser = async(userId)=>{
-    const posts = await Post.find().sort({ createdAt: -1 }).populate({
-        path: 'owner',
-        select: '-password'
+exports.getLikedPostsByUser = async (userId) => {
+    const user = await User.findById(userId)
+    .populate({
+        path: 'likedPosts.postId',
+        populate: {
+            path: 'owner',
+            select: '-password',
+        }
     });
-
-    const filteredPosts = posts.filter(p=>p.likedBy.map(id=>id.toString()).includes(userId));
-    return filteredPosts;
+    const sortedPosts = user.likedPosts.sort((a,b)=>b.likedAt - a.likedAt);
+    const mappedPosts = sortedPosts.map(post=>post.postId);
+    return mappedPosts;
 }
 
 function checkIfLiked(post, userId) {
