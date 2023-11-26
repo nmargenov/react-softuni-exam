@@ -10,6 +10,7 @@ const paths = {
     removeExistingImage: '/users/image/:userId',
     privateData: '/users/privateData/:userId',
     password: '/users/password/:userId',
+    search: "/users/search/:search"
 }
 
 export const getUser = (username) => {
@@ -40,4 +41,10 @@ export const editPrivateData = (userId, email, birthdate) => {
 export const editPassword = (userId, oldPassword, newPassword, newRePassword) => {
     const url = BASE_URL + paths.password.replace(':userId', userId);
     return patch(url, { oldPassword, newPassword, newRePassword });
+}
+
+export const searchUsers = (search) =>{
+    const url = BASE_URL+paths.search.replace(':search',search);
+    console.log(url);
+    return get(url);
 }

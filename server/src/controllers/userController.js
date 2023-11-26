@@ -1,4 +1,4 @@
-const { login, register, getUser, follow, removeExistingImage, editPublicProfileData, editPrivateProfileData, editPassword } = require('../managers/userManager');
+const { login, register, getUser, follow, removeExistingImage, editPublicProfileData, editPrivateProfileData, editPassword, searchUsers } = require('../managers/userManager');
 const { mustBeGuest, mustBeAuth } = require('../middlewares/authMiddlewares');
 const { formatErrorMessage } = require('../utils/errorHandler');
 
@@ -13,6 +13,7 @@ const paths = {
     removeExistingImage: '/image/:userId',
     privateData: '/privateData/:userId',
     password: '/password/:userId',
+    search: '/search/:search'
 }
 
 router.post(paths.register, mustBeGuest, async (req, res) => {
@@ -130,6 +131,20 @@ router.patch(paths.password,mustBeAuth,async(req,res)=>{
         const newRePassword = req.body.newRePassword;
         const token = await editPassword(oldPassword,newPassword,newRePassword,userId);
         res.status(200).json(token);
+    }catch(err){
+        const error = formatErrorMessage(err);
+        res.status(400).send({message:error})
+    }
+});
+
+router.get(paths.search,async(req,res)=>{
+    try{
+        const search = req.params.search;
+        if(!search){
+            throw new Error("Search is required!");
+        }
+        const users = await searchUsers(search);
+        res.status(200).json(users);
     }catch(err){
         const error = formatErrorMessage(err);
         res.status(400).send({message:error})

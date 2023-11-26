@@ -79,7 +79,7 @@ exports.login = async (username, password) => {
 };
 
 exports.getUser = async (username) => {
-    const user = await User.findOne({ username }).select('-password').populate('userPosts').populate({path:'userPosts',populate:{path:'owner',select:'-password'}});
+    const user = await User.findOne({ username }).select('-password').populate('userPosts').populate({ path: 'userPosts', populate: { path: 'owner', select: '-password' } });
     const userObject = user.toObject();
     userObject.userPosts = user.userPosts;
     userObject.profilePicture = user.profilePicture;
@@ -98,13 +98,13 @@ exports.follow = async (userToFollow, userId) => {
     let result;
     if (!isFollowing) {
         result = await Promise.all([
-            User.findByIdAndUpdate(userToFollowId, { $push: { followers: userId } }, { new: true }).select('-password').populate('userPosts').populate({path:'userPosts',populate:{path:'owner',select:'-password'}}),
+            User.findByIdAndUpdate(userToFollowId, { $push: { followers: userId } }, { new: true }).select('-password').populate('userPosts').populate({ path: 'userPosts', populate: { path: 'owner', select: '-password' } }),
             User.findByIdAndUpdate(userId, { $push: { following: userToFollowId } }, { new: true }).select('-password')
         ]);
     }
     if (isFollowing) {
         result = await Promise.all([
-            User.findByIdAndUpdate(userToFollowId, { $pull: { followers: userId } }, { new: true }).select('-password').populate('userPosts').populate({path:'userPosts',populate:{path:'owner',select:'-password'}}),
+            User.findByIdAndUpdate(userToFollowId, { $pull: { followers: userId } }, { new: true }).select('-password').populate('userPosts').populate({ path: 'userPosts', populate: { path: 'owner', select: '-password' } }),
             User.findByIdAndUpdate(userId, { $pull: { following: userToFollowId } }, { new: true }).select('-password')
         ]);
     }
@@ -127,7 +127,7 @@ exports.editPublicProfileData = async (req, res, userId) => {
             data: image,
             contentType: 'image/png'
         }
-        if(user.profilePicture){
+        if (user.profilePicture) {
             const oldPicturePath = user.profilePicture.data.toString().replace(/\\/g, '/');
             if (oldPicturePath !== 'src/profilePictures/defaultUser.png') {
                 fs.unlinkSync(user.profilePicture.data.toString());
@@ -144,7 +144,7 @@ exports.editPublicProfileData = async (req, res, userId) => {
     newData.lastName = lastName;
 
     const updatedUser = await User.findByIdAndUpdate(userId, newData, { runValidators: true, new: true }).select('-password');
-    
+
     const token = returnToken(updatedUser);
     return token;
 };
@@ -160,7 +160,7 @@ exports.removeExistingImage = async (userId) => {
             data: `src/profilePictures/defaultUser.png`,
             contentType: 'image/png'
         }
-    },{runValidators:true,new:true});
+    }, { runValidators: true, new: true });
     const token = returnToken(updatedUser);
     return token;
 };
@@ -179,10 +179,10 @@ exports.editPrivateProfileData = async (email, birthdate, userId) => {
     return token;
 };
 
-exports.editPrivateProfileData = async (email, birthdate, userId,loggedInUser) => {
+exports.editPrivateProfileData = async (email, birthdate, userId, loggedInUser) => {
     const existingEmail = await User.findOne({ email });
 
-    if(existingEmail && existingEmail._id != loggedInUser){
+    if (existingEmail && existingEmail._id != loggedInUser) {
         throw new Error("Email is in use already!");
     }
 
@@ -227,7 +227,27 @@ exports.editPassword = async (oldPassword, newPassword, newRepassword, userId) =
     return token;
 };
 
-async function returnToken(updatedUser){
+exports.searchUsers = async (search) => {
+    const regex = new RegExp(`^${search}`, 'i');
+
+    const users = await User.find({
+        $or: [
+            { username: { $regex: regex } },
+            { firstName: { $regex: regex } },
+            { lastName: { $regex: regex } },
+        ],
+    }).select('-password').populate('userPosts');
+    const objects = [];
+    users.forEach(user => {
+        const userObject = user.toObject();
+        userObject.userPosts = user.userPosts;
+        userObject.profilePicture = user.profilePicture;
+        objects.push(userObject);
+    });
+    return objects;
+}
+
+async function returnToken(updatedUser) {
     const payload = {
         _id: updatedUser._id,
         username: updatedUser.username,
@@ -241,6 +261,8 @@ async function returnToken(updatedUser){
     const token = await sign(payload, SECRET, { expiresIn: '1h' });
     return token;
 };
+
+
 
 function checkIfUserIsFollowing(user, userId) {
     return user.followers?.map(u => u.toString()).includes(userId);

@@ -10,8 +10,39 @@ nav ul {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+.left{
+    display: flex;
+    align-items: center;
+}
+
+.search-div input{
+    padding: 10px;
+    width: 150px;
+    border:none;
+    background-color: #e4e3e3;
+    border: 1px solid #999;
+    border-radius: 10px;
+}
+
+.search-div button{
+    padding: 10px;
+    background-color: #e4e3e3;
+    border: 1px solid #999;
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+.search-div button:hover{
+    background-color: #cccccc;
+    cursor: pointer;
+}
+
+.search-div button:active{
+    opacity: 0.5;
+}
+
 .logo a {
-    margin-left: 60px;
+    margin-left: 30px;
     padding: 0 8px;
     font-size: 23px;
     text-decoration: none;
@@ -62,6 +93,12 @@ nav img {
 }
 
 @media (max-width: 768px) {
+    .search-div form{
+        display: flex;
+    }
+    .logo a {
+     margin-left: 10px;
+    }
     .burger {
         display: block;
     }

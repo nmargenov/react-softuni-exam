@@ -13,6 +13,7 @@ import { MustBeAuthGuard } from "./guards/MustBeAuthGuard";
 import { Feed } from "./components/Feed/Feed";
 import { Details } from "./components/Details/Details";
 import { DetailsProvider } from "./contexts/DetailsContext";
+import { Search } from "./components/Search/Search";
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
       <div className={styles["main"]}>
         <Routes>
           <Route path='/' element={<Navigate to='/feed' />} />
+          <Route path="/search" element={<Search/>} />
           <Route path='/feed' element={<Feed />} />
           <Route path='/login' element={
             <MustBeGuestGuard>
