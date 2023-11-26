@@ -1,6 +1,7 @@
-const { login, register, getUser, follow, removeExistingImage, editPublicProfileData, editPrivateProfileData, editPassword, searchUsers } = require('../managers/userManager');
+const { login, register, getUser, follow, removeExistingImage, editPublicProfileData, editPrivateProfileData, editPassword, searchUsers, jwtResetPassword, resetPassword } = require('../managers/userManager');
 const { mustBeGuest, mustBeAuth } = require('../middlewares/authMiddlewares');
 const { formatErrorMessage } = require('../utils/errorHandler');
+const nodemailer = require('nodemailer');
 
 const router = require('express').Router();
 
@@ -13,7 +14,9 @@ const paths = {
     removeExistingImage: '/image/:userId',
     privateData: '/privateData/:userId',
     password: '/password/:userId',
-    search: '/search/:search'
+    search: '/search/:search',
+    forgotPassword: '/forgotPassword',
+    resetPassword:'/resetPassword'
 }
 
 router.post(paths.register, mustBeGuest, async (req, res) => {
@@ -151,5 +154,46 @@ router.get(paths.search,async(req,res)=>{
     }
 });
 
+router.post(paths.forgotPassword, mustBeGuest, async (req, res) => {
+    try {
+        const username = req.body.username?.trim();
+        const birthdate = req.body.birthdate?.trim();
+        const email = req.body.email?.trim();
+        const token = await jwtResetPassword(username, email, birthdate);
+        const mailOptions = {
+            from: 'nikolay_margenov@abv.bg',
+            to: email,
+            subject: "Reset Password",
+            text: `Your link for resseting password is http://10.0.0.157:5173/resetPassword?t=${token} and is valid for only 24 hours! If you want to reset the password after the time has passed you need to generate a new link.`
+        }
+        await transporter.sendMail(mailOptions);
+        res.status(200).send({message:'ok'});
+    } catch (err) {
+        res.status(400).send({message:err.message});
+    }
+});
 
+
+router.post(paths.resetPassword,mustBeGuest,async(req,res)=>{
+    try{
+        const token = req.body.token?.trim();
+        const newPassword = req.body.newPassword?.trim();
+        const reNewPassword = req.body.reNewPassword?.trim();
+        await resetPassword(token,newPassword,reNewPassword);
+        res.status(201).send({message:'ok'})
+    }catch(err){
+        console.log(err)
+        res.status(400).send({message:err.message})
+    }
+});
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,   
+    auth: {
+        user: 'niki.margenov@gmail.com',
+        pass: 'iypw ujxh dvcn wqhs'
+    }
+});
 module.exports = router;

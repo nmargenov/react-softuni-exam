@@ -2,8 +2,8 @@ const User = require("../models/User");
 const fs = require('fs');
 
 const bcrypt = require('bcrypt');
-const { sign } = require("../utils/jwt");
-const { SECRET } = require("../config/config");
+const { sign, verify } = require("../utils/jwt");
+const { SECRET, RESET_SECRET } = require("../config/config");
 const { editPublicProfileData } = require("./pictureManager");
 
 
@@ -247,6 +247,40 @@ exports.searchUsers = async (search) => {
     return objects;
 }
 
+exports.jwtResetPassword = async (username, email, birthdate) => {
+    const user = await User.findOne({ username });
+
+    if (!user || user.email !== email || user.birthdate !== birthdate) {
+        throw new Error("Invalid data");
+    }
+
+    const token = await sign({ username }, RESET_SECRET, { expiresIn: '24h' });
+    return token;
+}
+
+exports.resetPassword = async (token, newPassword, rePassword) => {
+    try {
+        if (newPassword !== rePassword) {
+            throw new Error("Passwords do not match")
+        }
+        if (newPassword.length < 6) {
+            throw new Error("Password must be at least 6 characters long!");
+        }
+        const verifiedToken = await verify(token, RESET_SECRET);
+        const username = verifiedToken.username;
+
+        const bcryptPass = await bcrypt.hash(newPassword, 10);
+        await User.findOneAndUpdate({ username }, { password: bcryptPass });
+
+        return null;
+    } catch (err) {
+        if (err.name === 'TokenExpiredError') {
+            throw new Error('The link has expired or is invalid! Please generate a new link and try again!');
+        } else {
+            throw err;
+        }
+    }
+}
 async function returnToken(updatedUser) {
     const payload = {
         _id: updatedUser._id,

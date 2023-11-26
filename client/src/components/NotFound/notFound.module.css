@@ -1,6 +1,6 @@
 #notfound {
     position: relative;
-    height: 757px;
+    min-height: calc(100vh - (198px));
     z-index: -1;
 }
 

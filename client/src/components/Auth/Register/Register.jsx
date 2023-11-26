@@ -189,8 +189,7 @@ export const Register = () => {
                                 !isValidEmail(values.email) ||
                                 values.firstName.length < 2 ||
                                 values.lastName.length < 2 ||
-                                birthdateValidator(values.birthdate) ||
-                                values.age < 1
+                                birthdateValidator(values.birthdate)
                             }
                         />
                     )}

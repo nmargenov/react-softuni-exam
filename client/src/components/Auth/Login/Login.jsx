@@ -5,6 +5,7 @@ import { UserContext } from "../../../contexts/AuthContext";
 import { useNavigate } from "react-router";
 import { SmallSpinner } from "../../spinners/SmallSpinner";
 import { useForm } from "../../../hooks/useForm";
+import { Link } from "react-router-dom";
 
 export const Login = () => {
     useEffect(()=>{
@@ -93,12 +94,14 @@ export const Login = () => {
                         </div>
                     )}
                     {!isLoading &&
+                    <>
                         <input
                             type="submit"
                             className={styles["submit-button"]}
                             value="Login"
                             disabled={values.username.length < 3 || values.password.length < 6 || isLoading}
-                        />}
+                        />
+                        <Link to="/forgotPassword">Forgot password?</Link></>}
                     {isLoading &&
                         <div className={styles["loader"]}>
                             <SmallSpinner />
