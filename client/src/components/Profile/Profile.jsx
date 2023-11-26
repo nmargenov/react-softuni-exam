@@ -12,6 +12,7 @@ import { Error } from "../Error/Error";
 import { ChooseFeed } from "../Shared/ChooseFeed/ChooseFeed";
 import { PostList } from "../Shared/PostList/PostList";
 import { getLikedPosts } from "../../services/postService";
+import { NotFound } from "../NotFound/NotFound";
 
 export const Profile = () => {
 
@@ -93,7 +94,7 @@ export const Profile = () => {
                 <div className={styles["loader"]}>
                     <GlobalSpinner />
                 </div>}
-            {!isLoading && hasError && <Error />}
+            {!isLoading && hasError && <NotFound/>}
             {!isLoading && !hasError && <div className={styles["main"]}>
                 <div className={styles["profile"]}>
                     <div className={styles["profile-image"]}>

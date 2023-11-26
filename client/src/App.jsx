@@ -14,6 +14,7 @@ import { Feed } from "./components/Feed/Feed";
 import { Details } from "./components/Details/Details";
 import { DetailsProvider } from "./contexts/DetailsContext";
 import { Search } from "./components/Search/Search";
+import { NotFound } from "./components/NotFound/NotFound";
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
             </MustBeAuthGuard>}
           />
           <Route path="/post/:postId" element={<DetailsProvider><Details /></DetailsProvider>} />
+          <Route path="*" element={<NotFound/>} />
         </Routes>
       </div>
       <Footer />
