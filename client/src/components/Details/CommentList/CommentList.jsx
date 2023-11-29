@@ -13,7 +13,7 @@ export const CommentList = () => {
                 {post.comments.map(c => <CommentItem key={c._id} {...c} />)}
             </div>}
             {post.comments.length === 0 &&
-            <div>
+            <div className={styles['no-posts']}>
                 <h1>There are no comments yet.</h1>
             </div>}
         </>)

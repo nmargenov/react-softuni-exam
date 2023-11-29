@@ -17,7 +17,7 @@ export const Footer = () => {
                     <a href="https://linkedin.com"><img src="/assets/icons/linkedin-icon.png" alt="Linkedin" /></a>
                 </li>
             </ul>
-            <p>Softuni reactJS december 2023 project.</p>
+            <p>Softuni reactJS October 2023 project.</p>
             <p>&copy; 2023 Nikolay Margenov. All rights reserved.</p>
         </div>
     )

@@ -113,6 +113,11 @@ i:hover {
     cursor: default !important
 }
 
+.no-posts{
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+
 @media (max-width: 768px) {
     .author-div {
         align-items: baseline;
