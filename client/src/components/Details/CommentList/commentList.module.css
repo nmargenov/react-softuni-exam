@@ -6,6 +6,11 @@
     margin-bottom: 30px;
 }
 
+.comments-component p{
+    white-space: pre-line;
+}
+
+
 .comments-component-container {
     background-color: #e2e2e2;
     display: flex;

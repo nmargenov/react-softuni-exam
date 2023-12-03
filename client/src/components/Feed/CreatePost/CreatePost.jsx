@@ -5,12 +5,12 @@ import { SmallSpinner } from '../../spinners/SmallSpinner';
 import { createPost } from '../../../services/postService';
 import { UserContext } from '../../../contexts/AuthContext';
 
-export const CreatePost = ({hasError,isPostsLoading,setPosts}) => {
+export const CreatePost = ({ hasError, isPostsLoading, setPosts }) => {
     const initialValues = {
         description: ""
     }
-    const {decodedUser} = useContext(UserContext);
-    const { values,setValues, onSubmitHandler, onInputChange, errorMsg, setErrorMsg, isLoading, setIsLoading } = useForm(initialValues);
+    const { decodedUser } = useContext(UserContext);
+    const { values, setValues, onSubmitHandler, onInputChange, errorMsg, setErrorMsg, isLoading, setIsLoading } = useForm(initialValues);
     const [previewUrl, setPreviewUrl] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
 
@@ -35,28 +35,28 @@ export const CreatePost = ({hasError,isPostsLoading,setPosts}) => {
     function onSubmit(e) {
         onSubmitHandler(e);
 
-        if(values.description.length<5){
+        if (values.description.length < 5) {
             setErrorMsg('Description must be at least 5 characters long!');
             return;
         }
 
         const formData = new FormData();
-        formData.append('owner',decodedUser._id);
-        formData.append('description',values.description.trim());
-        formData.append('postImage',selectedFile);
+        formData.append('owner', decodedUser._id);
+        formData.append('description', values.description.trim());
+        formData.append('postImage', selectedFile);
 
         setIsLoading(true);
 
         createPost(formData)
-            .then((data)=>{
+            .then((data) => {
                 setIsLoading(false);
-                setPosts(state=>[data,...state]);
+                setPosts(state => [data, ...state]);
                 setValues(initialValues);
                 setSelectedFile(null);
                 setPreviewUrl(null);
                 setErrorMsg('');
-                
-            }).catch((err)=>{
+
+            }).catch((err) => {
                 setIsLoading(false);
                 setValues(initialValues);
                 setSelectedFile(null);
@@ -66,8 +66,8 @@ export const CreatePost = ({hasError,isPostsLoading,setPosts}) => {
     }
 
     const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            if (values.description.length>0 && values.description.length<5){
+        if (e.key === 'Enter' && !e.shiftKey) {
+            if (values.description.length > 0 && values.description.length < 5) {
                 setErrorMsg('Description must be at least 5 characters long!');
                 return;
             }
@@ -81,7 +81,7 @@ export const CreatePost = ({hasError,isPostsLoading,setPosts}) => {
             </div>}
             <form onKeyDown={handleKeyDown} ref={formRef} onSubmit={onSubmit}>
                 <div className={styles['post-content']}>
-                    <textarea disabled={isLoading||isPostsLoading || hasError} value={values.description} onChange={onInputChange} name="description" id="" placeholder="What's happening?"></textarea>
+                    <textarea disabled={isLoading || isPostsLoading || hasError} value={values.description} onChange={onInputChange} name="description" id="" placeholder="What's happening?"></textarea>
                     <input onChange={onFileInputChange} ref={fileInputRef} type='file' accept='image/*'></input>
                 </div>
             </form>

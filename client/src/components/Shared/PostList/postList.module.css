@@ -8,6 +8,10 @@
     margin-bottom: 10px;
 }
 
+.item-container p{
+    white-space: pre-line;
+}
+
 .profile-image-div {
     width: fit-content;
     margin: 10px 15px;

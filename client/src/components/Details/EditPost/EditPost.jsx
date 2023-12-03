@@ -85,7 +85,7 @@ export const EditPost = () => {
     }
 
     const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && !e.shiftKey) {
             if (values.description.length > 0 && values.description.length < 5) {
                 setErrorMsg('Description must be at least 5 characters long!');
                 return;
@@ -106,7 +106,7 @@ export const EditPost = () => {
                     <textarea
                         onChange={onInputChange}
                         value={values.description}
-                        disabled={isEditing||isDeletingComment}
+                        disabled={isEditing || isDeletingComment}
                         name="description"
                         placeholder="What's happening"
                     ></textarea>
@@ -140,7 +140,7 @@ export const EditPost = () => {
                 )
             }
             {
-                !isEditing && !isCommenting && !isDeletingComment && !isEditingComment &&(
+                !isEditing && !isCommenting && !isDeletingComment && !isEditingComment && (
                     <div className={styles.actions}>
                         <input
                             type="file"

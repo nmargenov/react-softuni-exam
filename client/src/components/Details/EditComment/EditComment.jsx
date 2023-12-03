@@ -46,8 +46,7 @@ export const EditComment = ({ _id, comment, setIsOpen }) => {
     }
 
     const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
-
+        if (e.key === 'Enter' && !e.shiftKey) {
             onSubmit(e);
         }
     };

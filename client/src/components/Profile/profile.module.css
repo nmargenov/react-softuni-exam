@@ -147,7 +147,7 @@
 
     h1 {
         font-size: 22px;
-        margin-right: 10px;
+        margin-right: 5px;
     }
 
     .edit-btn {
@@ -155,7 +155,7 @@
     }
 
     .profile-image {
-        padding: 20px;
+        padding: 20px 10px 20px 5px;
         width: 100px;
         height: 100px;
     }
@@ -168,7 +168,7 @@
     .profile-info {
         width: 100%;
         max-width: 200px;
-        padding: 20px;
+        padding: 20px 0;
     }
 
     .settings {
