@@ -234,7 +234,7 @@ exports.searchUsers = async (search) => {
 }
 
 exports.jwtResetPassword = async (username, email, birthdate) => {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username:username.toLowerCase() });
 
     if (!user || user.email !== email.toLowerCase() || user.birthdate !== birthdate) {
         throw new Error("Invalid data");
