@@ -15,6 +15,7 @@ export const PublicInfo = ({userToEdit,setUserToEdit}) => {
     const { isPasswordSaving, isPrivateSaving, isPublicSaving, setIsPublicSaving } = useContext(SettingsContext);
     const [previewUrl, setPreviewUrl] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
+    const [successMsg, setSuccessMessage] = useState('');
 
     const initialValues = {
         username: userToEdit.username,
@@ -77,11 +78,13 @@ export const PublicInfo = ({userToEdit,setUserToEdit}) => {
                 setPreviewUrl(false);
                 setSelectedFile(null);
                 setErrorMsg('');
+                setSuccessMessage('Successfully updated the information!')
                 setIsPublicSaving(false);
             }).catch((err) => {
                 setPreviewUrl(false);
                 setSelectedFile(null);
                 setIsPublicSaving(false);
+                setSuccessMessage('');
                 setErrorMsg(err.message);
             })
     }
@@ -115,6 +118,11 @@ export const PublicInfo = ({userToEdit,setUserToEdit}) => {
                             {errorMsg && (
                                 <div className={styles["errorDiv-first"]}>
                                     <p className={styles["errorMsg"]}>{errorMsg}</p>
+                                </div>
+                            )}
+                            {successMsg && (
+                                <div className={styles["errorDiv-first"]}>
+                                    <p className={styles["successfullMsg"]}>{successMsg}</p>
                                 </div>
                             )}
                             <div className={styles['field']}>

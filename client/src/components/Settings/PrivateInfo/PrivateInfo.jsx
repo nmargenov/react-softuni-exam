@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { useForm } from '../../../hooks/useForm';
 import styles from '../shared/styles.module.css';
 import { UserContext } from '../../../contexts/AuthContext';
@@ -12,6 +12,7 @@ export const PrivateInfo = ({userToEdit,setUserToEdit}) => {
 
     const { setUser } = useContext(UserContext);
     const { isPasswordSaving, isPublicSaving, isPrivateSaving, setIsPrivateSaving } = useContext(SettingsContext);
+    const [successMsg, setSuccessMessage] = useState('');
 
     const formRef = useRef();
 
@@ -32,9 +33,11 @@ export const PrivateInfo = ({userToEdit,setUserToEdit}) => {
                 setUser(data);
                 setUserToEdit(jwt.jwtDecode(data));
                 setErrorMsg('');
+                setSuccessMessage('Successfully updated the information!')
                 setIsPrivateSaving(false);
             }).catch((err) => {
                 setIsPrivateSaving(false)
+                setSuccessMessage('');
                 setErrorMsg(err.message);
             });
     }
@@ -61,6 +64,11 @@ export const PrivateInfo = ({userToEdit,setUserToEdit}) => {
                             {errorMsg && (
                                 <div className={styles["errorDiv-first"]}>
                                     <p className={styles["errorMsg"]}>{errorMsg}</p>
+                                </div>
+                            )}
+                            {successMsg && (
+                                <div className={styles["errorDiv-first"]}>
+                                    <p className={styles["successfullMsg"]}>{successMsg}</p>
                                 </div>
                             )}
                             <div className={styles['field']}>

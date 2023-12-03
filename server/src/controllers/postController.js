@@ -165,7 +165,6 @@ router.get(paths.likedPosts, mustBeAuth, async (req, res) => {
         const posts = await getLikedPostsByUser(userId);
         res.status(200).json(posts);
     } catch (err) {
-        console.log(err);
         const error = formatErrorMessage(err);
         res.status(404).send({ message: error });
     }

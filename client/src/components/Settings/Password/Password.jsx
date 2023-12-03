@@ -1,15 +1,16 @@
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { useForm } from '../../../hooks/useForm';
 import styles from '../shared/styles.module.css';
 import { UserContext } from '../../../contexts/AuthContext';
 import { SettingsContext } from '../../../contexts/SettingsContext';
 import { SmallSpinner } from '../../spinners/SmallSpinner';
-import { editPassword, editPrivateData } from '../../../services/userService';
+import { editPassword } from '../../../services/userService';
 
-export const Password = ({userToEdit}) => {
+export const Password = ({ userToEdit }) => {
 
     const { setUser } = useContext(UserContext);
     const { isPasswordSaving, setIsPasswordSaving, isPublicSaving, isPrivateSaving } = useContext(SettingsContext);
+    const [successMsg, setSuccessMessage] = useState('');
 
     const formRef = useRef();
 
@@ -32,10 +33,12 @@ export const Password = ({userToEdit}) => {
                 setUser(data);
                 setErrorMsg('');
                 setIsPasswordSaving(false);
+                setSuccessMessage('Successfully updated the information!')
                 setValues(initialValues);
             }).catch((err) => {
                 setIsPasswordSaving(false)
                 setValues(initialValues);
+                setSuccessMessage('');
                 setErrorMsg(err.message);
             });
     }
@@ -62,6 +65,11 @@ export const Password = ({userToEdit}) => {
                             {errorMsg && (
                                 <div className={styles["errorDiv-first"]}>
                                     <p className={styles["errorMsg"]}>{errorMsg}</p>
+                                </div>
+                            )}
+                            {successMsg && (
+                                <div className={styles["errorDiv-first"]}>
+                                    <p className={styles["successfullMsg"]}>{successMsg}</p>
                                 </div>
                             )}
                             <div className={styles['field']}>

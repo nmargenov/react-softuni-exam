@@ -182,7 +182,6 @@ router.post(paths.resetPassword,mustBeGuest,async(req,res)=>{
         await resetPassword(token,newPassword,reNewPassword);
         res.status(201).send({message:'ok'})
     }catch(err){
-        console.log(err)
         res.status(400).send({message:err.message})
     }
 });

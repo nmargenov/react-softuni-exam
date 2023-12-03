@@ -7,6 +7,11 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._./DS_Store
+
 *.png
 *.jpg
 *.jpeg
