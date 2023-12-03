@@ -9,8 +9,9 @@ import { useForm } from '../../../hooks/useForm';
 import { editPublicData, removeExistingImage } from '../../../services/userService';
 import { SmallSpinner } from '../../spinners/SmallSpinner';
 import * as jwt from 'jwt-decode';
+import { isValidUsername } from '../../../utils/fieldsUtil';
 
-export const PublicInfo = ({userToEdit,setUserToEdit}) => {
+export const PublicInfo = ({ userToEdit, setUserToEdit }) => {
     const { setUser } = useContext(UserContext);
     const { isPasswordSaving, isPrivateSaving, isPublicSaving, setIsPublicSaving } = useContext(SettingsContext);
     const [previewUrl, setPreviewUrl] = useState('');
@@ -90,7 +91,7 @@ export const PublicInfo = ({userToEdit,setUserToEdit}) => {
     }
 
     const handleKeyDown = (e) => {
-        if (values.username.length < 3 || values.firstName.length < 2 || values.lastName.length < 2) {
+        if (!isValidUsername(values.username) || values.username.length < 3 || values.firstName.length < 2 || values.lastName.length < 2) {
             return;
         }
         if (e.key === 'Enter') {
@@ -139,15 +140,17 @@ export const PublicInfo = ({userToEdit,setUserToEdit}) => {
                                     minLength="3"
                                     maxLength="20"
                                     onChange={onInputChange}
-                                    className={`${values.username.length > 0 && values.username.length < 3
-                                        ? styles.invalidField
-                                        : ''
-                                        }`}
+                                    className={`${values.username.length > 0 && values.username.length<3 || !isValidUsername(values.username) ? styles.invalidField : ""}`}
                                 />
                             </div>
                             {values.username.length > 0 && values.username.length < 3 && (
                                 <div className={styles["errorDiv"]}>
                                     <small className={styles["errorMsg"]}>*Username must be at least 3 characters!</small>
+                                </div>
+                            )}
+                            {values.username.length >= 3 && !isValidUsername(values.username) && (
+                                <div className={styles.errorDiv}>
+                                    <small className={styles.errorMsg}>*Username contains invalid characters!</small>
                                 </div>
                             )}
                             <div className={styles['field']}>
@@ -254,7 +257,7 @@ export const PublicInfo = ({userToEdit,setUserToEdit}) => {
                         </div>)}
                     {!isPublicSaving &&
                         <button onClick={() => formRef.current.requestSubmit()} className={styles["save"]}
-                            disabled={values.username.length < 3 || values.firstName < 2
+                            disabled={values.username.length < 3 || !isValidUsername(values.username) || values.firstName < 2
                                 || values.lastName < 2 || isPublicSaving || isPrivateSaving || isPasswordSaving} >
                             Save changes
                         </button>}

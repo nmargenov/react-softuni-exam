@@ -2,7 +2,7 @@ import styles from '../shared/styles.module.css';
 import { SmallSpinner } from "../../spinners/SmallSpinner";
 import { useForm } from "../../../hooks/useForm";
 import { useEffect, useState } from "react";
-import { birthdateValidator, isValidEmail } from "../../../utils/fieldsUtil";
+import { birthdateValidator, isValidEmail, isValidUsername } from "../../../utils/fieldsUtil";
 import { forgotPassword } from '../../../services/userService';
 
 export const ForgotPassword = () => {
@@ -58,10 +58,7 @@ export const ForgotPassword = () => {
                         required
                         minLength="3"
                         maxLength="20"
-                        className={`${values.username.length > 0 && values.username.length < 3
-                            ? styles.invalidField
-                            : ''
-                            }`}
+                        className={`${values.username.length > 0 && values.username.length<3 || !isValidUsername(values.username) ? styles.invalidField : ""}`}
                         value={values.username}
                         onChange={onInputChange}
                         disabled={isLoading}
@@ -71,6 +68,11 @@ export const ForgotPassword = () => {
                             <small className={styles.errorMsg}>
                                 *Username must be at least 3 characters!
                             </small>
+                        </div>
+                    )}
+                     {values.username.length >= 3 && !isValidUsername(values.username) && (
+                        <div className={styles.errorDiv}>
+                            <small className={styles.errorMsg}>*Username contains invalid characters!</small>
                         </div>
                     )}
                     <input
@@ -113,6 +115,7 @@ export const ForgotPassword = () => {
                             value="Send Email"
                             disabled={
                                 values.username.length < 3 ||
+                                !isValidUsername(values.username) ||
                                 !isValidEmail(values.email) ||
                                 birthdateValidator(values.birthdate)
                             }

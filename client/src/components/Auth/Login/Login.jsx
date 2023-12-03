@@ -6,18 +6,19 @@ import { useNavigate } from "react-router";
 import { SmallSpinner } from "../../spinners/SmallSpinner";
 import { useForm } from "../../../hooks/useForm";
 import { Link } from "react-router-dom";
+import { isValidUsername } from "../../../utils/fieldsUtil";
 
 export const Login = () => {
-    useEffect(()=>{
-        document.title="Login";
-    },[])
+    useEffect(() => {
+        document.title = "Login";
+    }, [])
 
-    const initialValues={
+    const initialValues = {
         username: '',
         password: '',
     }
 
-    const { values, onInputChange, onSubmitHandler,isLoading,setIsLoading,errorMsg,setErrorMsg } = useForm(initialValues)
+    const { values, onInputChange, onSubmitHandler, isLoading, setIsLoading, errorMsg, setErrorMsg } = useForm(initialValues)
 
 
     const navigate = useNavigate();
@@ -28,11 +29,11 @@ export const Login = () => {
         onSubmitHandler(e);
         setIsLoading(true);
         login(values)
-            .then((data)=>{
+            .then((data) => {
                 setToken(data);
                 setIsLoading(false);
                 navigate('/feed');
-            }).catch((err)=>{
+            }).catch((err) => {
                 setIsLoading(false);
                 setErrorMsg(err.message);
             })
@@ -55,10 +56,7 @@ export const Login = () => {
                         required
                         minLength="3"
                         maxLength="20"
-                        className={`${values.username.length > 0 && values.username.length < 3
-                            ? styles.invalidField
-                            : ''
-                            }`}
+                        className={`${values.username.length > 0 && values.username.length<3 || !isValidUsername(values.username) ? styles.invalidField : ""}`}
                         value={values.username}
                         onChange={onInputChange}
                         disabled={isLoading}
@@ -68,6 +66,11 @@ export const Login = () => {
                             <small className={styles.errorMsg}>
                                 *Username must be at least 3 characters!
                             </small>
+                        </div>
+                    )}
+                    {values.username.length >= 3 && !isValidUsername(values.username) && (
+                        <div className={styles.errorDiv}>
+                            <small className={styles.errorMsg}>*Username contains invalid characters!</small>
                         </div>
                     )}
                     <input
@@ -94,19 +97,19 @@ export const Login = () => {
                         </div>
                     )}
                     {!isLoading &&
-                    <>
-                        <input
-                            type="submit"
-                            className={styles["submit-button"]}
-                            value="Login"
-                            disabled={values.username.length < 3 || values.password.length < 6 || isLoading}
-                        />
-                        <Link to="/forgotPassword">Forgot password?</Link></>}
+                        <>
+                            <input
+                                type="submit"
+                                className={styles["submit-button"]}
+                                value="Login"
+                                disabled={values.username.length < 3 || !isValidUsername(values.username) || values.password.length < 6 || isLoading}
+                            />
+                            <Link to="/forgotPassword">Forgot password?</Link></>}
                     {isLoading &&
                         <div className={styles["loader"]}>
                             <SmallSpinner />
                         </div>
-                        }
+                    }
                 </form>
             </div>
         </div>

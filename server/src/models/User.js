@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+const usernameRegex = /^[\w.]+$/;
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -8,6 +9,10 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Username is required!'],
         minLength: [3, 'Username must be between 3 and 20 characters!'],
         maxLegnth: [20, 'Username must be between 3 and 20 characters!'],
+        validate:{
+            validator:(value)=>usernameRegex.test(value),
+            message: 'Username contains invalid characters!',
+        }
     },
     firstName: {
         type: String,

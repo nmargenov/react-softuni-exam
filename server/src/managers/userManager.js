@@ -27,13 +27,13 @@ exports.register = async (username, firstName, lastName, password, rePassword, e
         throw new Error('Birthdate must be between year 1900 and 2023!');
     }
 
-    const existingUsername = await User.findOne({ username });
+    const existingUsername = await User.findOne({ username:username.toLowerCase() });
 
     if (existingUsername) {
         throw new Error("Username is already in use!");
     }
 
-    const existingEmail = await User.findOne({ email });
+    const existingEmail = await User.findOne({ email:email.toLowerCase() });
 
     if (existingEmail) {
         throw new Error("Email is already in use!");
@@ -42,11 +42,11 @@ exports.register = async (username, firstName, lastName, password, rePassword, e
     const bcryptPass = await bcrypt.hash(password, 10);
 
     const user = {
-        username,
+        username:username.toLowerCase(),
         firstName,
         lastName,
         password: bcryptPass,
-        email,
+        email:email.toLowerCase(),
         birthdate,
         bio: '',
         profilePicture: {
@@ -62,7 +62,7 @@ exports.register = async (username, firstName, lastName, password, rePassword, e
 }
 
 exports.login = async (username, password) => {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username:username.toLowerCase() });
 
     if (!user) {
         throw new Error('Username or password don\'t match!');
@@ -116,7 +116,7 @@ exports.follow = async (userToFollow, userId) => {
 
 exports.editPublicProfileData = async (req, res, userId) => {
     const { image, bio, firstName, lastName, username } = await editPublicProfileData(req, res);
-    const existingUsername = await User.findOne({ username });
+    const existingUsername = await User.findOne({ username:username.toLowerCase() });
     if (existingUsername && existingUsername._id != userId) {
         throw new Error("Username is already in use!");
     }
@@ -139,7 +139,7 @@ exports.editPublicProfileData = async (req, res, userId) => {
     } else {
         newData.bio = bio
     }
-    newData.username = username;
+    newData.username = username.toLowerCase();
     newData.firstName = firstName;
     newData.lastName = lastName;
 
@@ -165,22 +165,8 @@ exports.removeExistingImage = async (userId) => {
     return token;
 };
 
-exports.editPrivateProfileData = async (email, birthdate, userId) => {
-    const year = birthdate?.split('-')[0];
-    const isValidBirthdate = Number(year) >= 1900 && Number(year) <= 2023;
-
-    if (!isValidBirthdate) {
-        throw new Error('Birthdate must be between year 1900 and 2023!');
-    }
-
-    const updatedUser = await User.findByIdAndUpdate(userId, { email, birthdate }, { runValidators: true, new: true }).select('-password');
-
-    const token = returnToken(updatedUser);
-    return token;
-};
-
 exports.editPrivateProfileData = async (email, birthdate, userId, loggedInUser) => {
-    const existingEmail = await User.findOne({ email });
+    const existingEmail = await User.findOne({ email:email.toLowerCase() });
 
     if (existingEmail && existingEmail._id != loggedInUser) {
         throw new Error("Email is in use already!");
@@ -193,7 +179,7 @@ exports.editPrivateProfileData = async (email, birthdate, userId, loggedInUser) 
         throw new Error('Birthdate must be between year 1900 and 2023!');
     }
 
-    const updatedUser = await User.findByIdAndUpdate(userId, { email, birthdate }, { runValidators: true, new: true }).select('-password');
+    const updatedUser = await User.findByIdAndUpdate(userId, { email:email.toLowerCase(), birthdate }, { runValidators: true, new: true }).select('-password');
 
     const token = returnToken(updatedUser);
     return token;
@@ -250,7 +236,7 @@ exports.searchUsers = async (search) => {
 exports.jwtResetPassword = async (username, email, birthdate) => {
     const user = await User.findOne({ username });
 
-    if (!user || user.email !== email || user.birthdate !== birthdate) {
+    if (!user || user.email !== email.toLowerCase() || user.birthdate !== birthdate) {
         throw new Error("Invalid data");
     }
 
