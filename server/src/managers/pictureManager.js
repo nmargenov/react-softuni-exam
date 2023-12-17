@@ -1,5 +1,22 @@
 const multer = require('multer');
+const { Storage } = require('@google-cloud/storage');
+const multerGoogleStorage = require('multer-google-storage');
 const { promisify } = require('util');
+const fs = require('fs');
+const tmp = require('tmp');
+
+const keyFileContent = {
+    private_key: process.env.PRIVATE_KEY,
+    client_email: process.env.CLIENT_EMAIL,
+  };
+
+const tmpobj = tmp.fileSync();
+const keyFilePath = tmpobj.name;
+
+fs.writeFileSync(keyFilePath, JSON.stringify(keyFileContent));
+
+const bucket = process.env.BUCKET;
+const projectId = process.env.PROJECT_ID;
 
 const fileFilter = (req, file, cb) => {
     if (file.mimetype.startsWith('image/')) {
@@ -9,44 +26,60 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-const profilePictureStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'src/profilePictures');
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + file.originalname);
-    }
-});
+const createMulterUpload = (storageConfig) => {
+    const storage = new Storage({
+        projectId: storageConfig.projectId,
+        credentials: {
+            client_email: process.env.CLIENT_EMAIL,
+            private_key: process.env.PRIVATE_KEY,
+        },
+    });
 
-const profileUpload = multer({ storage: profilePictureStorage, fileFilter: fileFilter }).single('profilePicture');
+    const bucket = storage.bucket(storageConfig.bucket);
 
-exports.editPublicProfileData = async (req, res) => {
-        const uploadPromise = promisify(profileUpload);
-        await uploadPromise(req, res);
+    const storageEngine = multerGoogleStorage.storageEngine({
+        bucket: bucket.name,
+        projectId: storageConfig.projectId,
+        credentials: {
+            client_email: process.env.CLIENT_EMAIL,
+            private_key: process.env.PRIVATE_KEY,
+          },      
+          keyFilename:keyFilePath,
+        acl: 'publicRead',
+        filename: (req, file, cb) => {
+            cb(null, storageConfig.directory + Date.now() + file.originalname);
+        },
+    });
 
-        if(req.file){
-            return { image: req.file.path, bio: req.body.bio, username: req.body.username, firstName: req.body.firstName, lastName: req.body.lastName };
-        }else{
-            return { bio: req.body.bio, username: req.body.username, firstName: req.body.firstName, lastName: req.body.lastName };
-        }
-
+    return multer({ storage: storageEngine, fileFilter });
 };
 
-const postImageStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'src/postImages');
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + file.originalname);
-    }
-});
+const profileUpload = createMulterUpload({
+    bucket: bucket,
+    projectId: projectId,
+    directory: 'profilePictures/',
+}).single('profilePicture');
 
-const postUpload = multer({ storage: postImageStorage, fileFilter: fileFilter }).single('postImage');
+const postUpload = createMulterUpload({
+    bucket: bucket,
+    projectId: projectId,
+    directory: 'postImages/',
+}).single('postImage');
+
+exports.editPublicProfileData = async (req, res) => {
+    const uploadPromise = promisify(profileUpload);
+    await uploadPromise(req, res);
+
+    if (req.file) {
+        return { image: req.file.path, bio: req.body.bio, username: req.body.username, firstName: req.body.firstName, lastName: req.body.lastName };
+    } else {
+        return { bio: req.body.bio, username: req.body.username, firstName: req.body.firstName, lastName: req.body.lastName };
+    }
+};
 
 exports.postWithImage = async (req, res) => {
     const uploadPromise = promisify(postUpload);
     await uploadPromise(req, res);
-
 
     if (req.file) {
         return { image: req.file.path, description: req.body.description, owner: req.body.owner };
@@ -54,3 +87,20 @@ exports.postWithImage = async (req, res) => {
         return { description: req.body.description, owner: req.body.owner };
     }
 };
+
+exports.deleteImage = async (objectPath) => {
+    const storage = new Storage({
+        projectId: projectId,
+        keyFilename:keyFilePath,
+    });
+
+    const bucket = storage.bucket(process.env.BUCKET);
+    const oldPictureFile = bucket.file(objectPath);
+
+    if (oldPictureFile) {
+        oldPictureFile.delete().then(() => {
+        }).catch((error) => {
+        });
+    }
+};
+

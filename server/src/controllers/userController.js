@@ -164,7 +164,7 @@ router.post(paths.forgotPassword, mustBeGuest, async (req, res) => {
             from: 'nikolay_margenov@abv.bg',
             to: email,
             subject: "Reset Password",
-            text: `Your link for resseting password is http://10.0.0.157:5173/resetPassword?t=${token} and is valid for only 24 hours! If you want to reset the password after the time has passed you need to generate a new link.`
+            text: `Your link for resseting password is https://my-social-media-project.vercel.app/resetPassword?t=${token} and is valid for only 24 hours! If you want to reset the password after the time has passed you need to generate a new link.`
         }
         await transporter.sendMail(mailOptions);
         res.status(200).send({message:'ok'});
@@ -186,13 +186,14 @@ router.post(paths.resetPassword,mustBeGuest,async(req,res)=>{
     }
 });
 
+const emailPass = process.env.EMAIL_PASS;
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
     secure: true,   
     auth: {
         user: 'niki.margenov@gmail.com',
-        pass: 'iypw ujxh dvcn wqhs'
+        pass: emailPass
     }
 });
 module.exports = router;

@@ -2,7 +2,7 @@
 The REST API is made by me using express. I'm using mongoose for database, bcrypt for hashing the password, jsonwebtoken for authorization, multer for storing the pictures.
 
 # Database
-You need mongoDB installed on the machine that runs the application. If you want ot use another URI you can change it in the config.js file. There is a DATABASE_NAME that is 'react-softuni-exam' by default. You can change it there aswell.
+You need mongoDB installed on the machine that runs the application. If you want ot use another URI you can change it in the config.js file. There is a DATABASE_NAME that is 'angular-softuni-exam' by default. You can change it there aswell.
 
 # JWT
 The back-end returns a JWT on login and register. The JWT contains the user's _id, username, first name, last name, email, birthdate, bio and profilePicture(profile picture aswell as the posts pictures are explain below). There is no password by any form(hashed or pure) in the JWT for safety reasons.
@@ -12,6 +12,3 @@ I'm using multer for storing the pictures. Profile pictures will be stored in th
 
 # How are pictures saved in the database
 Im saving it as a buffer that contains the link to the existing photo. For example the buffer will be 'src/profilePicture/defaultUser.png'. Then by decoding it in the front-end i can make a request to the image and get it.
-
-# Reset password
-If you want to reset your password the backend will send an email via nodemailer. If you want to setup the email account you can do so in userContoller in the const transporter.

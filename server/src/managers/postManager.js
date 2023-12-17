@@ -1,7 +1,9 @@
+const { Storage } = require("@google-cloud/storage");
 const Post = require("../models/Post");
 const User = require("../models/User");
 
 const fs = require('fs');
+const { deleteImage } = require("./pictureManager");
 
 exports.getAllPosts = async (userId) => {
     const posts = await Post.find().sort({ createdAt: -1 }).populate({
@@ -53,13 +55,13 @@ exports.likePost = async (postId, userId) => {
     const post = await Post.findById(postId);
 
     if (checkIfLiked(post, userId)) {
-        await User.findByIdAndUpdate(userId, { $pull: { likedPosts: {postId} } }, { runValidators: true, new: true });
+        await User.findByIdAndUpdate(userId, { $pull: { likedPosts: { postId } } }, { runValidators: true, new: true });
 
         return Post.findByIdAndUpdate(postId, { $pull: { likedBy: userId } }, { runValidators: true, new: true })
             .populate({ path: 'owner', select: '-password' })
             .populate({ path: 'comments', populate: { path: 'owner', select: '-password' } });
     } else {
-        await User.findByIdAndUpdate(userId, { $push: { likedPosts: {postId:postId,likedAt:Date.now()} } }, { runValidators: true, new: true });
+        await User.findByIdAndUpdate(userId, { $push: { likedPosts: { postId: postId, likedAt: Date.now() } } }, { runValidators: true, new: true });
 
         return Post.findByIdAndUpdate(postId, { $push: { likedBy: userId } }, { new: true })
             .populate({ path: 'owner', select: '-password' })
@@ -75,11 +77,11 @@ exports.deletePostById = async (postId, loggedInUser) => {
     }
 
     if (post.image.data) {
-        const path = post.image.data.toString().replace(/\\/g, '/');
-        fs.unlinkSync(path);
+        const objectPath = extractObjectPathFromUrl(post.image.data.toString());
+        await deleteImage(objectPath);
     }
 
-    await User.findByIdAndUpdate(loggedInUser, { $pull: { likedPosts: {postId} } }, { runValidators: true, new: true });
+    await User.findByIdAndUpdate(loggedInUser, { $pull: { likedPosts: { postId } } }, { runValidators: true, new: true });
 
     return Post.findByIdAndDelete(postId);
 };
@@ -97,8 +99,8 @@ exports.editPost = async (postId, description, photo, loggedInUser) => {
     }
     if (photo) {
         if (post.image.data) {
-            const path = post.image.data.toString().replace(/\\/g, '/');
-            fs.unlinkSync(path);
+            const objectPath = extractObjectPathFromUrl(post.image.data.toString());
+            await deleteImage(objectPath);
         }
         edit.image = {
             data: photo,
@@ -109,6 +111,12 @@ exports.editPost = async (postId, description, photo, loggedInUser) => {
         .populate({ path: 'owner', select: '-password' })
         .populate({ path: 'comments', populate: { path: 'owner', select: '-password' } });;
 };
+
+function extractObjectPathFromUrl(url) {
+    const baseUrl = 'https://my-app-photos-bucket.storage.googleapis.com/';
+    return url.replace(baseUrl, '');
+}
+
 
 exports.deleteExistingImage = async (postId, loggedInUser) => {
     const post = await Post.findById(postId);
@@ -121,8 +129,8 @@ exports.deleteExistingImage = async (postId, loggedInUser) => {
     }
 
     if (post.image.data) {
-        const path = post.image.data.toString().replace(/\\/g, '/');
-        fs.unlinkSync(path);
+        const objectPath = extractObjectPathFromUrl(post.image.data.toString());
+        await deleteImage(objectPath);
     }
 
     edit.image = {};
@@ -172,15 +180,15 @@ exports.editComment = async (postId, commentId, comment, loggedInUser) => {
 
 exports.getLikedPostsByUser = async (userId) => {
     const user = await User.findById(userId)
-    .populate({
-        path: 'likedPosts.postId',
-        populate: {
-            path: 'owner',
-            select: '-password',
-        }
-    });
-    const sortedPosts = user.likedPosts.sort((a,b)=>b.likedAt - a.likedAt);
-    const mappedPosts = sortedPosts.map(post=>post.postId);
+        .populate({
+            path: 'likedPosts.postId',
+            populate: {
+                path: 'owner',
+                select: '-password',
+            }
+        });
+    const sortedPosts = user.likedPosts.sort((a, b) => b.likedAt - a.likedAt);
+    const mappedPosts = sortedPosts.map(post => post.postId);
     return mappedPosts;
 }
 

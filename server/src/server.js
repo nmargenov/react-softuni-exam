@@ -1,11 +1,15 @@
 const express = require('express');
+require('dotenv').config();
 
-const { PORT } = require('./config/config');
+const PORT = process.env.PORT;
+
 const { expressConfig } = require('./config/expressConfig');
 const { connectToDB } = require('./config/databaseConfig');
 const router = require('./routes');
 
 const app = express();
+
+require('dotenv').config();
 
 expressConfig(app);
 app.use(router);

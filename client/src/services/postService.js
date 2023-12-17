@@ -1,4 +1,4 @@
-import { BASE_URL } from "./BASE_URL";
+const BASE_URL = import.meta.env.VITE_REACT_APP_API_URL;
 import { del, get, patch, post } from "./requester";
 
 

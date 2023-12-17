@@ -3,9 +3,10 @@ const fs = require('fs');
 
 const bcrypt = require('bcrypt');
 const { sign, verify } = require("../utils/jwt");
-const { SECRET, RESET_SECRET } = require("../config/config");
-const { editPublicProfileData } = require("./pictureManager");
+const { editPublicProfileData, deleteImage } = require("./pictureManager");
 
+const SECRET = process.env.SECRET;
+const RESET_SECRET = process.env.RESET_SECRET;
 
 
 exports.register = async (username, firstName, lastName, password, rePassword, email, birthdate) => {
@@ -27,13 +28,13 @@ exports.register = async (username, firstName, lastName, password, rePassword, e
         throw new Error('Birthdate must be between year 1900 and 2023!');
     }
 
-    const existingUsername = await User.findOne({ username:username.toLowerCase() });
+    const existingUsername = await User.findOne({ username: username.toLowerCase() });
 
     if (existingUsername) {
         throw new Error("Username is already in use!");
     }
 
-    const existingEmail = await User.findOne({ email:email.toLowerCase() });
+    const existingEmail = await User.findOne({ email: email.toLowerCase() });
 
     if (existingEmail) {
         throw new Error("Email is already in use!");
@@ -42,15 +43,15 @@ exports.register = async (username, firstName, lastName, password, rePassword, e
     const bcryptPass = await bcrypt.hash(password, 10);
 
     const user = {
-        username:username.toLowerCase(),
+        username: username.toLowerCase(),
         firstName,
         lastName,
         password: bcryptPass,
-        email:email.toLowerCase(),
+        email: email.toLowerCase(),
         birthdate,
         bio: '',
         profilePicture: {
-            data: `src/profilePictures/defaultUser.png`,
+            data: `https://storage.googleapis.com/my-app-photos-bucket/profilePictures/defaultUser.png`,
             contentType: 'image/png'
         }
     };
@@ -62,7 +63,7 @@ exports.register = async (username, firstName, lastName, password, rePassword, e
 }
 
 exports.login = async (username, password) => {
-    const user = await User.findOne({ username:username.toLowerCase() });
+    const user = await User.findOne({ username: username.toLowerCase() });
 
     if (!user) {
         throw new Error('Username or password don\'t match!');
@@ -116,7 +117,7 @@ exports.follow = async (userToFollow, userId) => {
 
 exports.editPublicProfileData = async (req, res, userId) => {
     const { image, bio, firstName, lastName, username } = await editPublicProfileData(req, res);
-    const existingUsername = await User.findOne({ username:username.toLowerCase() });
+    const existingUsername = await User.findOne({ username: username.toLowerCase() });
     if (existingUsername && existingUsername._id != userId) {
         throw new Error("Username is already in use!");
     }
@@ -129,8 +130,9 @@ exports.editPublicProfileData = async (req, res, userId) => {
         }
         if (user.profilePicture) {
             const oldPicturePath = user.profilePicture.data.toString().replace(/\\/g, '/');
-            if (oldPicturePath !== 'src/profilePictures/defaultUser.png') {
-                fs.unlinkSync(user.profilePicture.data.toString());
+            if (oldPicturePath !== 'https://storage.googleapis.com/my-app-photos-bucket/profilePictures/defaultUser.png') {
+                const objectPath = extractObjectPathFromUrl(user.profilePicture.data.toString());
+                await deleteImage(objectPath);
             }
         }
     }
@@ -152,12 +154,13 @@ exports.editPublicProfileData = async (req, res, userId) => {
 exports.removeExistingImage = async (userId) => {
     const user = await User.findById(userId);
     const oldPicturePath = user.profilePicture.data.toString().replace(/\\/g, '/');
-    if (oldPicturePath !== 'src/profilePictures/defaultUser.png' && fs.existsSync(user.profilePicture.data.toString())) {
-        fs.unlinkSync(user.profilePicture.data.toString());
+    if (oldPicturePath !== 'https://storage.googleapis.com/my-app-photos-bucket/profilePictures/defaultUser.png') {
+        const objectPath = extractObjectPathFromUrl(user.profilePicture.data.toString());
+        await deleteImage(objectPath);
     }
     const updatedUser = await User.findByIdAndUpdate(userId, {
         profilePicture: {
-            data: `src/profilePictures/defaultUser.png`,
+            data: `https://storage.googleapis.com/my-app-photos-bucket/profilePictures/defaultUser.png`,
             contentType: 'image/png'
         }
     }, { runValidators: true, new: true });
@@ -166,7 +169,7 @@ exports.removeExistingImage = async (userId) => {
 };
 
 exports.editPrivateProfileData = async (email, birthdate, userId, loggedInUser) => {
-    const existingEmail = await User.findOne({ email:email.toLowerCase() });
+    const existingEmail = await User.findOne({ email: email.toLowerCase() });
 
     if (existingEmail && existingEmail._id != loggedInUser) {
         throw new Error("Email is in use already!");
@@ -179,7 +182,7 @@ exports.editPrivateProfileData = async (email, birthdate, userId, loggedInUser) 
         throw new Error('Birthdate must be between year 1900 and 2023!');
     }
 
-    const updatedUser = await User.findByIdAndUpdate(userId, { email:email.toLowerCase(), birthdate }, { runValidators: true, new: true }).select('-password');
+    const updatedUser = await User.findByIdAndUpdate(userId, { email: email.toLowerCase(), birthdate }, { runValidators: true, new: true }).select('-password');
 
     const token = returnToken(updatedUser);
     return token;
@@ -266,6 +269,10 @@ exports.resetPassword = async (token, newPassword, rePassword) => {
             throw err;
         }
     }
+}
+function extractObjectPathFromUrl(url) {
+    const baseUrl = 'https://my-app-photos-bucket.storage.googleapis.com/';
+    return url.replace(baseUrl, '');
 }
 async function returnToken(updatedUser) {
     const payload = {

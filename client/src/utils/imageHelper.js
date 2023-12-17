@@ -1,10 +1,8 @@
-import { BASE_URL } from "../services/BASE_URL";
-
 export function decodeBuffer(data) {
     const uint = new Uint8ClampedArray(data.data.data);
     const decoder = new TextDecoder('utf-8');
     const img = decoder.decode(uint);
-    return BASE_URL +`/${img}`;
+    return `${img}`;
   }
   
   export function isFileAnImage(file) {

@@ -1,5 +1,7 @@
-const { SECRET, AUTH_COOKIE } = require("../config/config");
 const { verify } = require("../utils/jwt");
+
+const SECRET = process.env.SECRET;
+const AUTH_COOKIE = process.env.AUTH_COOKIE;
 
 exports.auth = async (req, res, next) => {
     const token = req.headers[AUTH_COOKIE];
