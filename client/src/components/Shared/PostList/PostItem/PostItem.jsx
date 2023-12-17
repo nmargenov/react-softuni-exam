@@ -3,7 +3,7 @@ import { decodeBuffer } from '../../../../utils/imageHelper';
 import { isEdited, timeAgo } from '../../../../utils/postHelper';
 import styles from '../postList.module.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { SmallSpinner } from '../../../spinners/SmallSpinner';
+import { SmallSpinner } from '../../../Spinners/SmallSpinner';
 
 
 export const PostItem = ({ _id, description, image, likedBy, comments, owner, createdAt, lastEditedAt }) => {

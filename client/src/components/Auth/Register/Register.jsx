@@ -3,7 +3,7 @@ import styles from "../shared/styles.module.css";
 import { register } from "../../../services/authService";
 import { UserContext } from "../../../contexts/AuthContext";
 import { useNavigate } from "react-router";
-import { SmallSpinner } from "../../spinners/SmallSpinner";
+import { SmallSpinner } from "../../Spinners/SmallSpinner";
 import { useForm } from "../../../hooks/useForm";
 import { birthdateValidator, isValidEmail, isValidUsername } from "../../../utils/fieldsUtil";
 

@@ -7,7 +7,7 @@ import { UserContext } from "../../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faHeart, faPen, faTrash, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { deletePost, likePost } from "../../../services/postService";
-import { SmallSpinner } from "../../spinners/SmallSpinner";
+import { SmallSpinner } from "../../Spinners/SmallSpinner";
 import { useNavigate } from "react-router";
 import { EditPost } from "../EditPost/EditPost";
 

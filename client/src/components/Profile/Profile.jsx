@@ -3,7 +3,7 @@ import { decodeBuffer } from "../../utils/imageHelper"
 import styles from "./profile.module.css";
 import { useContext, useEffect, useState } from "react";
 import { follow, getUser } from "../../services/userService";
-import { SmallSpinner } from "../spinners/SmallSpinner";
+import { SmallSpinner } from "../Spinners/SmallSpinner";
 import { UserContext } from "../../contexts/AuthContext";
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

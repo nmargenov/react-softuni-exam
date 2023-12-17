@@ -1,7 +1,7 @@
 import { useContext, useRef, useState } from 'react';
 import { useForm } from '../../../hooks/useForm';
 import styles from './createPost.module.css';
-import { SmallSpinner } from '../../spinners/SmallSpinner';
+import { SmallSpinner } from '../../Spinners/SmallSpinner';
 import { createPost } from '../../../services/postService';
 import { UserContext } from '../../../contexts/AuthContext';
 

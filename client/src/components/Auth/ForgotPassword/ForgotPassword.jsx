@@ -1,5 +1,5 @@
 import styles from '../shared/styles.module.css';
-import { SmallSpinner } from "../../spinners/SmallSpinner";
+import { SmallSpinner } from "../../Spinners/SmallSpinner";
 import { useForm } from "../../../hooks/useForm";
 import { useEffect, useState } from "react";
 import { birthdateValidator, isValidEmail, isValidUsername } from "../../../utils/fieldsUtil";

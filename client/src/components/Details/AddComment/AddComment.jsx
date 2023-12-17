@@ -5,7 +5,7 @@ import styles from './addComment.module.css';
 import { useParams } from 'react-router';
 import { UserContext } from '../../../contexts/AuthContext';
 import { DetailsContext } from '../../../contexts/DetailsContext';
-import { SmallSpinner } from '../../spinners/SmallSpinner';
+import { SmallSpinner } from '../../Spinners/SmallSpinner';
 import { isEdited } from '../../../utils/postHelper';
 
 export const AddComment = () => {

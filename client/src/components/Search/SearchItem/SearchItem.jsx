@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import { decodeBuffer } from '../../../utils/imageHelper';
 import styles from './searchItem.module.css';
 import { useState } from 'react';
-import { SmallSpinner } from '../../spinners/SmallSpinner';
+import { SmallSpinner } from '../../Spinners/SmallSpinner';
 
 export const SearchItem = ({ userPosts, profilePicture, username, firstName, lastName, following, followers }) => {
     const [isProfilePictureLoading, setIsProfilePictureLoading] = useState(true);

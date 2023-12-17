@@ -3,7 +3,7 @@ import { useForm } from '../../../hooks/useForm';
 import styles from '../shared/styles.module.css';
 import { UserContext } from '../../../contexts/AuthContext';
 import { SettingsContext } from '../../../contexts/SettingsContext';
-import { SmallSpinner } from '../../spinners/SmallSpinner';
+import { SmallSpinner } from '../../Spinners/SmallSpinner';
 import { editPrivateData } from '../../../services/userService';
 import { birthdateValidator, isValidEmail } from '../../../utils/fieldsUtil';
 import * as jwt from 'jwt-decode';

@@ -7,7 +7,7 @@ import { SettingsContext } from '../../../contexts/SettingsContext';
 import styles from "../shared/styles.module.css";
 import { useForm } from '../../../hooks/useForm';
 import { editPublicData, removeExistingImage } from '../../../services/userService';
-import { SmallSpinner } from '../../spinners/SmallSpinner';
+import { SmallSpinner } from '../../Spinners/SmallSpinner';
 import * as jwt from 'jwt-decode';
 import { isValidUsername } from '../../../utils/fieldsUtil';
 

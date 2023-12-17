@@ -3,7 +3,7 @@ import { useForm } from '../../../hooks/useForm';
 import { editComment } from '../../../services/postService';
 import styles from './editComment.module.css';
 import { DetailsContext } from '../../../contexts/DetailsContext';
-import { SmallSpinner } from '../../spinners/SmallSpinner';
+import { SmallSpinner } from '../../Spinners/SmallSpinner';
 
 export const EditComment = ({ _id, comment, setIsOpen }) => {
 

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useState } from "react";
 import { deleteComment } from "../../../../services/postService";
 import { DetailsContext } from "../../../../contexts/DetailsContext";
-import { SmallSpinner } from "../../../spinners/SmallSpinner";
+import { SmallSpinner } from "../../../Spinners/SmallSpinner";
 import { UserContext } from "../../../../contexts/AuthContext";
 import { useNavigate } from "react-router";
 import { EditComment } from "../../EditComment/EditComment";

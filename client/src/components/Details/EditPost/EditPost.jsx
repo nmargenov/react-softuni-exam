@@ -6,7 +6,7 @@ import { useForm } from '../../../hooks/useForm';
 import { editPost, removeExistingImage } from '../../../services/postService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { SmallSpinner } from '../../spinners/SmallSpinner';
+import { SmallSpinner } from '../../Spinners/SmallSpinner';
 
 export const EditPost = () => {
 
