@@ -164,7 +164,7 @@ router.post(paths.forgotPassword, mustBeGuest, async (req, res) => {
             from: 'nikolay_margenov@abv.bg',
             to: email,
             subject: "Reset Password",
-            text: `Your link for resseting password is https://my-social-media-project.vercel.app/resetPassword?t=${token} and is valid for only 24 hours! If you want to reset the password after the time has passed you need to generate a new link.`
+            text: `Your link for resseting password is https://nmargenov.site/resetPassword?t=${token} and is valid for only 24 hours! If you want to reset the password after the time has passed you need to generate a new link.`
         }
         await transporter.sendMail(mailOptions);
         res.status(200).send({message:'ok'});
